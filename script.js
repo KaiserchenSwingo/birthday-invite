@@ -1,7 +1,6 @@
 (function() {
-  // ----- PIN Gate (lightweight, front-end only) -----
-  // Change this hash to the SHA-256 of your own PIN (see note below)
-  const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // = SHA-256('2412')
+  // ----- PIN Gate (front-end only, with one-time unlock via localStorage) -----
+  const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // SHA-256('2412') – bitte ersetzen
   const KEY = 'invite-unlocked-v1';
 
   const app = document.getElementById('app');
@@ -13,8 +12,7 @@
   function showApp() {
     if (gate) {
       gate.classList.add('hidden');
-      // hard hide as fallback in case of CSS conflicts
-      gate.style.display = 'none';
+      gate.style.display = 'none'; // fallback hard hide
     }
     if (app) app.classList.remove('hidden');
     document.body.classList.add('unlocked');
@@ -27,17 +25,16 @@
     return bytes.map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
-  // Auto-unlock if previously validated this session/device
+  // Auto-unlock if previously validated on this device
   try {
     if (localStorage.getItem(KEY) === '1') showApp();
   } catch (e) {}
 
   if (form) {
-    // prevent browser default validation popup reloading on some setups
     form.setAttribute('novalidate', 'true');
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      error.textContent = '';
+      if (error) error.textContent = '';
       const pin = (input.value || '').trim();
       if (!pin) return;
       try {
@@ -46,12 +43,12 @@
           try { localStorage.setItem(KEY, '1'); } catch (e) {}
           showApp();
         } else {
-          error.textContent = 'Falscher PIN. Versuch es bitte nochmal.';
+          if (error) error.textContent = 'Falscher PIN. Versuch es bitte nochmal.';
           input.focus();
           input.select();
         }
       } catch (err) {
-        error.textContent = 'Dein Browser unterstützt diese Funktion nicht.';
+        if (error) error.textContent = 'Dein Browser unterstützt diese Funktion nicht.';
       }
       return false;
     });
@@ -72,4 +69,38 @@
   }
   update();
   setInterval(update, 60*1000);
+})();
+
+// ----- RSVP via Formspree (AJAX) -----
+(function () {
+  const form = document.getElementById('rsvp-form');
+  if (!form) return;
+
+  const status = document.getElementById('rsvp-status');
+  const submitBtn = document.getElementById('rsvp-submit');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (status) status.textContent = 'Sende …';
+    if (submitBtn) submitBtn.disabled = true;
+
+    try {
+      const resp = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (resp.ok) {
+        if (status) status.textContent = 'Danke! Deine Antwort ist angekommen.';
+        form.reset();
+      } else {
+        if (status) status.textContent = 'Uff, da ging was schief. Versuch es später erneut.';
+      }
+    } catch (err) {
+      if (status) status.textContent = 'Keine Verbindung. Prüfe kurz dein Internet.';
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  });
 })();

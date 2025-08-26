@@ -19,7 +19,7 @@
     <div class="gate-card">
       <h1>🎉 Einladung</h1>
       <p>Bitte gib den PIN von der Karte ein.</p>
-      <!-- action=javascript:; to be extra-safe against reloads -->
+      <!-- action=javascript:; to avoid accidental reloads on submit -->
       <form id="gate-form" action="javascript:;">
         <label class="sr-only" for="gate-input">PIN</label>
         <input id="gate-input" inputmode="numeric" autocomplete="one-time-code" placeholder="PIN" required />
@@ -70,21 +70,28 @@
 
       <hr>
 
-      <!-- NOTE for GitHub Pages: Netlify Forms won't work here.
-           Use an external service like Formspree/Google Forms (Variant B below) or switch hosting to Netlify. -->
-
-      <!-- RSVP VARIANTE B: Externe Form (Formspree) – ersetze action-URL -->
-      <!-- Formspree Setup: https://formspree.io/ -> Create new form -> get your endpoint URL and paste below -->
-      <form class="rsvp" action="https://formspree.io/f/DEINE_ID" method="POST">
+      <!-- RSVP (Formspree) -->
+      <form id="rsvp-form" class="rsvp" action="https://formspree.io/f/xeolqzzr" method="POST">
         <h2>RSVP</h2>
+
+        <!-- Honeypot (unsichtbar) -->
+        <label class="honey">Firma
+          <input type="text" name="company" autocomplete="off">
+        </label>
+
+        <!-- Optionaler Betreff für die Mail -->
+        <input type="hidden" name="_subject" value="RSVP – Geburtstag">
+
         <label>
           Dein Name
           <input name="name" required autocomplete="name" />
         </label>
+
         <label>
           E‑Mail (für Updates)
           <input name="email" type="email" autocomplete="email" />
         </label>
+
         <label>
           Kommst du?
           <select name="zusagen" required>
@@ -93,11 +100,15 @@
             <option value="Nein">Leider nicht 🙁</option>
           </select>
         </label>
+
         <label>
           Nachricht (Allergien, +1, Fragen …)
           <textarea name="nachricht" rows="4"></textarea>
         </label>
-        <button type="submit" class="button">Antwort senden</button>
+
+        <button type="submit" class="button" id="rsvp-submit">Antwort senden</button>
+        <p id="rsvp-status" class="fineprint" aria-live="polite"></p>
+
         <p class="fineprint">Mit dem Senden stimmst du der Verarbeitung deiner Angaben zum Zweck der Eventplanung zu.</p>
       </form>
 
