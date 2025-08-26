@@ -19,7 +19,8 @@
     <div class="gate-card">
       <h1>🎉 Einladung</h1>
       <p>Bitte gib den PIN von der Karte ein.</p>
-      <form id="gate-form">
+      <!-- action=javascript:; to be extra-safe against reloads -->
+      <form id="gate-form" action="javascript:;">
         <label class="sr-only" for="gate-input">PIN</label>
         <input id="gate-input" inputmode="numeric" autocomplete="one-time-code" placeholder="PIN" required />
         <button type="submit" class="button">Entsperren</button>
@@ -69,12 +70,12 @@
 
       <hr>
 
-      <!-- RSVP VARIANTE A: Netlify Forms (funktioniert nur auf Netlify-Build) -->
-      <form name="rsvp" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="rsvp">
-        <input type="hidden" name="form-name" value="rsvp">
-        <p class="hidden">
-          <label>Don’t fill this out if you're human: <input name="bot-field"></label>
-        </p>
+      <!-- NOTE for GitHub Pages: Netlify Forms won't work here.
+           Use an external service like Formspree/Google Forms (Variant B below) or switch hosting to Netlify. -->
+
+      <!-- RSVP VARIANTE B: Externe Form (Formspree) – ersetze action-URL -->
+      <!-- Formspree Setup: https://formspree.io/ -> Create new form -> get your endpoint URL and paste below -->
+      <form class="rsvp" action="https://formspree.io/f/DEINE_ID" method="POST">
         <h2>RSVP</h2>
         <label>
           Dein Name
@@ -99,13 +100,6 @@
         <button type="submit" class="button">Antwort senden</button>
         <p class="fineprint">Mit dem Senden stimmst du der Verarbeitung deiner Angaben zum Zweck der Eventplanung zu.</p>
       </form>
-
-      <!-- RSVP VARIANTE B: Externe Form (Formspree/Google Forms) – ersetze action-URL -->
-      <!--
-      <form class="rsvp" action="https://formspree.io/f/DEINE_ID" method="POST">
-        ... gleiche Felder wie oben ...
-      </form>
-      -->
 
       <footer class="footer">
         <p>Fragen? Schreib mir auf <a href="https://t.me/username" target="_blank" rel="noopener">Telegram</a> oder per Mail.</p>

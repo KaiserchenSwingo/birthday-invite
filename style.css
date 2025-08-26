@@ -70,7 +70,8 @@ hr { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0; 
 .footer { margin-top: 2rem; color: var(--muted); font-size: 0.95rem; }
 
 .countdown { margin-top: .25rem; color: var(--accent-2); font-weight: 600; }
-.hidden { display: none; }
+/* Stronger hidden rule to avoid conflicts */
+.hidden { display: none !important; }
 
 /* Print-friendly tweaks for QR cards linking to this page */
 @media print {
@@ -79,7 +80,7 @@ hr { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0; 
 }
 
 /* PIN Gate styles */
-.gate { position: fixed; inset: 0; display: grid; place-items: center; padding: 2rem; background: radial-gradient(1000px 600px at 50% 10%, rgba(255,255,255,0.05), rgba(0,0,0,0.75)); backdrop-filter: blur(4px); }
+.gate { position: fixed; inset: 0; display: grid; place-items: center; padding: 2rem; background: radial-gradient(1000px 600px at 50% 10%, rgba(255,255,255,0.05), rgba(0,0,0,0.75)); backdrop-filter: blur(4px); z-index: 1000; }
 .gate-card { width: 100%; max-width: 440px; background: var(--card); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
 .gate-card h1 { margin: 0 0 .5rem; }
 #gate-form { display: flex; gap: .5rem; margin: 1rem 0; }

@@ -11,8 +11,13 @@
   const error = document.getElementById('gate-error');
 
   function showApp() {
-    gate.classList.add('hidden');
-    app.classList.remove('hidden');
+    if (gate) {
+      gate.classList.add('hidden');
+      // hard hide as fallback in case of CSS conflicts
+      gate.style.display = 'none';
+    }
+    if (app) app.classList.remove('hidden');
+    document.body.classList.add('unlocked');
   }
 
   async function sha256Hex(str) {
@@ -27,25 +32,30 @@
     if (localStorage.getItem(KEY) === '1') showApp();
   } catch (e) {}
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    error.textContent = '';
-    const pin = (input.value || '').trim();
-    if (!pin) return;
-    try {
-      const digest = await sha256Hex(pin);
-      if (digest === PIN_HASH) {
-        try { localStorage.setItem(KEY, '1'); } catch (e) {}
-        showApp();
-      } else {
-        error.textContent = 'Falscher PIN. Versuch es bitte nochmal.';
-        input.focus();
-        input.select();
+  if (form) {
+    // prevent browser default validation popup reloading on some setups
+    form.setAttribute('novalidate', 'true');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      error.textContent = '';
+      const pin = (input.value || '').trim();
+      if (!pin) return;
+      try {
+        const digest = await sha256Hex(pin);
+        if (digest === PIN_HASH) {
+          try { localStorage.setItem(KEY, '1'); } catch (e) {}
+          showApp();
+        } else {
+          error.textContent = 'Falscher PIN. Versuch es bitte nochmal.';
+          input.focus();
+          input.select();
+        }
+      } catch (err) {
+        error.textContent = 'Dein Browser unterstützt diese Funktion nicht.';
       }
-    } catch (err) {
-      error.textContent = 'Dein Browser unterstützt diese Funktion nicht.';
-    }
-  });
+      return false;
+    });
+  }
 
   // ----- Countdown -----
   const target = new Date('2025-12-21T19:00:00+01:00');
