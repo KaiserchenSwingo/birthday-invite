@@ -66,7 +66,7 @@
   setInterval(update, 60*1000);
 })();
 
-// ----- RSVP via Formspree (AJAX) -----
+// ----- ANT WORT via Formspree (AJAX) -----
 (function () {
   const form = document.getElementById('rsvp-form');
   if (!form) return;

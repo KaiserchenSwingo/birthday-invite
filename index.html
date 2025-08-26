@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>🎉 Dirty 30 – Einladung</title>
-  <meta name="description" content="Du bist eingeladen! Alle Infos zu Datum, Ort und RSVP." />
+  <meta name="description" content="Du bist eingeladen! Alle Infos zu Datum, Ort und Antwort." />
   <meta property="og:title" content="🎉 Dirty 30 – Einladung" />
-  <meta property="og:description" content="Alle Infos & RSVP auf einen Blick." />
+  <meta property="og:description" content="Alle Infos & Antwort auf einen Blick." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="/cover.jpg" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
       <form id="gate-form" action="javascript:;">
         <label class="sr-only" for="gate-input">PIN</label>
         <input id="gate-input" inputmode="numeric" autocomplete="one-time-code" placeholder="PIN" required />
-        <button type="submit" class="button">Entsperren</button>
+        <button type="submit" class="button btn-crown">Entsperren</button>
       </form>
       <p id="gate-error" class="gate-error" aria-live="polite"></p>
       <p class="fineprint">Leichter Schutz, kein echtes Passwortsystem.</p>
@@ -49,7 +49,7 @@
             Speicherstraße 12, 10115 Berlin
           </p>
           <p>
-            <a class="button" target="_blank" rel="noopener" href="https://maps.google.com/?q=Speicherstraße%2012%2010115%20Berlin">Route öffnen</a>
+            <a class="button btn-crown" target="_blank" rel="noopener" href="https://maps.google.com/?q=Speicherstraße%2012%2010115%20Berlin">Route öffnen</a>
           </p>
         </div>
       </div>
@@ -71,9 +71,9 @@
 
       <hr>
 
-      <!-- RSVP (Formspree, ohne E-Mail-Feld) -->
+      <!-- ANTWO RT (Formspree, ohne E-Mail-Feld) -->
       <form id="rsvp-form" class="rsvp" action="https://formspree.io/f/xeolqzzr" method="POST">
-        <h2>RSVP</h2>
+        <h2>ANTWORT</h2>
 
         <!-- Honeypot (unsichtbar) -->
         <label class="honey">Firma
@@ -81,7 +81,7 @@
         </label>
 
         <!-- Optionaler Betreff für die Mail -->
-        <input type="hidden" name="_subject" value="RSVP – 30. Geburtstag">
+        <input type="hidden" name="_subject" value="ANTWORT – 30. Geburtstag">
 
         <label>
           Dein Name
@@ -102,15 +102,11 @@
           <textarea name="nachricht" rows="4"></textarea>
         </label>
 
-        <button type="submit" class="button" id="rsvp-submit">Antwort senden</button>
+        <button type="submit" class="button btn-crown" id="rsvp-submit">Antwort senden</button>
         <p id="rsvp-status" class="fineprint" aria-live="polite"></p>
 
         <p class="fineprint">Mit dem Senden stimmst du der Verarbeitung deiner Angaben zum Zweck der Eventplanung zu.</p>
       </form>
-
-      <footer class="footer">
-        <p>Fragen? Schreib mir auf <a href="https://t.me/username" target="_blank" rel="noopener">Telegram</a>.</p>
-      </footer>
     </section>
   </main>
 
