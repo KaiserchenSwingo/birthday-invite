@@ -3,37 +3,38 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🎉 Geburtstags­einladung</title>
+  <title>🎉 Dirty 30 – Einladung</title>
   <meta name="description" content="Du bist eingeladen! Alle Infos zu Datum, Ort und RSVP." />
-  <meta property="og:title" content="🎉 Geburtstag – Einladung" />
+  <meta property="og:title" content="🎉 Dirty 30 – Einladung" />
   <meta property="og:description" content="Alle Infos & RSVP auf einen Blick." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="/cover.jpg" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <!-- Simple PIN Gate (front-end only) -->
   <div id="gate" class="gate">
     <div class="gate-card">
-      <h1>🎉 Einladung</h1>
-      <p>Bitte gib den PIN von der Karte ein.</p>
-      <!-- action=javascript:; to avoid accidental reloads on submit -->
+      <h1 class="logo">DIRTY 30</h1>
+      <p>Gib den PIN von der Karte ein, um reinzukommen.</p>
       <form id="gate-form" action="javascript:;">
         <label class="sr-only" for="gate-input">PIN</label>
         <input id="gate-input" inputmode="numeric" autocomplete="one-time-code" placeholder="PIN" required />
         <button type="submit" class="button">Entsperren</button>
       </form>
       <p id="gate-error" class="gate-error" aria-live="polite"></p>
-      <p class="fineprint">Hinweis: Das ist ein leichter Schutz, kein echtes Passwortsystem.</p>
+      <p class="fineprint">Leichter Schutz, kein echtes Passwortsystem.</p>
     </div>
   </div>
 
   <main id="app" class="container hidden">
     <section class="card">
-      <h1>🎉 Ich feiere Geburtstag!</h1>
-      <p class="lede">Hey, ich würde mich mega freuen, wenn du mit mir anstoßen kommst.</p>
+      <div class="hero">
+        <h1 class="headline">MEIN 30. GEBURTSTAG</h1>
+        <p class="lede">Lass uns die Nacht zum Tag machen 💥</p>
+      </div>
 
       <div class="grid">
         <div>
@@ -56,7 +57,7 @@
       <div class="grid">
         <div>
           <h2>Dresscode</h2>
-          <p>Smart casual mit einem Hauch Glitzer ✨ (freiwillig).</p>
+          <p>Smart casual – Neon-Detail gern gesehen ✨</p>
         </div>
         <div>
           <h2>Hinweise</h2>
@@ -70,7 +71,7 @@
 
       <hr>
 
-      <!-- RSVP (Formspree) -->
+      <!-- RSVP (Formspree, ohne E-Mail-Feld) -->
       <form id="rsvp-form" class="rsvp" action="https://formspree.io/f/xeolqzzr" method="POST">
         <h2>RSVP</h2>
 
@@ -80,16 +81,11 @@
         </label>
 
         <!-- Optionaler Betreff für die Mail -->
-        <input type="hidden" name="_subject" value="RSVP – Geburtstag">
+        <input type="hidden" name="_subject" value="RSVP – 30. Geburtstag">
 
         <label>
           Dein Name
           <input name="name" required autocomplete="name" />
-        </label>
-
-        <label>
-          E‑Mail (für Updates)
-          <input name="email" type="email" autocomplete="email" />
         </label>
 
         <label>
@@ -113,7 +109,7 @@
       </form>
 
       <footer class="footer">
-        <p>Fragen? Schreib mir auf <a href="https://t.me/username" target="_blank" rel="noopener">Telegram</a> oder per Mail.</p>
+        <p>Fragen? Schreib mir auf <a href="https://t.me/username" target="_blank" rel="noopener">Telegram</a>.</p>
       </footer>
     </section>
   </main>

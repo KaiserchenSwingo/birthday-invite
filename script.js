@@ -1,5 +1,5 @@
 (function() {
-  // ----- PIN Gate (front-end only, with one-time unlock via localStorage) -----
+  // ----- PIN Gate (front-end only, one-time unlock via localStorage) -----
   const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // SHA-256('2412') – bitte ersetzen
   const KEY = 'invite-unlocked-v1';
 
@@ -10,10 +10,7 @@
   const error = document.getElementById('gate-error');
 
   function showApp() {
-    if (gate) {
-      gate.classList.add('hidden');
-      gate.style.display = 'none'; // fallback hard hide
-    }
+    if (gate) { gate.classList.add('hidden'); gate.style.display = 'none'; }
     if (app) app.classList.remove('hidden');
     document.body.classList.add('unlocked');
   }
@@ -25,7 +22,6 @@
     return bytes.map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
-  // Auto-unlock if previously validated on this device
   try {
     if (localStorage.getItem(KEY) === '1') showApp();
   } catch (e) {}
@@ -44,8 +40,7 @@
           showApp();
         } else {
           if (error) error.textContent = 'Falscher PIN. Versuch es bitte nochmal.';
-          input.focus();
-          input.select();
+          input.focus(); input.select();
         }
       } catch (err) {
         if (error) error.textContent = 'Dein Browser unterstützt diese Funktion nicht.';
