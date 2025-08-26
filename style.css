@@ -4,12 +4,12 @@
   --text:#E6E7EB;
   --muted:#9AA0A6;
   --silver1:#C9CDD3;--silver2:#F3F4F6;--silver3:#AEB4BB;
-  --red:#FF445A;          /* Rotton */
-  --blue:#2BD2FF;         /* Blauton */
+  --magenta:#FF3CAC;      /* Lila/Pink aus dem Hintergrund */
+  --blue:#2BD2FF;         /* Blau */
 }
 
-/* Ermöglicht Animation von Winkel-Variablen (für breite Browserunterstützung) */
-@property --swap-angle{
+/* Animierbare Winkel-Variable für den Rand */
+@property --rot{
   syntax: '<angle>';
   inherits: false;
   initial-value: 45deg;
@@ -33,6 +33,7 @@ body::after{
     repeating-linear-gradient(0deg,rgba(243,244,246,.06) 0 1px,transparent 1px 40px),
     repeating-linear-gradient(90deg,rgba(201,205,211,.05) 0 1px,transparent 1px 40px);
 }
+
 .container{max-width:980px;margin:0 auto;padding:3rem 1rem 6rem}
 .card{position:relative;background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:2rem;backdrop-filter:blur(6px);box-shadow:0 10px 40px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.03) inset}
 .card::before{
@@ -57,7 +58,7 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 /* Schlange vollständig deaktivieren */
 .btn-snake{display:none !important}
 
-/* moderner Silber-Button */
+/* moderner Button */
 .btn{
   --r:14px;
   position:relative;display:inline-grid;place-items:center;
@@ -72,36 +73,31 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 .btn:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
 .btn-label{position:relative;z-index:3}
 
-/* weicher Neon-Glow um den Button (statisch) */
+/* weicher Neon-Glow (statisch) */
 .btn::before{
   content:"";position:absolute;inset:-10px;border-radius:calc(var(--r) + 10px);
   background:
-    radial-gradient(140px 100px at 15% 20%, rgba(255,68,90,.45), transparent 70%),
+    radial-gradient(140px 100px at 15% 20%, rgba(255,60,172,.45), transparent 70%),
     radial-gradient(140px 100px at 85% 80%, rgba(43,210,255,.35), transparent 70%);
   filter:blur(22px) saturate(1.05);opacity:.6;z-index:1;pointer-events:none;
 }
 
-/* animierter Rand: diagonal Rot→Blau, nach 2s diagonal Blau→Rot (Ping‑Pong) */
+/* animierter Rand, der UM DEN BUTTON HERUM LÄUFT (kontinuierlich) */
 .btn::after{
   content:"";position:absolute;inset:-2px;border-radius:calc(var(--r) + 2px);padding:2px;
-  /* Gradient entlang der Button-Kante (diagonal) */
-  --swap-angle:45deg;
-  background:linear-gradient(var(--swap-angle), var(--red) 0%, var(--blue) 100%);
+  /* conic-gradient rotiert um das Zentrum -> Lauflicht rundum */
+  background:conic-gradient(from var(--rot), var(--magenta) 0deg, var(--blue) 180deg, var(--magenta) 360deg);
   /* nur als Rahmen anzeigen */
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
           mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;mask-composite:exclude;
-  filter:drop-shadow(0 0 16px rgba(43,210,255,.55)) drop-shadow(0 0 18px rgba(255,68,90,.45));
+  filter:drop-shadow(0 0 16px rgba(43,210,255,.55)) drop-shadow(0 0 18px rgba(255,60,172,.45));
   z-index:2;pointer-events:none;
-  animation:swap-colors 4s ease-in-out infinite;
+  animation:spin-around 2s linear infinite;
 }
 
-/* 0–2s: Rot oben links → Blau unten rechts
-   2–4s: Blau oben links → Rot unten rechts (Rückweg) */
-@keyframes swap-colors{
-  0%   { --swap-angle: 45deg; }
-  50%  { --swap-angle: 225deg; }
-  100% { --swap-angle: 45deg; }
+@keyframes spin-around{
+  to{ --rot: 405deg; }  /* 360° + Startoffset -> nahtlos */
 }
 
 /* ==================== FORM ==================== */
@@ -121,5 +117,3 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 .fineprint{color:var(--muted);font-size:.92rem}
 .countdown{margin-top:.25rem;color:var(--silver2);font-weight:700;letter-spacing:.02em;text-shadow:0 0 10px rgba(243,244,246,.35)}
 .hidden{display:none !important}
-
-/* PIN-Gate, Honeypot, Danke-Overlay etc. – unverändert zu deiner letzten Version */
