@@ -1,1 +1,111 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>🎉 Mein 30. – Einladung</title><meta name="description" content="Einladung mit Infos & Antwort-Formular."/><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"/></head><body><div id="gate" class="gate"><div class="gate-card"><h1 class="logo">DIRTY 30</h1><p>Gib den PIN von der Karte ein, um reinzukommen.</p><form id="gate-form" action="javascript:;"><label class="sr-only" for="gate-input">PIN</label><input id="gate-input" inputmode="numeric" autocomplete="one-time-code" placeholder="PIN" required/><button type="submit" class="btn"><span class="btn-label">Entsperren</span></button></form><p id="gate-error" class="gate-error" aria-live="polite"></p><p class="fineprint">Leichter Schutz, kein echtes Passwortsystem.</p></div></div><main id="app" class="container hidden"><section class="card"><div class="hero"><h1 class="headline">MEIN 30. GEBURTSTAG</h1><p class="lede">Lass uns die Nacht zum Tag machen 💥</p></div><div class="grid"><div><h2>Wann?</h2><p><strong id="date">Samstag, 21. Dezember 2025</strong><br>Einlass ab 18:00, Start 19:00</p><p class="countdown" id="countdown" aria-live="polite"></p></div><div><h2>Wo?</h2><p><strong>Zum Alten Speicher</strong><br>Speicherstraße 12, 10115 Berlin</p><p><a class="btn" target="_blank" rel="noopener" href="https://maps.google.com/?q=Speicherstraße%2012%2010115%20Berlin"><span class="btn-label">Route öffnen</span></a></p></div></div><div class="grid"><div><h2>Dresscode</h2><p>Smart casual – Neon‑Detail gern gesehen ✨</p></div><div><h2>Hinweise</h2><ul><li>Parken begrenzt – ÖPNV empfohlen</li><li>Bar & Softdrinks vorhanden</li><li>+1 nur nach Rücksprache</li></ul></div></div><hr><form id="rsvp-form" class="rsvp" action="https://formspree.io/f/xeolqzzr" method="POST"><h2>ANTWORT</h2><input type="hidden" name="_subject" value="ANTWORT – 30. Geburtstag"/><label>Dein Name <input name="name" required autocomplete="name"/></label><label>Kommst du?<select name="zusagen" required><option value="Ja">Ja, ich bin dabei 🎉</option><option value="Vielleicht">Vielleicht 🤔</option><option value="Nein">Leider nicht 🙁</option></select></label><label class="full">Nachricht (Allergien, +1, Fragen …)<textarea name="nachricht" rows="4"></textarea></label><button type="submit" class="btn" id="rsvp-submit"><span class="btn-label">Antwort senden</span></button><p id="rsvp-status" class="fineprint" aria-live="polite"></p><div class="thanks" id="thanks" aria-hidden="true" role="dialog" aria-labelledby="thanks-title"><div class="checkmark"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="gradCheck" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8266FF"/><stop offset="1" stop-color="#2BD2FF"/></linearGradient></defs><path d="M16 34 L28 46 L50 20" stroke="url(#gradCheck)" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3 id="thanks-title">Danke! 🎉</h3><p>Deine Antwort ist angekommen.</p><div class="confetti" id="confetti"></div></div></form></section></main><script src="script.js" defer></script></body></html>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎉 Mein 30. – Einladung</title>
+  <meta name="description" content="Einladung mit Infos & Antwort-Formular." />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="gate" class="gate">
+    <div class="gate-card">
+      <h1 class="logo">DIRTY 30</h1>
+      <p>Gib den PIN von der Karte ein, um reinzukommen.</p>
+      <form id="gate-form" action="javascript:;">
+        <label class="sr-only" for="gate-input">PIN</label>
+        <input id="gate-input" inputmode="numeric" autocomplete="one-time-code" placeholder="PIN" required />
+        <button type="submit" class="btn"><span class="btn-label">Entsperren</span></button>
+      </form>
+      <p id="gate-error" class="gate-error" aria-live="polite"></p>
+      <p class="fineprint">Leichter Schutz, kein echtes Passwortsystem.</p>
+    </div>
+  </div>
+
+  <main id="app" class="container hidden">
+    <section class="card">
+      <div class="hero">
+        <h1 class="headline">MEIN 30. GEBURTSTAG</h1>
+        <p class="lede">Lass uns die Nacht zum Tag machen 💥</p>
+      </div>
+
+      <div class="grid">
+        <div>
+          <h2>Wann?</h2>
+          <p><strong id="date">Samstag, 21. Dezember 2025</strong><br>Einlass ab 18:00, Start 19:00</p>
+          <p class="countdown" id="countdown" aria-live="polite"></p>
+        </div>
+        <div>
+          <h2>Wo?</h2>
+          <p><strong>Zum Alten Speicher</strong><br>Speicherstraße 12, 10115 Berlin</p>
+          <p><a class="btn" target="_blank" rel="noopener" href="https://maps.google.com/?q=Speicherstraße%2012%2010115%20Berlin"><span class="btn-label">Route öffnen</span></a></p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div>
+          <h2>Dresscode</h2>
+          <p>Smart casual – Neon‑Detail gern gesehen ✨</p>
+        </div>
+        <div>
+          <h2>Hinweise</h2>
+          <ul>
+            <li>Parken begrenzt – ÖPNV empfohlen</li>
+            <li>Bar & Softdrinks vorhanden</li>
+            <li>+1 nur nach Rücksprache</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr>
+
+      <form id="rsvp-form" class="rsvp" action="https://formspree.io/f/xeolqzzr" method="POST">
+        <h2>ANTWORT</h2>
+        <input type="hidden" name="_subject" value="ANTWORT – 30. Geburtstag"/>
+
+        <label>
+          Dein Name
+          <input name="name" required autocomplete="name" />
+        </label>
+
+        <label>
+          Kommst du?
+          <select name="zusagen" required>
+            <option value="Ja">Ja, ich bin dabei 🎉</option>
+            <option value="Vielleicht">Vielleicht 🤔</option>
+            <option value="Nein">Leider nicht 🙁</option>
+          </select>
+        </label>
+
+        <label class="full">
+          Nachricht (Allergien, +1, Fragen …)
+          <textarea name="nachricht" rows="4"></textarea>
+        </label>
+
+        <button type="submit" class="btn" id="rsvp-submit"><span class="btn-label">Antwort senden</span></button>
+        <p id="rsvp-status" class="fineprint" aria-live="polite"></p>
+
+        <div class="thanks" id="thanks" aria-hidden="true" role="dialog" aria-labelledby="thanks-title">
+          <div class="checkmark">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <defs>
+                <linearGradient id="gradCheck" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#8266FF"/>
+                  <stop offset="1" stop-color="#2BD2FF"/>
+                </linearGradient>
+              </defs>
+              <path d="M16 34 L28 46 L50 20" stroke="url(#gradCheck)" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 id="thanks-title">Danke! 🎉</h3>
+          <p>Deine Antwort ist angekommen.</p>
+          <div class="confetti" id="confetti"></div>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
