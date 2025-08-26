@@ -17,12 +17,14 @@ body {
               linear-gradient(120deg, #0B0C10, var(--bg));
   overflow-x: hidden;
 }
+/* Hintergrund-Glow */
 body::before {
   content: ""; position: fixed; inset: -50vmax;
   background: conic-gradient(from 0deg, var(--neon1), var(--neon2), var(--neon3), var(--neon1));
   filter: blur(120px); opacity: .1; animation: sweep 18s linear infinite; pointer-events: none;
 }
 @keyframes sweep { to { transform: rotate(360deg); } }
+/* feines Raster in Silber */
 body::after {
   content: ""; position: fixed; inset: 0;
   background:
@@ -66,7 +68,7 @@ body::after {
 
 hr { border: none; border-top: 1px solid rgba(243,244,246,0.25); margin: 2rem 0; }
 
-/* Buttons: silber + transparenter */
+/* Button: silber, transparenter */
 .btn {
   position: relative;
   display: inline-grid; place-items: center;
@@ -74,7 +76,7 @@ hr { border: none; border-top: 1px solid rgba(243,244,246,0.25); margin: 2rem 0;
   padding: .9rem 1.2rem;
   border-radius: 14px;
   color: #0f1116;
-  background: linear-gradient(180deg, rgba(243,244,246,0.42), rgba(201,205,211,0.22));
+  background: linear-gradient(180deg, rgba(243,244,246,0.40), rgba(201,205,211,0.18));
   border: 1px solid rgba(255,255,255,0.28);
   font-weight: 800; letter-spacing: .02em;
   text-decoration: none; cursor: pointer; outline: none;
@@ -87,9 +89,17 @@ hr { border: none; border-top: 1px solid rgba(243,244,246,0.25); margin: 2rem 0;
 .btn:focus-visible { outline: 2px solid var(--neon2); outline-offset: 3px; }
 .btn-label { position: relative; z-index: 1; }
 
-/* Neon-"Schlange" */
-.btn-snake { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; filter: drop-shadow(0 0 12px rgba(43,210,255,0.25)) drop-shadow(0 0 18px rgba(130,102,255,0.25)); }
-.snake-path { stroke-dasharray: 22 78; animation: snake-move 3.5s linear infinite; opacity: 0.95; }
+/* Neon-„Schlange“ */
+.btn-snake {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+}
+.snake-path {
+  stroke-dasharray: 28 72;         /* sichtbarer Anteil + Lücke bei pathLength=100 */
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 10px rgba(43,210,255,0.55)) drop-shadow(0 0 14px rgba(130,102,255,0.5));
+  animation: snake-move 3s linear infinite;
+  opacity: 1;
+}
 @keyframes snake-move { to { stroke-dashoffset: -100; } }
 
 /* Form */
@@ -100,13 +110,19 @@ hr { border: none; border-top: 1px solid rgba(243,244,246,0.25); margin: 2rem 0;
   border: 1px solid rgba(201,205,211,0.35); background: rgba(15,16,22,0.85); color: var(--text);
   font-family: 'DM Sans', system-ui, sans-serif; box-shadow: 0 1px 0 rgba(243,244,246,0.06) inset;
 }
-.rsvp select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--silver1) 50%), linear-gradient(135deg, var(--silver1) 50%, transparent 50%); background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px); background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+.rsvp select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--silver1) 50%), linear-gradient(135deg, var(--silver1) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px);
+  background-size: 5px 5px, 5px 5px; background-repeat: no-repeat;
+}
 .fineprint { color: var(--muted); font-size: 0.92rem; }
 .countdown { margin-top: .25rem; color: var(--silver2); font-weight: 700; letter-spacing: .02em; text-shadow: 0 0 10px rgba(243,244,246,0.35); }
 .hidden { display: none !important; }
 
 /* PIN Gate */
-.gate { position: fixed; inset: 0; display: grid; place-items: center; padding: 2rem; background: radial-gradient(1200px 600px at 50% 10%, rgba(255,60,172,0.10), rgba(0,0,0,0.75)); backdrop-filter: blur(4px); z-index: 1000; }
+.gate { position: fixed; inset: 0; display: grid; place-items: center; padding: 2rem;
+  background: radial-gradient(1200px 600px at 50% 10%, rgba(255,60,172,0.10), rgba(0,0,0,0.75)); backdrop-filter: blur(4px); z-index: 1000; }
 .gate-card { width: 100%; max-width: 520px; background: rgba(17,18,27,0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 1.6rem; box-shadow: 0 10px 30px rgba(0,0,0,0.45), 0 0 40px rgba(130,102,255,0.25); }
 .gate-card p { margin: .4rem 0 .6rem; }
 #gate-form { display: grid; gap: .75rem; margin: 1rem 0; justify-items: center; }
@@ -117,17 +133,35 @@ hr { border: none; border-top: 1px solid rgba(243,244,246,0.25); margin: 2rem 0;
 /* Honeypot */
 .honey { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
-/* Danke-Overlay blockiert Aktionen */
-.thanks { position: absolute; inset: 0; display: grid; place-content: center; gap: .5rem; text-align: center; background: rgba(14,15,22,0.92); border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); opacity: 0; pointer-events: none; transform: scale(.98); }
+/* Danke-Overlay (blockiert) */
+.thanks {
+  position: absolute; inset: 0;
+  display: grid; place-content: center; gap: .5rem;
+  text-align: center; background: rgba(14,15,22,0.92);
+  border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);
+  opacity: 0; pointer-events: none; transform: scale(.98);
+}
 .rsvp.success .thanks { animation: thanks-in 700ms ease forwards; pointer-events: auto; }
 .rsvp.success > *:not(.thanks) { filter: blur(2px); pointer-events: none; user-select: none; }
-@keyframes thanks-in { 0% { opacity: 0; transform: scale(.98); } 60% { opacity: 1; transform: scale(1.01); } 100% { opacity: 1; transform: scale(1); } }
-.checkmark { width: 70px; height: 70px; margin: 0 auto .5rem; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ffffff, #cdd3da); box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 10px 24px rgba(0,0,0,.35); display: grid; place-items: center; }
-.checkmark svg { width: 46px; height: 46px; }
+@keyframes thanks-in {
+  0% { opacity: 0; transform: scale(.98); }
+  60% { opacity: 1; transform: scale(1.01); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.checkmark { width: 80px; height: 80px; margin: 0 auto .6rem; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #cdd3da);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 10px 24px rgba(0,0,0,.35);
+  display: grid; place-items: center;
+}
+.checkmark svg { width: 52px; height: 52px; filter: drop-shadow(0 0 8px rgba(130,102,255,0.6)); }
 
-/* Confetti */
+/* Konfetti */
 .confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-.confetti .p { position: absolute; width: 10px; height: 16px; opacity: 0.9; will-change: transform; animation: fall linear forwards; }
+.confetti .p {
+  position: absolute; width: 10px; height: 16px; opacity: 0.9;
+  will-change: transform;
+  animation: fall linear forwards;
+}
 @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
 
 /* Print */

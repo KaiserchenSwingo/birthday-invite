@@ -1,5 +1,6 @@
 (function() {
-  const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16';
+  // ----- PIN Gate (einmalig via localStorage) -----
+  const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // SHA-256('2412')
   const KEY = 'invite-unlocked-v1';
 
   const app = document.getElementById('app');
@@ -8,7 +9,10 @@
   const input = document.getElementById('gate-input');
   const error = document.getElementById('gate-error');
 
-  function showApp(){ if (gate){ gate.classList.add('hidden'); gate.style.display='none'; } if (app) app.classList.remove('hidden'); }
+  function showApp(){
+    if (gate){ gate.classList.add('hidden'); gate.style.display='none'; }
+    if (app) app.classList.remove('hidden');
+  }
 
   async function sha256Hex(str){
     const enc = new TextEncoder().encode(str);
@@ -17,6 +21,7 @@
   }
 
   try { if (localStorage.getItem(KEY) === '1') showApp(); } catch(e){}
+
   if (form){
     form.setAttribute('novalidate','true');
     form.addEventListener('submit', async (e)=>{
@@ -33,6 +38,7 @@
     });
   }
 
+  // Countdown
   const target = new Date('2025-12-21T19:00:00+01:00');
   const el = document.getElementById('countdown');
   function update(){
@@ -47,6 +53,7 @@
   update(); setInterval(update, 60*1000);
 })();
 
+// ----- Formspree AJAX + blockierendes Danke-Overlay -----
 (function () {
   const form = document.getElementById('rsvp-form');
   if (!form) return;
@@ -77,6 +84,7 @@
   }
 
   function showThanks() {
+    // blockiere alles im Formular
     const controls = form.querySelectorAll('input, select, textarea, button');
     controls.forEach(el => { el.disabled = true; });
     form.classList.add('success');
