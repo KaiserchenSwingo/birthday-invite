@@ -22,34 +22,14 @@
       <form id="gate-form" action="javascript:;">
         <label class="sr-only" for="gate-input">PIN</label>
         <input id="gate-input" inputmode="numeric" autocomplete="one-time-code" placeholder="PIN" required />
-        <button type="submit" class="crown-button">
-          <svg class="crown-svg" viewBox="0 0 320 200" aria-hidden="true">
-            <defs>
-              <linearGradient id="silverGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#F3F4F6"/>
-                <stop offset="0.5" stop-color="#C9CDD3"/>
-                <stop offset="1" stop-color="#AEB4BB"/>
-              </linearGradient>
-              <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="rgba(0,0,0,0.45)"/>
-                <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="rgba(130,102,255,0.35)"/>
-              </filter>
-            </defs>
-            <path d="M10 150 L40 60 L80 150 L150 30 L220 150 L270 60 L310 150 L310 190 L10 190 Z"
-              fill="url(#silverGrad)" stroke="#2A2E35" stroke-width="10" filter="url(#softShadow)"/>
-            <circle cx="70" cy="172" r="12" fill="#DDE1E7" stroke="#2A2E35" stroke-width="6"/>
-            <circle cx="130" cy="172" r="12" fill="#DDE1E7" stroke="#2A2E35" stroke-width="6"/>
-            <circle cx="190" cy="172" r="12" fill="#DDE1E7" stroke="#2A2E35" stroke-width="6"/>
-            <circle cx="250" cy="172" r="12" fill="#DDE1E7" stroke="#2A2E35" stroke-width="6"/>
-          </svg>
-          <span class="crown-label">Entsperren</span>
-        </button>
+        <button type="submit" class="btn neon-outline">Entsperren</button>
       </form>
       <p id="gate-error" class="gate-error" aria-live="polite"></p>
       <p class="fineprint">Leichter Schutz, kein echtes Passwortsystem.</p>
     </div>
   </div>
 
+  <!-- Inhalt -->
   <main id="app" class="container hidden">
     <section class="card">
       <div class="hero">
@@ -70,28 +50,7 @@
             Speicherstraße 12, 10115 Berlin
           </p>
           <p>
-            <a class="crown-button" target="_blank" rel="noopener" href="https://maps.google.com/?q=Speicherstraße%2012%2010115%20Berlin">
-              <svg class="crown-svg" viewBox="0 0 320 200" aria-hidden="true">
-                <defs>
-                  <linearGradient id="silverGrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#F3F4F6"/>
-                    <stop offset="0.5" stop-color="#C9CDD3"/>
-                    <stop offset="1" stop-color="#AEB4BB"/>
-                  </linearGradient>
-                  <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="rgba(0,0,0,0.45)"/>
-                    <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="rgba(130,102,255,0.35)"/>
-                  </filter>
-                </defs>
-                <path d="M10 150 L40 60 L80 150 L150 30 L220 150 L270 60 L310 150 L310 190 L10 190 Z"
-                  fill="url(#silverGrad)" stroke="#2A2E35" stroke-width="10" filter="url(#softShadow)"/>
-                <circle cx="70" cy="172" r="12" fill="#DDE1E7" stroke="#2A2E35" stroke-width="6"/>
-                <circle cx="130" cy="172" r="12" fill="#DDE1E7" stroke="#2A2E35" stroke-width="6"/>
-                <circle cx="190" cy="172" r="12" fill="#DDE1E7" stroke="#2A2E35" stroke-width="6"/>
-                <circle cx="250" cy="172" r="12" fill="#DDE1E7" stroke="#2A2E35" stroke-width="6"/>
-              </svg>
-              <span class="crown-label">Route öffnen</span>
-            </a>
+            <a class="btn neon-outline" target="_blank" rel="noopener" href="https://maps.google.com/?q=Speicherstraße%2012%2010115%20Berlin">Route öffnen</a>
           </p>
         </div>
       </div>
@@ -113,9 +72,11 @@
 
       <hr>
 
+      <!-- ANT WORT -->
       <form id="rsvp-form" class="rsvp" action="https://formspree.io/f/xeolqzzr" method="POST">
         <h2>ANTWORT</h2>
 
+        <!-- Honeypot -->
         <label class="honey">Firma
           <input type="text" name="company" autocomplete="off">
         </label>
@@ -141,31 +102,18 @@
           <textarea name="nachricht" rows="4"></textarea>
         </label>
 
-        <button type="submit" class="crown-button" id="rsvp-submit">
-          <svg class="crown-svg" viewBox="0 0 320 200" aria-hidden="true">
-            <defs>
-              <linearGradient id="silverGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#F3F4F6"/>
-                <stop offset="0.5" stop-color="#C9CDD3"/>
-                <stop offset="1" stop-color="#AEB4BB"/>
-              </linearGradient>
-              <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="rgba(0,0,0,0.45)"/>
-                <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="rgba(130,102,255,0.35)"/>
-              </filter>
-            </defs>
-            <path d="M10 150 L40 60 L80 150 L150 30 L220 150 L270 60 L310 150 L310 190 L10 190 Z"
-              fill="url(#silverGrad)" stroke="#2A2E35" stroke-width="10" filter="url(#softShadow)"/>
-            <circle cx="70" cy="172" r="12" fill="#DDE1E7" stroke="#2A2E35" stroke-width="6"/>
-            <circle cx="130" cy="172" r="12" fill="#DDE1E7" stroke="#2A2E35" stroke-width="6"/>
-            <circle cx="190" cy="172" r="12" fill="#DDE1E7" stroke="#2A2E35" stroke-width="6"/>
-            <circle cx="250" cy="172" r="12" fill="#DDE1E7" stroke="#2A2E35" stroke-width="6"/>
-          </svg>
-          <span class="crown-label">Antwort senden</span>
-        </button>
-
+        <button type="submit" class="btn neon-outline" id="rsvp-submit">Antwort senden</button>
         <p id="rsvp-status" class="fineprint" aria-live="polite"></p>
-        <p class="fineprint">Mit dem Senden stimmst du der Verarbeitung deiner Angaben zum Zweck der Eventplanung zu.</p>
+
+        <!-- Danke-Overlay (wird per JS eingeblendet) -->
+        <div class="thanks" id="thanks" aria-hidden="true">
+          <div class="checkmark">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M16 34 L28 46 L50 20" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Danke! 🎉</h3>
+          <p>Deine Antwort ist angekommen.</p>
+          <div class="confetti" id="confetti"></div>
+        </div>
       </form>
     </section>
   </main>
