@@ -3,12 +3,9 @@
   --card: rgba(17,18,27,0.75);
   --text: #E6E7EB;
   --muted: #9AA0A6;
-  --neon1: #FF3CAC; /* pink */
-  --neon2: #2BD2FF; /* blue */
-  --neon3: #8266FF; /* violet */
-  --silver1: #C9CDD3; /* light steel */
-  --silver2: #F3F4F6; /* near white silver */
-  --silver3: #AEB4BB; /* darker silver for contrast */
+  --neon1: #FF3CAC; --neon2: #2BD2FF; --neon3: #8266FF;
+  --silver1: #C9CDD3; --silver2: #F3F4F6; --silver3: #AEB4BB;
+  --stroke: #2A2E35;
 }
 * { box-sizing: border-box; }
 html, body { height: 100%; }
@@ -21,26 +18,16 @@ body {
               linear-gradient(120deg, #0B0C10, var(--bg));
   overflow-x: hidden;
 }
-/* Animated neon sweep */
+/* animated neon sweep */
 body::before {
-  content: "";
-  position: fixed;
-  inset: -50vmax;
+  content: ""; position: fixed; inset: -50vmax;
   background: conic-gradient(from 0deg, var(--neon1), var(--neon2), var(--neon3), var(--neon1));
-  filter: blur(120px);
-  opacity: 0.1;
-  animation: sweep 18s linear infinite;
-  pointer-events: none;
+  filter: blur(120px); opacity: .1; animation: sweep 18s linear infinite; pointer-events: none;
 }
-@keyframes sweep {
-  to { transform: rotate(360deg); }
-}
-
-/* Geometric lines overlay with subtle silver */
+@keyframes sweep { to { transform: rotate(360deg); } }
+/* silver grid overlay */
 body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
+  content: ""; position: fixed; inset: 0;
   background:
     repeating-linear-gradient(0deg, rgba(243,244,246,0.06) 0, rgba(243,244,246,0.06) 1px, transparent 1px, transparent 40px),
     repeating-linear-gradient(90deg, rgba(201,205,211,0.05) 0, rgba(201,205,211,0.05) 1px, transparent 1px, transparent 40px);
@@ -58,12 +45,9 @@ body::after {
   box-shadow: 0 10px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.03) inset;
   backdrop-filter: blur(6px);
 }
-/* Silver accent border */
 .card::before {
-  content: "";
-  position: absolute; inset: -1px;
-  border-radius: 24px;
-  padding: 1px;
+  content: ""; position: absolute; inset: -1px;
+  border-radius: 24px; padding: 1px;
   background: linear-gradient(135deg, var(--silver3), var(--silver1), var(--silver2));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude;
@@ -72,92 +56,65 @@ body::after {
 
 .logo, .headline, h2 {
   font-family: 'Bebas Neue', system-ui, sans-serif;
-  letter-spacing: 0.06em;
-  color: #fff;
-  text-transform: uppercase;
-  text-shadow: 0 0 18px rgba(255,60,172,0.4), 0 0 24px rgba(130,102,255,0.25), 0 0 6px rgba(243,244,246,0.35); /* silver glow */
+  letter-spacing: 0.06em; color: #fff; text-transform: uppercase;
+  text-shadow: 0 0 18px rgba(255,60,172,0.4), 0 0 24px rgba(130,102,255,0.25), 0 0 6px rgba(243,244,246,0.35);
   margin: 0 0 .5rem;
 }
 .logo { font-size: 2rem; letter-spacing: 0.15em; }
 .headline { font-size: clamp(2rem, 6vw, 4rem); line-height: .95; }
-
 .lede { color: var(--muted); margin-top: .25rem; }
 
 .grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin: 1.75rem 0; }
-@media (min-width: 740px) {
-  .grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
-}
+@media (min-width: 740px) { .grid { grid-template-columns: 1fr 1fr; gap: 2rem; } }
 
-hr { border: none; border-top: 1px solid rgba(243,244,246,0.25); margin: 2rem 0; } /* silver line */
+hr { border: none; border-top: 1px solid rgba(243,244,246,0.25); margin: 2rem 0; }
 
-.button {
-  display: inline-block;
-  padding: 1rem 1.2rem 0.9rem; /* extra top padding because of crown spikes */
-  border-radius: 14px;
-  text-decoration: none;
-  color: #0c0c10;
-  background: linear-gradient(180deg, var(--silver2), var(--silver1));
-  border: 0;
-  cursor: pointer;
-  font-weight: 800;
-  letter-spacing: .02em;
-  box-shadow: 0 0 0 2px rgba(255,255,255,0.06) inset,
-              0 10px 20px rgba(0,0,0,0.35),
-              0 0 28px rgba(201,205,211,0.25);
-  transition: transform .06s ease, filter .2s ease;
+/* crown button */
+.crown-button {
+  position: relative; display: inline-grid; place-items: center;
+  width: clamp(200px, 48vw, 280px); background: none; border: none; padding: 0;
+  cursor: pointer; text-decoration: none; outline: none;
 }
-.button:hover { filter: brightness(1.05); transform: translateY(-1px); }
-.button:active { transform: translateY(0); }
+.crown-svg { width: 100%; height: auto; pointer-events: none; display: block; }
+.crown-label {
+  position: absolute; bottom: 28px; font-weight: 900; letter-spacing: .02em; color: #111318;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5); font-family: 'DM Sans', system-ui, sans-serif;
+}
+.crown-button:hover .crown-svg {
+  filter: drop-shadow(0 0 14px rgba(130,102,255,0.35)) drop-shadow(0 0 10px rgba(43,210,255,0.25));
+}
+.crown-button:active { transform: translateY(1px); }
+.crown-button:focus-visible { outline: 2px solid var(--neon2); outline-offset: 6px; border-radius: 12px; }
 
-/* Crown shape with 3 spikes via clip-path */
-.btn-crown {
-  -webkit-clip-path: polygon(0% 30%, 6% 30%, 10% 14%, 14% 30%, 38% 30%, 50% 6%, 62% 30%, 86% 30%, 90% 14%, 94% 30%, 100% 30%, 100% 100%, 0% 100%);
-  clip-path: polygon(0% 30%, 6% 30%, 10% 14%, 14% 30%, 38% 30%, 50% 6%, 62% 30%, 86% 30%, 90% 14%, 94% 30%, 100% 30%, 100% 100%, 0% 100%);
-  position: relative;
-  overflow: hidden;
-}
-/* slight neon edge for the crown */
-.btn-crown::after {
-  content: "";
-  position: absolute; inset: 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, rgba(255,60,172,0.25), rgba(43,210,255,0.25));
-  mix-blend-mode: screen;
-  opacity: .6;
-}
-
-/* Inputs */
+/* form */
 .rsvp label { display: grid; gap: 0.5rem; margin-bottom: 1rem; }
 .rsvp input, .rsvp select, .rsvp textarea {
-  width: 100%;
-  padding: 0.8rem 0.9rem;
-  border-radius: 12px;
-  border: 1px solid rgba(201,205,211,0.35); /* silver border */
-  background: rgba(15,16,22,0.85);
-  color: var(--text);
-  font-family: 'DM Sans', system-ui, sans-serif;
-  box-shadow: 0 1px 0 rgba(243,244,246,0.06) inset;
+  width: 100%; padding: 0.8rem 0.9rem; border-radius: 12px;
+  border: 1px solid rgba(201,205,211,0.35); background: rgba(15,16,22,0.85); color: var(--text);
+  font-family: 'DM Sans', system-ui, sans-serif; box-shadow: 0 1px 0 rgba(243,244,246,0.06) inset;
 }
-.rsvp select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--silver1) 50%), linear-gradient(135deg, var(--silver1) 50%, transparent 50%); background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px); background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+.rsvp select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--silver1) 50%), linear-gradient(135deg, var(--silver1) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px);
+  background-size: 5px 5px, 5px 5px; background-repeat: no-repeat;
+}
 .fineprint { color: var(--muted); font-size: 0.92rem; }
-
 .countdown { margin-top: .25rem; color: var(--silver2); font-weight: 700; letter-spacing: .02em; text-shadow: 0 0 10px rgba(243,244,246,0.35); }
 .hidden { display: none !important; }
 
-/* PIN Gate styles */
-.gate { position: fixed; inset: 0; display: grid; place-items: center; padding: 2rem; background: radial-gradient(1200px 600px at 50% 10%, rgba(255,60,172,0.10), rgba(0,0,0,0.75)); backdrop-filter: blur(4px); z-index: 1000; }
+/* gate */
+.gate { position: fixed; inset: 0; display: grid; place-items: center; padding: 2rem;
+  background: radial-gradient(1200px 600px at 50% 10%, rgba(255,60,172,0.10), rgba(0,0,0,0.75)); backdrop-filter: blur(4px); z-index: 1000; }
 .gate-card { width: 100%; max-width: 520px; background: rgba(17,18,27,0.9); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 1.6rem; box-shadow: 0 10px 30px rgba(0,0,0,0.45), 0 0 40px rgba(130,102,255,0.25); }
 .gate-card p { margin: .4rem 0 .6rem; }
-#gate-form { display: flex; gap: .5rem; margin: 1rem 0; }
-#gate-input { flex: 1; padding: 0.9rem 1rem; border-radius: 12px; border: 1px solid rgba(201,205,211,0.35); background: #0f1016; color: var(--text); letter-spacing: .1em; text-align: center; font-weight: 800; }
+#gate-form { display: grid; gap: .75rem; margin: 1rem 0; justify-items: center; }
+#gate-input { width: clamp(220px, 60vw, 280px); padding: 0.9rem 1rem; border-radius: 12px; border: 1px solid rgba(201,205,211,0.35); background: #0f1016; color: var(--text); letter-spacing: .1em; text-align: center; font-weight: 800; }
 .gate-error { color: #ffb4b4; min-height: 1.2em; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
-/* Honeypot */
+/* honeypot */
 .honey { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
-/* Print-friendly */
-@media print {
-  body { background: white; color: black; }
-  .card { box-shadow: none; border-color: #ddd; }
-}
+/* print */
+@media print { body { background: white; color: black; } .card { box-shadow: none; border-color: #ddd; } }
