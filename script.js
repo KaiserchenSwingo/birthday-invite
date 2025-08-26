@@ -1,34 +1,25 @@
+// PIN-Gate + RSVP submit (Formspree)
 (function() {
-  // ----- PIN Gate (einmalig via localStorage) -----
-  const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // SHA-256('2412')
+  const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // 2412
   const KEY = 'invite-unlocked-v1';
-
   const app = document.getElementById('app');
   const gate = document.getElementById('gate');
   const form = document.getElementById('gate-form');
   const input = document.getElementById('gate-input');
   const error = document.getElementById('gate-error');
 
-  function showApp(){
-    if (gate){ gate.classList.add('hidden'); gate.style.display='none'; }
-    if (app) app.classList.remove('hidden');
-  }
-
+  function showApp(){ if (gate){ gate.classList.add('hidden'); gate.style.display='none'; } if (app) app.classList.remove('hidden'); }
   async function sha256Hex(str){
     const enc = new TextEncoder().encode(str);
     const digest = await crypto.subtle.digest('SHA-256', enc);
     return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');
   }
-
   try { if (localStorage.getItem(KEY) === '1') showApp(); } catch(e){}
-
   if (form){
     form.setAttribute('novalidate','true');
     form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      if (error) error.textContent='';
-      const pin = (input.value||'').trim();
-      if (!pin) return;
+      e.preventDefault(); if (error) error.textContent='';
+      const pin = (input.value||'').trim(); if (!pin) return;
       try {
         const digest = await sha256Hex(pin);
         if (digest === PIN_HASH){ try{ localStorage.setItem(KEY,'1'); }catch(e){} showApp(); }
@@ -53,7 +44,6 @@
   update(); setInterval(update, 60*1000);
 })();
 
-// ----- Formspree AJAX + blockierendes Danke-Overlay -----
 (function () {
   const form = document.getElementById('rsvp-form');
   if (!form) return;
@@ -84,7 +74,6 @@
   }
 
   function showThanks() {
-    // blockiere alles im Formular
     const controls = form.querySelectorAll('input, select, textarea, button');
     controls.forEach(el => { el.disabled = true; });
     form.classList.add('success');

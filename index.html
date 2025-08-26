@@ -3,14 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🎉 Dirty 30 – Einladung</title>
-  <meta name="description" content="Du bist eingeladen! Alle Infos zu Datum, Ort und Antwort." />
-  <meta property="og:title" content="🎉 Dirty 30 – Einladung" />
-  <meta property="og:description" content="Alle Infos & Antwort auf einen Blick." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="/cover.jpg" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>🎉 Mein 30. – Einladung</title>
+  <meta name="description" content="Einladung mit Infos & ANT WORT-Formular." />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -22,21 +17,7 @@
       <form id="gate-form" action="javascript:;">
         <label class="sr-only" for="gate-input">PIN</label>
         <input id="gate-input" inputmode="numeric" autocomplete="one-time-code" placeholder="PIN" required />
-        <button type="submit" class="btn snake">
-          <span class="btn-label">Entsperren</span>
-          <svg class="btn-snake" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="snake-grad-1" x1="0" y1="0" x2="100" y2="40" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#FF3CAC"/>
-                <stop offset="0.5" stop-color="#2BD2FF"/>
-                <stop offset="1" stop-color="#8266FF"/>
-              </linearGradient>
-            </defs>
-            <rect x="1.5" y="1.5" width="97" height="37" rx="12" ry="12"
-              fill="none" stroke="url(#snake-grad-1)" stroke-width="4"
-              pathLength="100" stroke-linecap="round" class="snake-path"/>
-          </svg>
-        </button>
+        <button type="submit" class="btn"><span class="btn-label">Entsperren</span></button>
       </form>
       <p id="gate-error" class="gate-error" aria-live="polite"></p>
       <p class="fineprint">Leichter Schutz, kein echtes Passwortsystem.</p>
@@ -59,34 +40,15 @@
         </div>
         <div>
           <h2>Wo?</h2>
-          <p>
-            <strong>Zum Alten Speicher</strong><br>
-            Speicherstraße 12, 10115 Berlin
-          </p>
-          <p>
-            <a class="btn snake" target="_blank" rel="noopener" href="https://maps.google.com/?q=Speicherstraße%2012%2010115%20Berlin">
-              <span class="btn-label">Route öffnen</span>
-              <svg class="btn-snake" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
-                <defs>
-                  <linearGradient id="snake-grad-2" x1="0" y1="0" x2="100" y2="40" gradientUnits="userSpaceOnUse">
-                    <stop offset="0" stop-color="#FF3CAC"/>
-                    <stop offset="0.5" stop-color="#2BD2FF"/>
-                    <stop offset="1" stop-color="#8266FF"/>
-                  </linearGradient>
-                </defs>
-                <rect x="1.5" y="1.5" width="97" height="37" rx="12" ry="12"
-                  fill="none" stroke="url(#snake-grad-2)" stroke-width="4"
-                  pathLength="100" stroke-linecap="round" class="snake-path"/>
-              </svg>
-            </a>
-          </p>
+          <p><strong>Zum Alten Speicher</strong><br>Speicherstraße 12, 10115 Berlin</p>
+          <p><a class="btn" target="_blank" rel="noopener" href="https://maps.google.com/?q=Speicherstraße%2012%2010115%20Berlin"><span class="btn-label">Route öffnen</span></a></p>
         </div>
       </div>
 
       <div class="grid">
         <div>
           <h2>Dresscode</h2>
-          <p>Smart casual – Neon-Detail gern gesehen ✨</p>
+          <p>Smart casual – Neon‑Detail gern gesehen ✨</p>
         </div>
         <div>
           <h2>Hinweise</h2>
@@ -100,16 +62,10 @@
 
       <hr>
 
-      <!-- ANT WORT -->
+      <!-- ANT WORT (RSVP) -->
       <form id="rsvp-form" class="rsvp" action="https://formspree.io/f/xeolqzzr" method="POST">
         <h2>ANTWORT</h2>
-
-        <!-- Honeypot -->
-        <label class="honey">Firma
-          <input type="text" name="company" autocomplete="off">
-        </label>
-
-        <input type="hidden" name="_subject" value="ANTWORT – 30. Geburtstag">
+        <input type="hidden" name="_subject" value="ANTWORT – 30. Geburtstag"/>
 
         <label>
           Dein Name
@@ -125,26 +81,12 @@
           </select>
         </label>
 
-        <label>
+        <label class="full">
           Nachricht (Allergien, +1, Fragen …)
           <textarea name="nachricht" rows="4"></textarea>
         </label>
 
-        <button type="submit" class="btn snake" id="rsvp-submit">
-          <span class="btn-label">Antwort senden</span>
-          <svg class="btn-snake" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="snake-grad-3" x1="0" y1="0" x2="100" y2="40" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#FF3CAC"/>
-                <stop offset="0.5" stop-color="#2BD2FF"/>
-                <stop offset="1" stop-color="#8266FF"/>
-              </linearGradient>
-            </defs>
-            <rect x="1.5" y="1.5" width="97" height="37" rx="12" ry="12"
-              fill="none" stroke="url(#snake-grad-3)" stroke-width="4"
-              pathLength="100" stroke-linecap="round" class="snake-path"/>
-          </svg>
-        </button>
+        <button type="submit" class="btn" id="rsvp-submit"><span class="btn-label">Antwort senden</span></button>
         <p id="rsvp-status" class="fineprint" aria-live="polite"></p>
 
         <!-- Danke-Overlay -->
