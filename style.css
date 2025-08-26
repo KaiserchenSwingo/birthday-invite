@@ -17,14 +17,12 @@ body {
               linear-gradient(120deg, #0B0C10, var(--bg));
   overflow-x: hidden;
 }
-/* Hintergrund-Glow */
 body::before {
   content: ""; position: fixed; inset: -50vmax;
   background: conic-gradient(from 0deg, var(--neon1), var(--neon2), var(--neon3), var(--neon1));
   filter: blur(120px); opacity: .1; animation: sweep 18s linear infinite; pointer-events: none;
 }
 @keyframes sweep { to { transform: rotate(360deg); } }
-/* feines Raster in Silber */
 body::after {
   content: ""; position: fixed; inset: 0;
   background:
@@ -68,41 +66,59 @@ body::after {
 
 hr { border: none; border-top: 1px solid rgba(243,244,246,0.25); margin: 2rem 0; }
 
-/* Button: silber, transparenter */
+/* Buttons: diffuse Neon-Border ohne Rand-Lücke */
 .btn {
+  --r: 14px;
   position: relative;
   display: inline-grid; place-items: center;
   min-width: 190px;
   padding: .9rem 1.2rem;
-  border-radius: 14px;
+  border-radius: var(--r);
   color: #0f1116;
-  background: linear-gradient(180deg, rgba(243,244,246,0.40), rgba(201,205,211,0.18));
-  border: 1px solid rgba(255,255,255,0.28);
+  background: linear-gradient(180deg, rgba(243,244,246,0.34), rgba(201,205,211,0.14));
+  border: 0; /* kein sichtbarer Rand */
   font-weight: 800; letter-spacing: .02em;
   text-decoration: none; cursor: pointer; outline: none;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.7);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.65), 0 8px 18px rgba(0,0,0,0.35);
   transition: transform .08s ease, filter .2s ease;
   backdrop-filter: blur(6px);
+  z-index: 0;
 }
-.btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
 .btn:active { transform: translateY(0); }
 .btn:focus-visible { outline: 2px solid var(--neon2); outline-offset: 3px; }
-.btn-label { position: relative; z-index: 1; }
+.btn-label { position: relative; z-index: 2; }
 
-/* Neon-„Schlange“ */
-.btn-snake {
-  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+/* Glow-Halo */
+.btn::before {
+  content: "";
+  position: absolute; inset: -10px; border-radius: calc(var(--r) + 10px);
+  background: conic-gradient(from 0deg, var(--neon1), var(--neon2), var(--neon3), var(--neon1));
+  filter: blur(22px) saturate(1.2);
+  opacity: .55;
+  animation: neon-rotate 6s linear infinite reverse;
+  z-index: 0; pointer-events: none;
 }
-.snake-path {
-  stroke-dasharray: 28 72;         /* sichtbarer Anteil + Lücke bei pathLength=100 */
-  stroke-linecap: round;
-  filter: drop-shadow(0 0 10px rgba(43,210,255,0.55)) drop-shadow(0 0 14px rgba(130,102,255,0.5));
-  animation: snake-move 3s linear infinite;
-  opacity: 1;
-}
-@keyframes snake-move { to { stroke-dashoffset: -100; } }
 
-/* Form */
+/* tatsächliche Neon-Outline (ohne Lücke dank Masking) */
+.btn::after {
+  content: "";
+  position: absolute; inset: -2px; border-radius: calc(var(--r) + 2px);
+  padding: 2px;
+  background: conic-gradient(from 0deg, var(--neon1), var(--neon2), var(--neon3), var(--neon1));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: neon-rotate 6s linear infinite;
+  filter: drop-shadow(0 0 16px rgba(43,210,255,0.6)) drop-shadow(0 0 20px rgba(130,102,255,0.5));
+  z-index: 1; pointer-events: none;
+}
+@keyframes neon-rotate { to { transform: rotate(360deg); } }
+
+/* alte SVG-Schlange deaktivieren */
+.btn-snake { display: none !important; }
+
+/* Formular */
 .rsvp { position: relative; }
 .rsvp label { display: grid; gap: 0.5rem; margin-bottom: 1rem; }
 .rsvp input, .rsvp select, .rsvp textarea {
@@ -133,35 +149,17 @@ hr { border: none; border-top: 1px solid rgba(243,244,246,0.25); margin: 2rem 0;
 /* Honeypot */
 .honey { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
-/* Danke-Overlay (blockiert) */
-.thanks {
-  position: absolute; inset: 0;
-  display: grid; place-content: center; gap: .5rem;
-  text-align: center; background: rgba(14,15,22,0.92);
-  border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);
-  opacity: 0; pointer-events: none; transform: scale(.98);
-}
+/* Danke-Overlay */
+.thanks { position: absolute; inset: 0; display: grid; place-content: center; gap: .5rem; text-align: center; background: rgba(14,15,22,0.92); border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); opacity: 0; pointer-events: none; transform: scale(.98); }
 .rsvp.success .thanks { animation: thanks-in 700ms ease forwards; pointer-events: auto; }
 .rsvp.success > *:not(.thanks) { filter: blur(2px); pointer-events: none; user-select: none; }
-@keyframes thanks-in {
-  0% { opacity: 0; transform: scale(.98); }
-  60% { opacity: 1; transform: scale(1.01); }
-  100% { opacity: 1; transform: scale(1); }
-}
-.checkmark { width: 80px; height: 80px; margin: 0 auto .6rem; border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #ffffff, #cdd3da);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 10px 24px rgba(0,0,0,.35);
-  display: grid; place-items: center;
-}
+@keyframes thanks-in { 0% { opacity: 0; transform: scale(.98);} 60% { opacity: 1; transform: scale(1.01);} 100% { opacity: 1; transform: scale(1);} }
+.checkmark { width: 80px; height: 80px; margin: 0 auto .6rem; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ffffff, #cdd3da); box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 10px 24px rgba(0,0,0,.35); display: grid; place-items: center; }
 .checkmark svg { width: 52px; height: 52px; filter: drop-shadow(0 0 8px rgba(130,102,255,0.6)); }
 
 /* Konfetti */
 .confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-.confetti .p {
-  position: absolute; width: 10px; height: 16px; opacity: 0.9;
-  will-change: transform;
-  animation: fall linear forwards;
-}
+.confetti .p { position: absolute; width: 10px; height: 16px; opacity: 0.9; will-change: transform; animation: fall linear forwards; }
 @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
 
 /* Print */
