@@ -22,7 +22,21 @@
       <form id="gate-form" action="javascript:;">
         <label class="sr-only" for="gate-input">PIN</label>
         <input id="gate-input" inputmode="numeric" autocomplete="one-time-code" placeholder="PIN" required />
-        <button type="submit" class="btn neon-outline">Entsperren</button>
+        <button type="submit" class="btn snake">
+          <span class="btn-label">Entsperren</span>
+          <svg class="btn-snake" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="snake-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#FF3CAC"/>
+                <stop offset="0.5" stop-color="#2BD2FF"/>
+                <stop offset="1" stop-color="#8266FF"/>
+              </linearGradient>
+            </defs>
+            <rect x="1.5" y="1.5" width="97" height="37" rx="12" ry="12"
+              fill="none" stroke="url(#snake-grad)" stroke-width="3"
+              pathLength="100" stroke-linecap="round" class="snake-path"/>
+          </svg>
+        </button>
       </form>
       <p id="gate-error" class="gate-error" aria-live="polite"></p>
       <p class="fineprint">Leichter Schutz, kein echtes Passwortsystem.</p>
@@ -50,7 +64,15 @@
             Speicherstraße 12, 10115 Berlin
           </p>
           <p>
-            <a class="btn neon-outline" target="_blank" rel="noopener" href="https://maps.google.com/?q=Speicherstraße%2012%2010115%20Berlin">Route öffnen</a>
+            <a class="btn snake" target="_blank" rel="noopener" href="https://maps.google.com/?q=Speicherstraße%2012%2010115%20Berlin">
+              <span class="btn-label">Route öffnen</span>
+              <svg class="btn-snake" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
+                <use href="#snake-grad" />
+                <rect x="1.5" y="1.5" width="97" height="37" rx="12" ry="12"
+                  fill="none" stroke="url(#snake-grad)" stroke-width="3"
+                  pathLength="100" stroke-linecap="round" class="snake-path"/>
+              </svg>
+            </a>
           </p>
         </div>
       </div>
@@ -102,15 +124,23 @@
           <textarea name="nachricht" rows="4"></textarea>
         </label>
 
-        <button type="submit" class="btn neon-outline" id="rsvp-submit">Antwort senden</button>
+        <button type="submit" class="btn snake" id="rsvp-submit">
+          <span class="btn-label">Antwort senden</span>
+          <svg class="btn-snake" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
+            <use href="#snake-grad" />
+            <rect x="1.5" y="1.5" width="97" height="37" rx="12" ry="12"
+              fill="none" stroke="url(#snake-grad)" stroke-width="3"
+              pathLength="100" stroke-linecap="round" class="snake-path"/>
+          </svg>
+        </button>
         <p id="rsvp-status" class="fineprint" aria-live="polite"></p>
 
-        <!-- Danke-Overlay (wird per JS eingeblendet) -->
-        <div class="thanks" id="thanks" aria-hidden="true">
+        <!-- Danke-Overlay -->
+        <div class="thanks" id="thanks" aria-hidden="true" role="dialog" aria-labelledby="thanks-title">
           <div class="checkmark">
             <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M16 34 L28 46 L50 20" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <h3>Danke! 🎉</h3>
+          <h3 id="thanks-title">Danke! 🎉</h3>
           <p>Deine Antwort ist angekommen.</p>
           <div class="confetti" id="confetti"></div>
         </div>

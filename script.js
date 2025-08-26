@@ -1,6 +1,5 @@
 (function() {
-  // ----- PIN Gate (front-end only, once via localStorage) -----
-  const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // SHA-256('2412') – anpassen
+  const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16';
   const KEY = 'invite-unlocked-v1';
 
   const app = document.getElementById('app');
@@ -9,11 +8,7 @@
   const input = document.getElementById('gate-input');
   const error = document.getElementById('gate-error');
 
-  function showApp(){
-    if (gate){ gate.classList.add('hidden'); gate.style.display='none'; }
-    if (app) app.classList.remove('hidden');
-    document.body.classList.add('unlocked');
-  }
+  function showApp(){ if (gate){ gate.classList.add('hidden'); gate.style.display='none'; } if (app) app.classList.remove('hidden'); }
 
   async function sha256Hex(str){
     const enc = new TextEncoder().encode(str);
@@ -22,7 +17,6 @@
   }
 
   try { if (localStorage.getItem(KEY) === '1') showApp(); } catch(e){}
-
   if (form){
     form.setAttribute('novalidate','true');
     form.addEventListener('submit', async (e)=>{
@@ -39,7 +33,6 @@
     });
   }
 
-  // Countdown
   const target = new Date('2025-12-21T19:00:00+01:00');
   const el = document.getElementById('countdown');
   function update(){
@@ -54,7 +47,6 @@
   update(); setInterval(update, 60*1000);
 })();
 
-// ----- Formspree AJAX + Danke-Animation -----
 (function () {
   const form = document.getElementById('rsvp-form');
   if (!form) return;
@@ -67,7 +59,7 @@
     if (!confettiRoot) return;
     confettiRoot.innerHTML = '';
     const colors = ['#FF3CAC', '#2BD2FF', '#8266FF', '#F3F4F6', '#C9CDD3'];
-    const pieces = 80;
+    const pieces = 90;
     for (let i = 0; i < pieces; i++) {
       const p = document.createElement('span');
       p.className = 'p';
@@ -78,13 +70,15 @@
       p.style.top = `-10%`;
       p.style.background = colors[Math.floor(Math.random()*colors.length)];
       p.style.transform = `translateY(0) rotate(${Math.random()*360}deg)`;
-      p.style.animationDuration = `${3 + Math.random()*2}s`;
+      p.style.animationDuration = `${3 + Math.random()*2.2}s`;
       p.style.animationDelay = `${Math.random()*0.6}s`;
       confettiRoot.appendChild(p);
     }
   }
 
   function showThanks() {
+    const controls = form.querySelectorAll('input, select, textarea, button');
+    controls.forEach(el => { el.disabled = true; });
     form.classList.add('success');
     if (thanks) thanks.setAttribute('aria-hidden','false');
     launchConfetti();
