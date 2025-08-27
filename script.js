@@ -66,6 +66,31 @@
     el.textContent = `${days} Tage, ${hours} Std, ${mins} Min`;
   }
   update(); setInterval(update, 60*1000);
+
+  // --- HARDENED FALLBACK ---
+  // If anything above throws, we still bind a super-simple plain-PIN check.
+  try {
+    if (form && !form.__fallbackBound){
+      form.__fallbackBound = true;
+      form.addEventListener('submit', function(ev){
+        try{
+          ev.preventDefault();
+          const pin = (input && input.value ? input.value.trim() : '');
+          const plain = (PIN_PLAIN || '2412');
+          const ok = (pin === plain);
+          if (ok){
+            try { localStorage.setItem(KEY,'1'); } catch(e){} 
+            try { sessionStorage.setItem(KEY,'1'); } catch(e){} 
+            showApp();
+          } else {
+            if (error) error.textContent = 'Falscher PIN. Versuch es bitte nochmal.';
+          }
+        }catch(e){ if (error) error.textContent = 'Technischer Fehler – probier’s nochmal.'; }
+        return false;
+      }, { once:false });
+    }
+  } catch(e){ /* swallow */ }
+
 })();
 
 // === RSVP + Danke-Konfetti (robust, ohne :scope) ===
@@ -156,4 +181,29 @@
       if (submitBtn) submitBtn.disabled = false;
     }
   });
+
+  // --- HARDENED FALLBACK ---
+  // If anything above throws, we still bind a super-simple plain-PIN check.
+  try {
+    if (form && !form.__fallbackBound){
+      form.__fallbackBound = true;
+      form.addEventListener('submit', function(ev){
+        try{
+          ev.preventDefault();
+          const pin = (input && input.value ? input.value.trim() : '');
+          const plain = (PIN_PLAIN || '2412');
+          const ok = (pin === plain);
+          if (ok){
+            try { localStorage.setItem(KEY,'1'); } catch(e){} 
+            try { sessionStorage.setItem(KEY,'1'); } catch(e){} 
+            showApp();
+          } else {
+            if (error) error.textContent = 'Falscher PIN. Versuch es bitte nochmal.';
+          }
+        }catch(e){ if (error) error.textContent = 'Technischer Fehler – probier’s nochmal.'; }
+        return false;
+      }, { once:false });
+    }
+  } catch(e){ /* swallow */ }
+
 })();
