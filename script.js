@@ -62,7 +62,8 @@ if (el && el.dataset && el.dataset.target) {
     const t = new Date(el.dataset.target);
     if (!isNaN(+t)) target = t;
   }
-  function pad2(n) { return String(n).padStart(2,'0'); }
+  function pad2(n){ return String(n).padStart(2,'0'); }
+  function pad3(n){ return String(n).padStart(3,'0'); }
   function update(){ 
     if (!el) return; 
     const now = new Date();
@@ -73,7 +74,7 @@ if (el && el.dataset && el.dataset.target) {
     const hours = Math.floor((totalSec % (24*3600)) / 3600);
     const mins = Math.floor((totalSec % 3600) / 60);
     const secs = totalSec % 60;
-    if (cd) cd.textContent = `${pad2(days)}:${pad2(hours)}:${pad2(mins)}:${pad2(secs)}`;
+    if (cd) cd.textContent = `${pad3(days)}:${pad2(hours)}:${pad2(mins)}:${pad2(secs)}`;
   }
   update(); setInterval(update, 1000);
 
