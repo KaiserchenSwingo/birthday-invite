@@ -390,3 +390,30 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   0%   { background-position:   0% 50%; }
   100% { background-position: 200% 50%; }
 }
+
+
+/* === COUNTDOWN STATIC GRADIENT (no box, no animation) === */
+#countdown,
+#countdown::before, #countdown::after{
+  background: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  border-radius: 0 !important;
+  backdrop-filter: none !important;
+  content: none !important;
+}
+#countdown{ display:inline-block !important; }
+
+#countdown .cd{
+  display:inline-block !important;
+  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple)) !important;
+  background-size: 100% 100% !important;
+  background-position: 0% 50% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  animation: none !important;
+}
