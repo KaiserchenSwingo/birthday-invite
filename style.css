@@ -294,9 +294,7 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
     0.8px 0 0 #000,
     -0.8px 0 0 #000;
 }
-@keyframes cd-sweep{
-  0%   { background-position:   0% 50%; }
-  100% { background-position: 200% 50%; }
+100% { background-position: 200% 50%; }
 }
 
 
@@ -326,4 +324,18 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   background-size: 300% 100% !important; /* wider gradient for smoother flow */
   animation: cd-sweep 12s linear infinite !important; /* slower, steady flow */
   will-change: background-position;
+}
+
+
+/* === Countdown gradient: seamless left->right loop === */
+.countdown .cd{
+  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple), var(--magenta)) !important;
+  background-size: 200% 100% !important;
+  background-repeat: repeat !important;
+  background-position: 0% 50% !important;
+  animation: cd-sweep 12s linear infinite !important;
+}
+@keyframes cd-sweep{
+  0%   { background-position:   0% 50%; }
+  100% { background-position: 200% 50%; }
 }
