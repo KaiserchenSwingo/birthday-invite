@@ -355,3 +355,38 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   0%   { background-position-x: 0%; }
   100% { background-position-x: 100%; }
 }
+
+
+/* === COUNTDOWN: kill any box + enforce animated gradient text === */
+#countdown,
+#countdown:before, #countdown::before,
+#countdown:after,  #countdown::after{
+  background: none !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  filter: none !important;
+  content: none !important;
+}
+
+#countdown{ display:inline-block !important; }
+
+#countdown .cd{
+  display:inline-block !important;
+  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple), var(--magenta)) !important;
+  background-size: 200% 100% !important;
+  background-position: 0% 50% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  animation: cd-slide 12s linear infinite !important;
+}
+
+@keyframes cd-slide{
+  0%   { background-position:   0% 50%; }
+  100% { background-position: 200% 50%; }
+}
