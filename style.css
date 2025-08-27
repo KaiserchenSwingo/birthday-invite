@@ -526,3 +526,24 @@ h3{ animation: neon-breathe 7s ease-in-out infinite !important; }
 :where(h1.headline, h2, h3){
   animation: neon-breathe-soft 5s ease-in-out infinite !important;
 }
+
+
+/* === Force smooth breathe on headings (equal speed) === */
+@keyframes breath-v2{
+  0%   { opacity:.96; filter:saturate(1.0) brightness(1.00); }
+  50%  { opacity:1.00; filter:saturate(1.10) brightness(1.07); }
+  100% { opacity:.96; filter:saturate(1.0) brightness(1.00); }
+}
+.fx-on h1.headline,
+.fx-on h1.logo,
+.fx-on h2,
+.fx-on h3{
+  animation: breath-v2 5s ease-in-out infinite !important;
+}
+/* If some earlier rule disables animation in reduce-motion, this re-enables when .fx-on is present */
+@media (prefers-reduced-motion: reduce){
+  .fx-on h1.headline,
+  .fx-on h1.logo,
+  .fx-on h2,
+  .fx-on h3{ animation: breath-v2 5s ease-in-out infinite !important; }
+}
