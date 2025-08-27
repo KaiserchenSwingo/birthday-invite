@@ -360,19 +360,7 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 /* === COUNTDOWN: kill any box + enforce animated gradient text === */
 #countdown,
 #countdown:before, #countdown::before,
-#countdown:after,  #countdown::after{
-  background: none !important;
-  background-image: none !important;
-  box-shadow: none !important;
-  border: 0 !important;
-  outline: 0 !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-  filter: none !important;
-  content: none !important;
-}
-
-#countdown{ display:inline-block !important; }
+#countdown:after,  #countdown{ display:inline-block !important; }
 
 #countdown .cd{
   display:inline-block !important;
@@ -394,17 +382,7 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 
 /* === COUNTDOWN STATIC GRADIENT (no box, no animation) === */
 #countdown,
-#countdown::before, #countdown::after{
-  background: none !important;
-  box-shadow: none !important;
-  border: 0 !important;
-  padding: 0 !important;
-  min-width: 0 !important;
-  border-radius: 0 !important;
-  backdrop-filter: none !important;
-  content: none !important;
-}
-#countdown{ display:inline-block !important; }
+#countdown::before, #countdown{ display:inline-block !important; }
 
 #countdown .cd{
   display:inline-block !important;
@@ -491,4 +469,23 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   -webkit-text-fill-color: transparent !important;
   color: transparent !important;
   animation: none !important;
+}
+
+
+/* Countdown: transparent box + animated button ring */
+#countdown.btn{
+  --r:14px;
+  position:relative; display:inline-grid; place-items:center;
+  width:12ch; padding:.7rem 1.1rem; border-radius:var(--r);
+  background:transparent; box-shadow:none; text-align:center; z-index:0;
+}
+#countdown.btn::before{ content:none }
+#countdown.btn::after{
+  content:""; position:absolute; inset:-2px; border-radius:calc(var(--r) + 2px); padding:2px;
+  background:conic-gradient(from var(--rot), var(--magenta) 0deg, var(--blue) 180deg, var(--magenta) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+          mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  filter:drop-shadow(0 0 22px rgba(43,210,255,.7)) drop-shadow(0 0 26px rgba(255,60,172,.55)) drop-shadow(0 0 14px rgba(130,102,255,.45));
+  z-index:2; pointer-events:none; animation:spin 2.2s linear infinite;
 }
