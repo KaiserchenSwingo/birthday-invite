@@ -14,9 +14,7 @@
   }
 
   async function sha256Hex(str){
-    if (!window.crypto || !window.crypto.subtle) {
-      return null; // Fallback auf Klartext
-    }
+    if (!window.crypto || !window.crypto.subtle) return null;
     const enc = new TextEncoder().encode(str);
     const digest = await crypto.subtle.digest('SHA-256', enc);
     return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');
@@ -65,7 +63,7 @@
   update(); setInterval(update, 60*1000);
 })();
 
-// === RSVP + robustes Konfetti ===
+// === RSVP + Danke-Konfetti (robust, ohne :scope) ===
 (function () {
   const form = document.getElementById('rsvp-form');
   if (!form) return;
@@ -104,17 +102,23 @@
   }
 
   function hideFormFields() {
-    const toDisable = form.querySelectorAll('input, select, textarea, button');
-    toDisable.forEach(el => { el.disabled = true; });
-    const toHide = form.querySelectorAll(':scope > *:not(.thanks)');
-    toHide.forEach(el => { el.setAttribute('aria-hidden','true'); });
+    try {
+      const toDisable = form.querySelectorAll('input, select, textarea, button');
+      toDisable.forEach(el => { el.disabled = true; });
+      Array.from(form.children).forEach(el => {
+        if (!el.classList.contains('thanks')) el.setAttribute('aria-hidden','true');
+      });
+    } catch (e) {
+      const toDisable = form.querySelectorAll('input, select, textarea, button');
+      toDisable.forEach(el => { el.disabled = true; });
+    }
   }
 
   function showThanks() {
     hideFormFields();
     form.classList.add('success');
     if (thanks) thanks.setAttribute('aria-hidden','false');
-    setTimeout(launchConfetti, 50);
+    setTimeout(launchConfetti, 40);
   }
 
   form.addEventListener('submit', async (e) => {
