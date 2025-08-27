@@ -20,8 +20,6 @@ body{
     linear-gradient(120deg,#0B0C10,#0F0F14);
   overflow-x:hidden;
 }
-
-/* dezentes Raster */
 body::after{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
   background:
@@ -131,15 +129,86 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 .gate-error{ color:#ffb4b4; min-height:1.2em }
 .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
 
-/* Danke-Overlay + Haken-Ring */
-.thanks{ position:absolute; inset:0; display:grid; place-content:center; gap:.5rem; text-align:center;
+/* === Neon-Upgrade für die DANKE-Overlay-Seite ============================= */
+.thanks{
+  position:absolute; inset:0; display:grid; place-content:center; gap:.5rem; text-align:center;
   background:rgba(14,15,22,.92); border-radius:16px; border:1px solid rgba(255,255,255,.1);
   opacity:0; pointer-events:none; transform:scale(.98);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.06),
+    0 20px 60px rgba(0,0,0,.6),
+    0 0 60px rgba(130,102,255,.22),
+    0 0 90px rgba(43,210,255,.16);
 }
 .rsvp.success .thanks{ animation:thanks-in 700ms ease forwards; pointer-events:auto }
 .rsvp.success > *:not(.thanks){ filter:blur(2px); pointer-events:none; user-select:none }
 @keyframes thanks-in{ 0%{opacity:0; transform:scale(.98)} 60%{opacity:1; transform:scale(1.01)} 100%{opacity:1; transform:scale(1)} }
 
+/* Rotierender Neon-Rand */
+.thanks::before{
+  content:"";
+  position:absolute; inset:-3px; border-radius:18px; padding:3px;
+  background: conic-gradient(from var(--rot),
+    var(--magenta) 0deg, var(--blue) 120deg, var(--purple) 240deg, var(--magenta) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+          mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  filter:
+    drop-shadow(0 0 28px rgba(43,210,255,.70))
+    drop-shadow(0 0 34px rgba(255,60,172,.55))
+    drop-shadow(0 0 20px rgba(130,102,255,.50));
+  pointer-events:none;
+  animation: spin 2.8s linear infinite;
+}
+
+/* Glanz-Sweep über die Fläche */
+.thanks::after{
+  content:"";
+  position:absolute; inset:0; border-radius:16px; pointer-events:none;
+  background: linear-gradient(120deg, rgba(255,255,255,.18) 0%, rgba(255,255,255,0) 60%);
+  transform: translateX(-120%) skewX(-8deg);
+  mix-blend-mode: screen; filter: blur(.5px);
+  animation: sweep 2.6s ease-in-out infinite;
+}
+@keyframes sweep{
+  0%{ transform:translateX(-120%) skewX(-8deg) }
+  60%,100%{ transform:translateX(120%) skewX(-8deg) }
+}
+
+/* Neon-Schrift mit leichtem Flicker */
+.thanks h3{
+  font-family:'Bebas Neue', system-ui, sans-serif;
+  font-size: clamp(1.6rem, 4.2vw, 2.6rem);
+  letter-spacing:.12em; color:#fff;
+  margin:.2rem 0 .25rem;
+  text-shadow:
+    0 0 8px rgba(255,255,255,.55),
+    0 0 16px rgba(130,102,255,.9),
+    0 0 28px rgba(43,210,255,.75),
+    0 0 44px rgba(255,60,172,.55);
+  animation: neon-flicker 2.2s ease-in-out infinite alternate;
+}
+@keyframes neon-flicker{
+  0%{  opacity:.92; filter:saturate(1.0) brightness(1.0) }
+  35%{ opacity:1;   filter:saturate(1.15) brightness(1.06) }
+  42%{ opacity:.82; filter:saturate(1.0)  brightness(.95) }
+  55%{ opacity:1;   filter:saturate(1.25) brightness(1.10) }
+  100%{opacity:1;   filter:saturate(1.35) brightness(1.15) }
+}
+
+/* dezent: Linie unter dem Titel */
+.thanks h3::after{
+  content:"";
+  display:block; height:2px; margin:.25rem auto 0; width:min(200px,60%);
+  background: linear-gradient(90deg, transparent,
+    rgba(130,102,255,.9), rgba(43,210,255,.9), rgba(255,60,172,.85), transparent);
+  box-shadow:
+    0 0 12px rgba(130,102,255,.65),
+    0 0 18px rgba(43,210,255,.55),
+    0 0 14px rgba(255,60,172,.50);
+}
+
+/* Checkmark-Ring Neon */
 .checkmark{ width:80px; height:80px; margin:0 auto .6rem; border-radius:50%;
   background: linear-gradient(180deg, rgba(243,244,246,.60), rgba(201,205,211,.28));
   box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 12px 28px rgba(0,0,0,.45);
@@ -156,7 +225,18 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   animation: spin 2s linear infinite; pointer-events:none;
 }
 
-/* === HOLOGRAFISCHER GLITZER-OVERLAY – PALETTE: BLAU / LILA-PINK / WEISS === */
+/* Confetti (falls noch nicht animiert) */
+.confetti{ position:absolute; inset:0; overflow:hidden; pointer-events:none }
+.confetti .p{
+  position:absolute; display:block; border-radius:2px;
+  animation-name: conf-fall, conf-spin;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: 1, infinite;
+}
+@keyframes conf-fall{ to{ transform: translateY(120vh) rotate(360deg) } }
+@keyframes conf-spin{ from{ transform: rotateY(0deg) } to{ transform: rotateY(360deg) } }
+
+/* === HOLOGRAFISCHER GLITZER-OVERLAY – Palette: Blau / Lila-Pink / Weiß === */
 .fx-holo{
   position:fixed; inset:0; pointer-events:none; z-index:9999;
   mix-blend-mode: screen;
@@ -164,7 +244,6 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 .fx-holo::before,
 .fx-holo::after{ content:""; position:absolute; inset:0; }
 
-/* große Sparkles, nur Blau / Purple / Magenta / Weiß */
 .fx-holo::before{
   background:
     radial-gradient(8px 8px at 6% 12%, rgba(255,255,255,.98), transparent 55%),
@@ -194,7 +273,6 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   100%{ opacity:.60; filter:saturate(1.25) brightness(1.0) }
 }
 
-/* holografischer Folien-Schimmer */
 .fx-holo::after{
   background:
     radial-gradient(60vmax 30vmax at 20% 10%, rgba(255,60,172,.30), transparent 60%),
@@ -212,4 +290,8 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 }
 
 /* Print */
-@media print{ body{ background:#fff; color:#000 } .card{ box-shadow:none; border-color:#ddd } .fx-holo{ display:none } }
+@media print{
+  body{ background:#fff; color:#000 }
+  .card{ box-shadow:none; border-color:#ddd }
+  .fx-holo{ display:none }
+}
