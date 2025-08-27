@@ -56,7 +56,9 @@
   // Countdown
   let target = new Date('2025-12-21T19:00:00+01:00');
   const el = document.getElementById('countdown');
-  if (el && el.dataset && el.dataset.target) {
+  let cd = (el ? el.querySelector('.cd') : null);
+if (el && !cd) { cd = document.createElement('span'); cd.className = 'cd'; el.appendChild(cd); }
+if (el && el.dataset && el.dataset.target) {
     const t = new Date(el.dataset.target);
     if (!isNaN(+t)) target = t;
   }
@@ -65,13 +67,13 @@
     if (!el) return; 
     const now = new Date();
     const diff = target - now;
-    if (diff <= 0){ el.textContent = '00:00:00:00'; return; }
+    if (diff <= 0){ if (cd) cd.textContent = '00:00:00:00'; return; }
     const totalSec = Math.floor(diff/1000);
     const days = Math.floor(totalSec / (24*3600));
     const hours = Math.floor((totalSec % (24*3600)) / 3600);
     const mins = Math.floor((totalSec % 3600) / 60);
     const secs = totalSec % 60;
-    el.innerHTML = `<span class=\"cd\">${pad2(days)}:${pad2(hours)}:${pad2(mins)}:${pad2(secs)}</span>`;
+    if (cd) cd.textContent = `${pad2(days)}:${pad2(hours)}:${pad2(mins)}:${pad2(secs)}`;
   }
   update(); setInterval(update, 1000);
 
