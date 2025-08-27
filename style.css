@@ -489,3 +489,27 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   filter:drop-shadow(0 0 22px rgba(43,210,255,.7)) drop-shadow(0 0 26px rgba(255,60,172,.55)) drop-shadow(0 0 14px rgba(130,102,255,.45));
   z-index:2; pointer-events:none; animation:spin 2.2s linear infinite;
 }
+
+
+/* === Smooth breathe effect for headings === */
+@keyframes neon-breathe{
+  0%   { opacity:.92; filter:saturate(1.0) brightness(1.00); }
+  50%  { opacity:1.00; filter:saturate(1.18) brightness(1.08); }
+  100% { opacity:.92; filter:saturate(1.0) brightness(1.00); }
+}
+
+/* Apply to section headings and page headline */
+h3{ animation: neon-breathe 7s ease-in-out infinite !important; }
+.headline{
+  text-shadow:
+    0 0 10px rgba(255,255,255,.45),
+    0 0 24px rgba(130,102,255,.65),
+    0 0 38px rgba(43,210,255,.55),
+    0 0 56px rgba(255,60,172,.45);
+  animation: neon-breathe 8s ease-in-out infinite !important;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  h3, .headline{ animation: none !important; }
+}
