@@ -50,6 +50,9 @@ body::after{
 
 .logo,.headline,h2{font-family:'Bebas Neue',system-ui,sans-serif;letter-spacing:.06em;color:#fff;text-transform:uppercase;text-shadow:0 0 18px rgba(255,60,172,.4),0 0 24px rgba(130,102,255,.25),0 0 6px rgba(243,244,246,.35);margin:0 0 .5rem}
 .logo{font-size:2rem;letter-spacing:.15em}
+/* Gate-Logo zentriert & größer für "30" */
+.gate-card .logo{ text-align:center; font-size:clamp(3rem, 10vw, 4.5rem); letter-spacing:.05em; }
+
 .headline{font-size:clamp(2rem,6vw,4rem);line-height:.95}
 .lede{color:var(--muted);margin-top:.25rem}
 
@@ -191,7 +194,7 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   100%{ opacity:.60; filter:saturate(1.25) brightness(1.0) }
 }
 
-/* holografischer Folien-Schimmer, nur Palettenfarben */
+/* holografischer Folien-Schimmer */
 .fx-holo::after{
   background:
     radial-gradient(60vmax 30vmax at 20% 10%, rgba(255,60,172,.30), transparent 60%),
