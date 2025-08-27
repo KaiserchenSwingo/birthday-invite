@@ -277,9 +277,25 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   backdrop-filter:blur(6px);
   border:1px solid rgba(255,255,255,.18);
 }
+
 .countdown .cd{
-  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple));
+  /* animated left-to-right gradient in site colors */
+  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple), var(--magenta));
+  background-size: 200% 100%;
+  background-position: 0% 50%;
   -webkit-background-clip: text; background-clip: text;
   color: transparent;
   letter-spacing:.03em;
+  animation: cd-sweep 4s linear infinite;
+  /* subtle black outline for readability */
+  text-shadow:
+    0 0.8px 0 #000,
+    0 -0.8px 0 #000,
+    0.8px 0 0 #000,
+    -0.8px 0 0 #000;
 }
+@keyframes cd-sweep{
+  0%   { background-position:   0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
