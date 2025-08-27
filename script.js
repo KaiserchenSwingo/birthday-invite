@@ -1,4 +1,4 @@
-// PIN-Gate + RSVP submit (Formspree)
+// PIN-Gate + RSVP submit (Formspree) + brighter confetti
 (function() {
   const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // 2412
   const KEY = 'invite-unlocked-v1';
@@ -55,28 +55,40 @@
   function launchConfetti() {
     if (!confettiRoot) return;
     confettiRoot.innerHTML = '';
-    const colors = ['#FF3CAC', '#2BD2FF', '#8266FF', '#F3F4F6', '#FFFFFF'];
-    const pieces = 90;
+    const colors = ['#FFFFFF','#2BD2FF','#87E8FF','#8266FF','#A28DFF','#FF3CAC','#FF64B7'];
+    const pieces = 120;
     for (let i = 0; i < pieces; i++) {
       const p = document.createElement('span');
       p.className = 'p';
-      const size = 6 + Math.random()*10;
+      const size = 6 + Math.random()*12;
+      const color = colors[Math.floor(Math.random()*colors.length)];
+      const left = Math.random()*100;
+      const delay = Math.random()*0.8;
+      const fall = 3 + Math.random()*2.5;
+      const spin = 1.2 + Math.random()*1.6;
+
+      p.style.setProperty('--c', color);
       p.style.width = `${size}px`;
       p.style.height = `${size*1.4}px`;
-      p.style.left = `${Math.random()*100}%`;
+      p.style.left = `${left}%`;
       p.style.top = `-10%`;
-      p.style.background = colors[Math.floor(Math.random()*colors.length)];
-      p.style.transform = `translateY(0) rotate(${Math.random()*360}deg)`;
-      p.style.animationDuration = `${3 + Math.random()*2.2}s`;
-      p.style.animationDelay = `${Math.random()*0.6}s`;
+      p.style.opacity = `${0.88 + Math.random()*0.12}`;
+      // Zwei Animationen explizit setzen
+      p.style.animation = `conf-fall ${fall}s linear ${delay}s 1 forwards, conf-spin ${spin}s ease-in-out ${delay/2}s infinite alternate`;
+
+      if (Math.random() < 0.35) p.style.borderRadius = '50%/30%';
+      if (Math.random() < 0.35) p.style.transform = `rotate(${Math.random()*360}deg)`;
       confettiRoot.appendChild(p);
     }
   }
 
   function showThanks() {
-    const controls = form.querySelectorAll('input, select, textarea, button');
+    const controls = document.querySelectorAll('#rsvp-form input, #rsvp-form select, #rsvp-form textarea, #rsvp-form button, #rsvp-form p, #rsvp-form label, #rsvp-form h2');
     controls.forEach(el => { el.disabled = true; });
-    form.classList.add('success');
+    const wrapperChildren = document.querySelectorAll('#rsvp-form > *:not(.thanks)');
+    wrapperChildren.forEach(el => { el.setAttribute('aria-hidden','true'); });
+    const root = document.getElementById('rsvp-form');
+    if (root) root.classList.add('success');
     if (thanks) thanks.setAttribute('aria-hidden','false');
     launchConfetti();
   }
