@@ -51,7 +51,7 @@ body::after{
     0 0 16px rgba(130,102,255,.9),
     0 0 28px rgba(43,210,255,.75),
     0 0 44px rgba(255,60,172,.55);
-  animation: neon-flicker 2.2s ease-in-out infinite alternate;
+  animation: none;
   position:relative;
 }
 .headline::after, .card h2::after{
@@ -191,7 +191,7 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
     0 0 16px rgba(130,102,255,.9),
     0 0 28px rgba(43,210,255,.75),
     0 0 44px rgba(255,60,172,.55);
-  animation: neon-flicker 2.2s ease-in-out infinite alternate;
+  animation: none;
 }
 .thanks h3::after{
   content:""; display:block; height:2px; margin:.25rem auto 0; width:min(200px,60%);
@@ -512,4 +512,17 @@ h3{ animation: neon-breathe 7s ease-in-out infinite !important; }
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce){
   h3, .headline{ animation: none !important; }
+}
+
+
+/* === Smooth + same-speed breathe for all headings === */
+@keyframes neon-breathe-soft{
+  0%   { opacity: .96; filter: saturate(1.0)  brightness(1.00); }
+  50%  { opacity: 1.00; filter: saturate(1.10) brightness(1.07); }
+  100% { opacity: .96; filter: saturate(1.0)  brightness(1.00); }
+}
+
+/* Force on headline + h2 + h3 (override any earlier animations) */
+:where(h1.headline, h2, h3){
+  animation: neon-breathe-soft 5s ease-in-out infinite !important;
 }
