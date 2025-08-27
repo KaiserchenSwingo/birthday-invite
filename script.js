@@ -1,3 +1,4 @@
+// PIN-Gate + RSVP submit (Formspree)
 (function() {
   const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // 2412
   const KEY = 'invite-unlocked-v1';
@@ -54,7 +55,7 @@
   function launchConfetti() {
     if (!confettiRoot) return;
     confettiRoot.innerHTML = '';
-    const colors = ['#FF3CAC', '#2BD2FF', '#8266FF', '#F3F4F6', '#C9CDD3'];
+    const colors = ['#FF3CAC', '#2BD2FF', '#8266FF', '#F3F4F6', '#FFFFFF'];
     const pieces = 90;
     for (let i = 0; i < pieces; i++) {
       const p = document.createElement('span');

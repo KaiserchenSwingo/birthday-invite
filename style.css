@@ -4,7 +4,7 @@
   --text:#E6E7EB;
   --muted:#9AA0A6;
   --silver1:#C9CDD3;--silver2:#F3F4F6;--silver3:#AEB4BB;
-  --magenta:#FF3CAC; --blue:#2BD2FF;
+  --magenta:#FF3CAC; --blue:#2BD2FF; --purple:#8266FF; --white:#FFFFFF;
 }
 @property --rot{ syntax:'<angle>'; inherits:false; initial-value:45deg; }
 
@@ -21,7 +21,7 @@ body{
   overflow-x:hidden;
 }
 
-/* dezentes Raster im Hintergrund */
+/* dezentes Raster */
 body::after{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
   background:
@@ -144,7 +144,8 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 }
 .checkmark svg{ width:52px; height:52px; filter: drop-shadow(0 0 10px rgba(130,102,255,.7)) }
 .checkmark::after{ content:""; position:absolute; inset:-2px; border-radius:50%; padding:2px;
-  background: conic-gradient(from var(--rot), var(--magenta) 0deg, var(--blue) 180deg, var(--magenta) 360deg);
+  background: conic-gradient(from var(--rot),
+    var(--magenta) 0deg, var(--blue) 90deg, var(--purple) 180deg, var(--white) 270deg, var(--magenta) 360deg);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
           mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor; mask-composite:exclude;
@@ -152,7 +153,7 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   animation: spin 2s linear infinite; pointer-events:none;
 }
 
-/* === HOLOGRAFISCHER GLITZER-OVERLAY ÜBER ALLEN ELEMENTEN === */
+/* === HOLOGRAFISCHER GLITZER-OVERLAY – PALETTE: BLAU / LILA-PINK / WEISS === */
 .fx-holo{
   position:fixed; inset:0; pointer-events:none; z-index:9999;
   mix-blend-mode: screen;
@@ -160,7 +161,7 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 .fx-holo::before,
 .fx-holo::after{ content:""; position:absolute; inset:0; }
 
-/* große Sparkles + Hue-Shift */
+/* große Sparkles, nur Blau / Purple / Magenta / Weiß */
 .fx-holo::before{
   background:
     radial-gradient(8px 8px at 6% 12%, rgba(255,255,255,.98), transparent 55%),
@@ -173,39 +174,37 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
     radial-gradient(8px 8px at 78% 18%, rgba(255,60,172,1), transparent 55%);
   background-size: 260px 260px, 280px 280px, 270px 270px, 300px 300px, 260px 260px, 320px 320px, 270px 270px, 300px 300px;
   background-repeat: repeat;
-  opacity:.85;
-  filter: saturate(1.5) brightness(1.1) hue-rotate(0deg);
-  animation: holo-move 36s linear infinite, holo-twinkle 2s ease-in-out infinite alternate, holo-hue 10s linear infinite;
+  opacity:.82;
+  filter: saturate(1.45) brightness(1.08);
+  animation: holo-move 36s linear infinite, holo-twinkle 2.1s ease-in-out infinite alternate;
 }
 @keyframes holo-move{
   to{
     background-position:
-      260px -260px,
-      -280px 280px,
-      270px 270px,
-      -300px -300px,
-      260px 260px,
-      -320px -320px,
-      270px -270px,
-      -300px 300px;
+      260px -260px, -280px 280px, 270px 270px, -300px -300px,
+      260px 260px, -320px -320px, 270px -270px, -300px 300px;
   }
 }
 @keyframes holo-twinkle{
-  0%{ opacity:.62; filter:saturate(1.3) brightness(1.0) hue-rotate(0deg) }
-  50%{ opacity:.95; filter:saturate(1.7) brightness(1.22) hue-rotate(0deg) }
-  100%{ opacity:.62; filter:saturate(1.3) brightness(1.0) hue-rotate(0deg) }
+  0%{ opacity:.60; filter:saturate(1.25) brightness(1.0) }
+  50%{ opacity:.95; filter:saturate(1.65) brightness(1.18) }
+  100%{ opacity:.60; filter:saturate(1.25) brightness(1.0) }
 }
-@keyframes holo-hue{ to{ filter:saturate(1.5) brightness(1.1) hue-rotate(360deg) } }
 
-/* holografischer Folien-Schimmer */
+/* holografischer Folien-Schimmer, nur Palettenfarben */
 .fx-holo::after{
   background:
-    radial-gradient(60vmax 30vmax at 20% 10%, rgba(255,60,172,.3), transparent 60%),
-    radial-gradient(60vmax 30vmax at 80% 90%, rgba(43,210,255,.28), transparent 60%),
-    repeating-conic-gradient(from var(--rot), rgba(255,60,172,.12) 0 12deg, rgba(43,210,255,.12) 12deg 24deg, rgba(130,102,255,.12) 24deg 36deg, rgba(43,210,255,.12) 36deg 48deg, rgba(255,60,172,.12) 48deg 60deg);
+    radial-gradient(60vmax 30vmax at 20% 10%, rgba(255,60,172,.30), transparent 60%),
+    radial-gradient(60vmax 30vmax at 80% 90%, rgba(43,210,255,.26), transparent 60%),
+    repeating-conic-gradient(from var(--rot),
+      rgba(255,60,172,.14) 0 12deg,
+      rgba(43,210,255,.14) 12deg 24deg,
+      rgba(130,102,255,.14) 24deg 36deg,
+      rgba(255,255,255,.12) 36deg 48deg,
+      rgba(255,60,172,.14) 48deg 60deg);
   mix-blend-mode: screen;
-  opacity:.26;
-  filter: blur(10px) saturate(1.25);
+  opacity:.24;
+  filter: blur(10px) saturate(1.2);
   animation: spin 16s linear infinite;
 }
 
