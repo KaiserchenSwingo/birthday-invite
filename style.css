@@ -202,22 +202,6 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
     0 0 14px rgba(255,60,172,.50);
 }
 
-/* Confetti – leuchtender & intensiver */
-.confetti{ position:absolute; inset:0; overflow:hidden; pointer-events:none; }
-.confetti .p{
-  --c:#FFFFFF;
-  position:absolute; display:block; border-radius:2px;
-  background: var(--c);
-  box-shadow: 0 0 10px var(--c), 0 0 18px var(--c), 0 0 26px var(--c);
-  mix-blend-mode: screen;
-  will-change: transform, opacity;
-  animation-name: conf-fall, conf-spin;
-  animation-timing-function: linear, ease-in-out;
-  animation-iteration-count: 1, infinite;
-}
-@keyframes conf-fall{ to{ transform: translateY(120vh) rotate(360deg); opacity:.95; } }
-@keyframes conf-spin{ from{ transform: rotateY(0deg) } to{ transform: rotateY(360deg) } }
-
 /* Checkmark-Ring */
 .checkmark{ width:80px; height:80px; margin:0 auto .6rem; border-radius:50%;
   background: linear-gradient(180deg, rgba(243,244,246,.60), rgba(201,205,211,.28));
