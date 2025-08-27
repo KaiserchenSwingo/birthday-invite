@@ -417,3 +417,34 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   color: transparent !important;
   animation: none !important;
 }
+
+
+/* === Countdown uses button edge/glass effect === */
+#countdown.btn{
+  --r:14px;
+  position:relative !important;
+  display:inline-grid !important; place-items:center !important;
+  min-width:190px !important;
+  padding:.7rem 1.1rem !important;
+  border-radius:var(--r) !important;
+  background:linear-gradient(180deg, rgba(243,244,246,.55), rgba(201,205,211,.28)) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85), 0 8px 18px rgba(0,0,0,.35) !important;
+  color:inherit !important;
+  z-index:0;
+}
+#countdown.btn::before{
+  content:"" !important; position:absolute; inset:-12px; border-radius:calc(var(--r) + 12px);
+  background:
+    radial-gradient(180px 120px at 15% 20%, rgba(255,60,172,.5), transparent 70%),
+    radial-gradient(180px 120px at 85% 80%, rgba(43,210,255,.4), transparent 70%);
+  filter:blur(30px) saturate(1.1); opacity:.8; z-index:1; pointer-events:none;
+}
+#countdown.btn::after{
+  content:"" !important; position:absolute; inset:-2px; border-radius:calc(var(--r) + 2px); padding:2px;
+  background:conic-gradient(from var(--rot), var(--magenta) 0deg, var(--blue) 180deg, var(--magenta) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+          mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  filter:drop-shadow(0 0 22px rgba(43,210,255,.7)) drop-shadow(0 0 26px rgba(255,60,172,.55)) drop-shadow(0 0 14px rgba(130,102,255,.45));
+  z-index:2; pointer-events:none; animation:spin 2.2s linear infinite;
+}
