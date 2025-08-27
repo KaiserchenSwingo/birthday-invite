@@ -299,3 +299,19 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   100% { background-position: 200% 50%; }
 }
 
+
+
+/* === Countdown cleanup: no box, no outline === */
+.countdown{
+  background:none !important;
+  box-shadow:none !important;
+  border:0 !important;
+  padding:0 !important;
+  min-width:0 !important;
+  border-radius:0 !important;
+  backdrop-filter:none !important;
+  display:inline-block;
+}
+.countdown .cd{
+  text-shadow:none !important;
+}
