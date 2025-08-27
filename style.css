@@ -547,3 +547,16 @@ h3{ animation: neon-breathe 7s ease-in-out infinite !important; }
   .fx-on h2,
   .fx-on h3{ animation: breath-v2 5s ease-in-out infinite !important; }
 }
+
+
+/* === REMOVE HEADING BREATH EFFECTS === */
+h1.headline, h1.logo, h2, h3,
+.fx-on h1.headline, .fx-on h1.logo, .fx-on h2, .fx-on h3{
+  animation: none !important;
+}
+@media (prefers-reduced-motion: reduce){
+  h1.headline, h1.logo, h2, h3,
+  .fx-on h1.headline, .fx-on h1.logo, .fx-on h2, .fx-on h3{
+    animation: none !important;
+  }
+}
