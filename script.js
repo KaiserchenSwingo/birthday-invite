@@ -1,6 +1,11 @@
 // === PIN-Gate + Countdown ===
 (function(){
-  const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // PIN: 2412
+  // Read PIN from dataset (optional), keep hash as default for backward compat
+  const GATE_EL = document.getElementById('gate');
+  const PIN_PLAIN = (GATE_EL && GATE_EL.dataset && GATE_EL.dataset.pinPlain) ? GATE_EL.dataset.pinPlain : null;
+  const PIN_HASH = (GATE_EL && GATE_EL.dataset && GATE_EL.dataset.pinHash)
+    ? GATE_EL.dataset.pinHash
+    : '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // default: sha256('2412')
   const KEY = 'invite-unlocked-v1';
   const app = document.getElementById('app');
   const gate = document.getElementById('gate');
@@ -20,7 +25,7 @@
     return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');
   }
 
-  try { if (localStorage.getItem(KEY) === '1') showApp(); } catch(e){}
+  try { if (localStorage.getItem(KEY) === '1' || sessionStorage.getItem(KEY) === '1') showApp(); } catch(e){}
 
   if (form){
     form.setAttribute('novalidate','true');
@@ -32,9 +37,9 @@
 
       try {
         let digest = await sha256Hex(pin);
-        const ok = (digest ? (digest === PIN_HASH) : (pin === '2412'));
+        const ok = ((digest && PIN_HASH) ? (digest === PIN_HASH) : false) || (PIN_PLAIN ? (pin === PIN_PLAIN) : (pin === '2412'));
         if (ok){
-          try { localStorage.setItem(KEY,'1'); } catch(e){}
+          try { localStorage.setItem(KEY,'1'); } catch(e){} try { sessionStorage.setItem(KEY,'1'); } catch(e){}
           showApp();
         } else {
           if (error) error.textContent = 'Falscher PIN. Versuch es bitte nochmal.';
@@ -70,6 +75,35 @@
   const status = document.getElementById('rsvp-status');
   const submitBtn = document.getElementById('rsvp-submit');
   const thanks = document.getElementById('thanks');
+  const confettiRoot = document.getElementById('confetti');
+
+  function launchConfetti() {
+    if (!confettiRoot) return;
+    confettiRoot.innerHTML = '';
+    const colors = ['#FFFFFF','#2BD2FF','#87E8FF','#8266FF','#A28DFF','#FF3CAC','#FF64B7'];
+    const pieces = 140;
+    for (let i = 0; i < pieces; i++) {
+      const p = document.createElement('span');
+      p.className = 'p';
+      const size = 6 + Math.random()*12;
+      const color = colors[Math.floor(Math.random()*colors.length)];
+      const left = Math.random()*100;
+      const delay = Math.random()*0.8;
+      const fall = 3 + Math.random()*2.8;
+      const spin = 1.1 + Math.random()*1.8;
+
+      p.style.setProperty('--c', color);
+      p.style.width = `${size}px`;
+      p.style.height = `${size*1.4}px`;
+      p.style.left = `${left}%`;
+      p.style.top = `-10%`;
+      p.style.opacity = `${0.90 + Math.random()*0.10}`;
+      p.style.animation = `conf-fall ${fall}s linear ${delay}s 1 forwards, conf-spin ${spin}s ease-in-out ${delay/2}s infinite alternate`;
+
+      if (Math.random() < 0.35) p.style.borderRadius = '50%/30%';
+      if (Math.random() < 0.35) p.style.transform = `rotate(${Math.random()*360}deg)`;
+      confettiRoot.appendChild(p);
+    }
   }
 
   function hideFormFields() {
@@ -89,7 +123,7 @@
     hideFormFields();
     form.classList.add('success');
     if (thanks) thanks.setAttribute('aria-hidden','false');
-    
+    setTimeout(launchConfetti, 40);
   }
 
   form.addEventListener('submit', async (e) => {
