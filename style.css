@@ -278,22 +278,6 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   border:1px solid rgba(255,255,255,.18);
 }
 
-.countdown .cd{
-  /* animated left-to-right gradient in site colors */
-  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple), var(--magenta));
-  background-size: 200% 100%;
-  background-position: 0% 50%;
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent;
-  letter-spacing:.03em;
-  animation: cd-sweep 4s linear infinite;
-  /* subtle black outline for readability */
-  text-shadow:
-    0 0.8px 0 #000,
-    0 -0.8px 0 #000,
-    0.8px 0 0 #000,
-    -0.8px 0 0 #000;
-}
 100% { background-position: 200% 50%; }
 }
 
@@ -310,30 +294,28 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   backdrop-filter:none !important;
   display:inline-block;
 }
-.countdown .cd{
-  text-shadow:none !important;
-}
-
-
 /* === Countdown tuning: smoother, slower, bigger === */
 .countdown{
   font-size: 200% !important;   /* double the current size */
   line-height: 1 !important;
 }
-.countdown .cd{
-  background-size: 300% 100% !important; /* wider gradient for smoother flow */
-  animation: cd-sweep 12s linear infinite !important; /* slower, steady flow */
-  will-change: background-position;
+/* === Countdown gradient: seamless left->right loop === */
+100% { background-position: 200% 50%; }
 }
 
 
-/* === Countdown gradient: seamless left->right loop === */
+/* === Countdown digits: gradient text (visible) === */
 .countdown .cd{
   background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple), var(--magenta)) !important;
-  background-size: 200% 100% !important;
+  background-size: 300% 100% !important;
   background-repeat: repeat !important;
   background-position: 0% 50% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
   animation: cd-sweep 12s linear infinite !important;
+  will-change: background-position;
 }
 @keyframes cd-sweep{
   0%   { background-position:   0% 50%; }
