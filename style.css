@@ -315,3 +315,15 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 .countdown .cd{
   text-shadow:none !important;
 }
+
+
+/* === Countdown tuning: smoother, slower, bigger === */
+.countdown{
+  font-size: 200% !important;   /* double the current size */
+  line-height: 1 !important;
+}
+.countdown .cd{
+  background-size: 300% 100% !important; /* wider gradient for smoother flow */
+  animation: cd-sweep 12s linear infinite !important; /* slower, steady flow */
+  will-change: background-position;
+}
