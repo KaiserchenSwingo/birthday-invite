@@ -51,7 +51,9 @@
   // Countdown
   const target = new Date('2025-12-21T19:00:00+01:00');
   const el = document.getElementById('countdown');
-  function update(){
+  let cd = (el ? el.querySelector('.cd') : null);
+if (el && !cd) { cd = document.createElement('span'); cd.className = 'cd'; el.appendChild(cd); }
+function update(){
     if (!el) return;
     const diff = target - new Date();
     if (diff <= 0){ el.textContent = 'Es geht los!'; return; }
