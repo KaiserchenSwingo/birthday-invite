@@ -142,7 +142,7 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   background: radial-gradient(1200px 600px at 50% 10%, rgba(255,60,172,.10), rgba(0,0,0,.75));
   backdrop-filter: blur(4px); z-index:1000;
 }
-.gate-card{ width:100%; max-width:520px; background:var(--card); border:1px solid rgba(255,255,255,.1);
+.gate-card{ width:100%; max-width:520px; background:rgba(17,18,27,.9); border:1px solid rgba(255,255,255,.1);
   border-radius:20px; padding:1.6rem; box-shadow:0 10px 30px rgba(0,0,0,.45), 0 0 40px rgba(130,102,255,.25);
 }
 .gate-card p{ margin:.4rem 0 .6rem }
@@ -279,11 +279,17 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   .fx-holo{ display:none }
 }
 
-/* override: countdown size to 130% */
-#countdown{ font-size:130%; line-height:1; }
-#countdown .cd{ font-size:inherit; }
+/* HOTFIX */
 
-/* Countdown neon border (like buttons) */
+#countdown .cd{
+  display:inline-block;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple));
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color: transparent !important; color: transparent !important;
+}
+
 #countdown{
   --r:14px;
   position:relative;
@@ -300,67 +306,25 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   position:absolute; inset:-12px;
   border-radius:calc(var(--r) + 12px);
   background:
-    radial-gradient(180px 120px at 15% 20%, rgba(255,60,172,.5), transparent 70%),
-    radial-gradient(180px 120px at 85% 80%, rgba(43,210,255,.4), transparent 70%);
-  filter:blur(30px) saturate(1.1); opacity:.8; z-index:1; pointer-events:none;
+    radial-gradient(200px 140px at 18% 28%, rgba(255,60,172,.55), transparent 70%),
+    radial-gradient(220px 160px at 82% 72%, rgba(43,210,255,.45), transparent 72%);
+  filter: blur(28px) saturate(1.05);
+  opacity:.9;
+  z-index:1; pointer-events:none;
 }
 #countdown::after{
   --rot:0deg;
   content:"";
   position:absolute; inset:-2px; padding:2px;
   border-radius:calc(var(--r) + 2px);
-  background:conic-gradient(from var(--rot), var(--magenta) 0deg, var(--blue) 180deg, var(--magenta) 360deg);
+  background: conic-gradient(from var(--rot), var(--magenta) 0deg, var(--blue) 180deg, var(--magenta) 360deg);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
           mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor; mask-composite:exclude;
-  filter:drop-shadow(0 0 22px rgba(43,210,255,.7)) drop-shadow(0 0 18px rgba(255,60,172,.55)) drop-shadow(0 0 14px rgba(130,102,255,.45));
+  filter: drop-shadow(0 0 22px rgba(43,210,255,.7))
+          drop-shadow(0 0 18px rgba(255,60,172,.55))
+          drop-shadow(0 0 14px rgba(130,102,255,.45));
   z-index:2; pointer-events:none;
-  animation:spin 12s linear infinite;
+  animation: spin 12s linear infinite;
 }
-
-/* Hero layer base */
-#hero-layer{
-  position:fixed;
-  top:calc(50% - 5vh);
-  left:50%;
-  transform:translate(-50%,-50%);
-  width:min(48vw, 560px);
-  max-width:92vw;
-  pointer-events:none;
-  z-index:0;
-  -webkit-mask-image: radial-gradient(130% 160% at 50% 36%, rgba(0,0,0,1) 52%, rgba(0,0,0,0) 82%);
-          mask-image: radial-gradient(130% 160% at 50% 36%, rgba(0,0,0,1) 52%, rgba(0,0,0,0) 82%);
-  filter: drop-shadow(0 22px 48px rgba(0,0,0,.45));
-}
-.pin-locked #hero-layer{ z-index:900; }
-
-/* Mobile hero visibility */
-@media (max-width: 900px){
-  #hero-layer{
-    width: min(82vw, 620px);
-    top: calc(50% - 2vh);
-    -webkit-mask-image: radial-gradient(150% 130% at 50% 44%, rgba(0,0,0,1) 62%, rgba(0,0,0,0) 94%);
-            mask-image: radial-gradient(150% 130% at 50% 44%, rgba(0,0,0,1) 62%, rgba(0,0,0,0) 94%);
-    filter: brightness(1.12) contrast(1.06) saturate(1.18) drop-shadow(0 22px 48px rgba(0,0,0,.45));
-  }
-}
-@media (max-width: 560px){
-  #hero-layer{
-    width: 92vw;
-    top: calc(50% - 0vh);
-    -webkit-mask-image: radial-gradient(190% 160% at 50% 44%, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 96%);
-            mask-image: radial-gradient(190% 160% at 50% 44%, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 96%);
-    filter: brightness(1.16) contrast(1.08) saturate(1.2) drop-shadow(0 22px 48px rgba(0,0,0,.5));
-  }
-}
-
-
-/* Countdown digit gradient (forced) */
-#countdown .cd{
-  display:inline-block;
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: 'tnum' 1;
-  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple));
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent !important; color: transparent !important;
-}
+@keyframes spin{ to{ --rot:360deg; } }
