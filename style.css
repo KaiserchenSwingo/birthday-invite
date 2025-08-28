@@ -286,3 +286,18 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   -webkit-background-clip:text; background-clip:text;
   -webkit-text-fill-color:transparent; color:transparent;
 }
+
+/* Hero layer centered behind container; sharp under PIN gate */
+#hero-layer{
+  position:fixed;
+  top: calc(50% - 5vh); left:50%;
+  transform: translate(-50%, -50%);
+  width: min(48vw, 560px);
+  max-width: 92vw;
+  pointer-events:none;
+  z-index: 1;
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 92%);
+          mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 92%);
+}
+.container{ position:relative; z-index:2; }
+.pin-locked #hero-layer{ z-index: 900; opacity:1; } /* below .gate (z:1000), above container */

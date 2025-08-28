@@ -9,7 +9,7 @@
   const error = document.getElementById('gate-error');
 
   function showApp(){
-    if (gate){ gate.classList.add('hidden'); gate.style.display='none'; }
+    if (gate){ gate.classList.add('hidden'); gate.style.display='none';  try{document.body.classList.remove('pin-locked');}catch(e){} }
     if (app) app.classList.remove('hidden');
   }
 
@@ -20,7 +20,7 @@
     return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');
   }
 
-  try { if (localStorage.getItem(KEY) === '1') showApp(); } catch(e){}
+  try { if (localStorage.getItem(KEY) === '1') showApp(); else { document.body.classList.add('pin-locked'); } } catch(e){ document.body.classList.add('pin-locked'); }
 
   if (form){
     form.setAttribute('novalidate','true');
@@ -40,13 +40,7 @@
           if (error) error.textContent = 'Falscher PIN. Versuch es bitte nochmal.';
           input.focus(); input.select();
         }
-      } catch (err){
-        if (pin === '2412'){ try{ localStorage.setItem(KEY,'1'); }catch(e){} showApp(); }
-        else { if (error) error.textContent = 'Falscher PIN. Versuch es bitte nochmal.'; }
-      }
-      return false;
-    });
-  }
+      } catch(err){ if (error) error.textContent = 'Technischer Fehler – probier’s nochmal.'; return false; }); }
 
   // Countdown (DD:HH:MM:SS to 22.12.2025 00:00; 1s updates)
   (function(){
