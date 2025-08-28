@@ -123,3 +123,25 @@ p{ margin:8px 0; color:var(--muted); }
   background:rgba(255,255,255,.04); color:var(--text);
 }
 .error{ color:#ff7b7b; min-height:1.2em; margin:.5rem 0 0; }
+
+/* RSVP form styling */
+#rsvp .form-grid{
+  display:grid; grid-template-columns: 1fr 1fr; gap:14px;
+}
+#rsvp .form-group{ display:flex; flex-direction:column; gap:6px; }
+#rsvp .form-group.span-2{ grid-column: 1 / -1; }
+#rsvp input, #rsvp select, #rsvp textarea{
+  width:100%; font-size:1rem; padding:.7rem .9rem;
+  border-radius:12px; border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.04); color:var(--text);
+  outline:none;
+}
+#rsvp input:focus, #rsvp select:focus, #rsvp textarea:focus{
+  border-color: rgba(43,210,255,.5);
+  box-shadow: 0 0 0 3px rgba(43,210,255,.15);
+}
+#rsvp .form-actions{ display:flex; gap:10px; margin-top:8px; flex-wrap:wrap; }
+#rsvp .muted{ color:var(--muted); min-height:1.2em; }
+@media (max-width: 700px){
+  #rsvp .form-grid{ grid-template-columns: 1fr; }
+}

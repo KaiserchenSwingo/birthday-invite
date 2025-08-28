@@ -50,6 +50,38 @@
              target="_blank" rel="noopener">Route öffnen</a>
         </p>
       </section>
+      <section id="rsvp">
+        <h2>RSVP</h2>
+        <form id="rsvp-form" autocomplete="on">
+          <div class="form-grid">
+            <label class="form-group">
+              <span>Dein Name</span>
+              <input type="text" id="rsvp-name" name="name" required placeholder="Max Mustermann" />
+            </label>
+            <label class="form-group">
+              <span>Kommst du?</span>
+              <select id="rsvp-attend" name="attend" required>
+                <option value="Ja">Ja</option>
+                <option value="Nein">Nein</option>
+              </select>
+            </label>
+            <label class="form-group">
+              <span>Anzahl Begleitungen</span>
+              <input type="number" id="rsvp-guests" name="guests" min="0" max="5" value="0" />
+            </label>
+            <label class="form-group span-2">
+              <span>Nachricht (optional)</span>
+              <textarea id="rsvp-notes" name="notes" rows="3" placeholder="Allergien, Wunschmusik, etc."></textarea>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn">RSVP senden</button>
+            <button type="button" id="rsvp-copy" class="btn">In Zwischenablage kopieren</button>
+          </div>
+          <p id="rsvp-feedback" class="muted"></p>
+        </form>
+      </section>
+    
     </div>
     <!-- optional: Konfetti-Layer -->
     <div class="confetti" aria-hidden="true"></div>

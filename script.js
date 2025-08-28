@@ -118,3 +118,43 @@ async function sha256Hex(str){
   }
   tick(); setInterval(tick,1000);
 })();
+// RSVP handler: mailto if body[data-rsvp-email], else copy to clipboard
+(function(){
+  const form = document.getElementById('rsvp-form');
+  if(!form) return;
+  const copyBtn = document.getElementById('rsvp-copy');
+  const fb = document.getElementById('rsvp-feedback');
+  function buildText(){
+    const n = document.getElementById('rsvp-name')?.value?.trim() || '';
+    const a = document.getElementById('rsvp-attend')?.value || '';
+    const g = document.getElementById('rsvp-guests')?.value || '0';
+    const t = document.getElementById('rsvp-notes')?.value?.trim() || '';
+    return `RSVP\nName: ${n}\nKommst du?: ${a}\nBegleitungen: ${g}\nNachricht: ${t}`;
+  }
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const txt = buildText();
+    const email = document.body?.dataset?.rsvpEmail || '';
+    if (email){
+      const subject = encodeURIComponent('RSVP Geburtstag');
+      const body = encodeURIComponent(txt);
+      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+      fb && (fb.textContent = 'Mail-Entwurf geöffnet. Danke!');
+    } else {
+      navigator.clipboard?.writeText(txt).then(()=>{
+        fb && (fb.textContent = 'RSVP in die Zwischenablage kopiert. Bitte per Mail/Chat senden.');
+      }).catch(()=>{
+        fb && (fb.textContent = 'Konnte nicht kopieren. Markiere den Text manuell.');
+        alert(txt);
+      });
+    }
+  });
+  copyBtn?.addEventListener('click', ()=>{
+    const txt = buildText();
+    navigator.clipboard?.writeText(txt).then(()=>{
+      fb && (fb.textContent = 'RSVP kopiert ✔');
+    }).catch(()=>{
+      fb && (fb.textContent = 'Konnte nicht kopieren.'); alert(txt);
+    });
+  });
+})();
