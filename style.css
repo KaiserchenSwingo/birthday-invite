@@ -352,3 +352,5 @@ body{ position:relative; }
 /* During PIN gate, hero above container (but below gate) */
 .pin-locked #hero-layer{ z-index:7; opacity:1; filter:drop-shadow(0 24px 54px rgba(0,0,0,.5)); }
 .pin-locked .gate{ position:relative; z-index:9; }
+
+.pin-locked .gate{ backdrop-filter:none !important; }

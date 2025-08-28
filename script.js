@@ -1,6 +1,6 @@
 // === PIN-Gate + Countdown ===
 (function(){
-  const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // PIN: 2412
+  const PIN_HASH = '05c8bd5d4dcdb18b690e160fd7a5c5190ee9ce7eb565d88f8e7b1f81b5f25bf6'; // PIN: 2212
   const KEY = 'invite-unlocked-v1';
   const app = document.getElementById('app');
   const gate = document.getElementById('gate');
@@ -32,7 +32,7 @@
 
       try {
         let digest = await sha256Hex(pin);
-        const ok = (digest ? (digest === PIN_HASH) : (pin === '2212'));
+        const ok = !!(digest && (digest === PIN_HASH));
         if (ok){
           try { localStorage.setItem(KEY,'1'); } catch(e){}
           showApp();
@@ -48,20 +48,33 @@
     });
   }
 
-  // Countdown
-  const target = new Date('2025-12-21T19:00:00+01:00');
+  
+// Countdown (DD:HH:MM:SS to 22.12.2025 00:00; updates every second)
+(function(){
   const el = document.getElementById('countdown');
-  function update(){
-    if (!el) return;
-    const diff = target - new Date();
-    if (diff <= 0){ el.textContent = 'Es geht los!'; return; }
-    const days  = Math.floor(diff/(1000*60*60*24));
-    const hours = Math.floor(diff/(1000*60*60)) % 24;
-    const mins  = Math.floor(diff/(1000*60)) % 60;
-    el.textContent = `${days} Tage, ${hours} Std, ${mins} Min`;
+  if (!el) return;
+  let target = new Date('2025-12-22T00:00:00+01:00');
+  if (el.dataset && el.dataset.target){
+    const t = new Date(el.dataset.target);
+    if (!isNaN(+t)) target = t;
   }
-  update(); setInterval(update, 60*1000);
+  el.textContent = '';
+  let cd = document.createElement('span'); cd.className = 'cd'; el.appendChild(cd);
+  const pad2 = n => String(n).padStart(2,'0');
+  const pad3 = n => String(n).padStart(3,'0');
+  function tick(){
+    const diff = target - new Date();
+    if (diff <= 0){ cd.textContent = '000:00:00:00'; return; }
+    const total = Math.floor(diff/1000);
+    const d = Math.floor(total / 86400);
+    const h = Math.floor((total % 86400) / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const s = total % 60;
+    cd.textContent = `${pad3(d)}:${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+  }
+  tick(); setInterval(tick, 1000);
 })();
+
 
 // === RSVP + Danke-Konfetti (robust, ohne :scope) ===
 (function () {
