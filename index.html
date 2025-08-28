@@ -3,112 +3,98 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🎉 Mein 30. – Einladung</title>
-  <meta name="description" content="Einladung mit Infos & Antwort-Formular." />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <title>Mein 30. Geburtstag</title>
   <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
 </head>
-<body>
+<body class="pin-locked">
+  <!-- Hero-Bild: hinter dem Container; im PIN-Gate nach vorn -->
+  <img id="hero-layer" src="besterCutout.png" alt="Portrait" />
+
   <!-- PIN-Gate -->
-  <div id="gate" class="gate">
+  <section id="gate" class="gate">
     <div class="gate-card">
-      <h1 class="logo">30</h1>
+      <div class="gate-title">30</div>
       <p>Gib den PIN von der Karte ein, um reinzukommen.</p>
-      <form id="gate-form" action="javascript:;">
-        <label class="sr-only" for="gate-input">PIN</label>
-        <input id="gate-input" inputmode="numeric" autocomplete="one-time-code" placeholder="PIN" required />
-        <button type="submit" class="btn"><span class="btn-label">Entsperren</span></button>
+      <form id="gate-form" novalidate>
+        <input id="gate-input" inputmode="numeric" maxlength="8" placeholder="PIN" />
+        <button type="submit" class="btn">Entsperren</button>
+        <p id="gate-error" class="error"></p>
       </form>
-      <p id="gate-error" class="gate-error" aria-live="polite"></p>
     </div>
-  </div>
+  </section>
 
-  <main id="app" class="container hidden">
-    <section class="card">
-      <div class="hero">
-        <h1 class="headline">MEIN 30. GEBURTSTAG</h1>
-        <p class="lede">Lass uns die Nacht zum Tag machen</p>
+  <!-- App -->
+  <main id="app" class="hidden">
+    <div class="container">
+      <h1>MEIN 30. GEBURTSTAG</h1>
+      <p class="tag">Lass uns die Nacht zum Tag machen</p>
+
+      <div class="grid">
+        <section>
+          <h2>WANN?</h2>
+          <p><strong>Samstag, 21. Dezember 2025</strong><br>Einlass ab 18:00, Start 19:00</p>
+          <div id="countdown" aria-label="Countdown"><span class="cd"></span></div>
+        </section>
+
+        <section>
+          <h2>WO?</h2>
+          <p><strong>Walther-Rathenau-Str. 60b,<br>15732 Schulzendorf</strong></p>
+          <p>
+            <a class="btn"
+              href="https://www.google.com/maps/search/?api=1&query=Walther-Rathenau-Str.%2060b,%2015732%20Schulzendorf"
+              target="_blank" rel="noopener">Route öffnen</a>
+          </p>
+        </section>
       </div>
 
       <div class="grid">
-        <div>
-          <h2>Wann?</h2>
-          <p><strong id="date">Samstag, 21. Dezember 2025</strong><br>Einlass ab 18:00, Start 19:00</p>
-          <p class="countdown" id="countdown" aria-live="polite"></p>
-        </div>
-        <div>
-          <h2>Wo?</h2>
-          <p><strong>Zum Alten Speicher</strong><br>Speicherstraße 12, 10115 Berlin</p>
-          <p><a class="btn" target="_blank" rel="noopener" href="https://maps.google.com/?q=Speicherstraße%2012%2010115%20Berlin"><span class="btn-label">Route öffnen</span></a></p>
-        </div>
-      </div>
-
-      <div class="grid">
-        <div>
-          <h2>Dresscode</h2>
-          <p>Smart casual – Neon‑Detail gern gesehen ✨</p>
-        </div>
-        <div>
-          <h2>Hinweise</h2>
+        <section>
+          <h2>DRESSCODE</h2>
+          <p>Smart casual – Neon-Detail gern gesehen ✨</p>
+        </section>
+        <section>
+          <h2>HINWEISE</h2>
           <ul>
             <li>Parken begrenzt – ÖPNV empfohlen</li>
             <li>Bar & Softdrinks vorhanden</li>
             <li>+1 nur nach Rücksprache</li>
           </ul>
-        </div>
+        </section>
       </div>
 
-      <hr>
+      <hr />
 
-      <form id="rsvp-form" class="rsvp" action="https://formspree.io/f/xeolqzzr" method="POST">
+      <section id="antwort">
         <h2>ANTWORT</h2>
-        <input type="hidden" name="_subject" value="ANTWORT – 30. Geburtstag"/>
-
-        <label>
-          Dein Name
-          <input name="name" required autocomplete="name" />
-        </label>
-
-        <label>
-          Kommst du?
-          <select name="zusagen" required>
-            <option value="Ja">Ja, ich bin dabei 🎉</option>
-            <option value="Vielleicht">Vielleicht 🤔</option>
-            <option value="Nein">Leider nicht 🙁</option>
-          </select>
-        </label>
-
-        <label class="full">
-          Nachricht (Allergien, +1, Fragen …)
-          <textarea name="nachricht" rows="4"></textarea>
-        </label>
-
-        <button type="submit" class="btn" id="rsvp-submit"><span class="btn-label">Antwort senden</span></button>
-        <p id="rsvp-status" class="fineprint" aria-live="polite"></p>
-
-        <div class="thanks" id="thanks" aria-hidden="true" role="dialog" aria-labelledby="thanks-title">
-          <div class="checkmark">
-            <svg viewBox="0 0 64 64" aria-hidden="true">
-              <defs>
-                <linearGradient id="gradCheck" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stop-color="#8266FF"/>
-                  <stop offset="1" stop-color="#2BD2FF"/>
-                </linearGradient>
-              </defs>
-              <path d="M16 34 L28 46 L50 20" stroke="url(#gradCheck)" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+        <form id="antwort-form" autocomplete="on">
+          <div class="form-row">
+            <label class="form-group">
+              <span>Dein Name</span>
+              <input type="text" id="antwort-name" name="name" required placeholder="Dein Name" />
+            </label>
+            <label class="form-group">
+              <span>Kommst du?</span>
+              <select id="antwort-attend" name="attend" required>
+                <option value="Ja, ich bin dabei 🎉" selected>Ja, ich bin dabei 🎉</option>
+                <option value="Ich schaffe es nicht 😕">Ich schaffe es nicht 😕</option>
+                <option value="Vielleicht 🤔">Vielleicht 🤔</option>
+              </select>
+            </label>
           </div>
-          <h3 id="thanks-title">Danke!</h3>
-          <p>Deine Antwort ist angekommen.</p>
-          <div class="confetti" id="confetti"></div>
-        </div>
-      </form>
-    </section>
+          <label class="form-group block">
+            <span>Nachricht (Allergien, +1, Fragen …)</span>
+            <textarea id="antwort-notes" name="notes" rows="4"></textarea>
+          </label>
+          <div class="form-actions">
+            <button type="submit" class="btn">Antwort senden</button>
+          </div>
+          <p id="antwort-feedback" class="muted"></p>
+        </form>
+      </section>
+    </div>
+
+    <div class="confetti" aria-hidden="true"></div>
   </main>
-
-  <!-- Holografischer Glitzer-Overlay -->
-  <div class="fx-holo" aria-hidden="true"></div>
-
-  <script src="script.js?v=pinfix2" defer></script>
 </body>
 </html>

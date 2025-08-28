@@ -1,165 +1,129 @@
-// === PIN-Gate + Countdown ===
+// === SHA-256 polyfill + helper ===
+function sha256_polyfill(ascii){
+  function R(n,x){ return (x>>>n) | (x<<(32-n)); }
+  var maxWord = Math.pow(2,32), result = '', i, j;
+  var words = [], asciiBitLength = ascii.length*8;
+  var hash = [], k = [], primeCounter = 0;
+  function isPrime(n){ for (var i=2,s=Math.sqrt(n); i<=s; i++) if(n%i===0) return false; return true; }
+  function frac(n){ return ((n - Math.floor(n)) * maxWord) | 0; }
+  for (var candidate=2; primeCounter<64; candidate++){
+    if (isPrime(candidate)){
+      if (primeCounter<8) hash[primeCounter] = frac(Math.pow(candidate, 1/2));
+      k[primeCounter++] = frac(Math.pow(candidate, 1/3));
+    }
+  }
+  ascii += '\x80';
+  while (ascii.length%64 - 56) ascii += '\x00';
+  for (i=0; i<ascii.length; i++){ j = ascii.charCodeAt(i); words[i>>2] |= j << ((3 - i)%4)*8; }
+  words[words.length] = ((asciiBitLength/ maxWord) | 0);
+  words[words.length] = (asciiBitLength) & 0xffffffff;
+  for (j=0; j<words.length;){
+    var w = words.slice(j, j += 16);
+    var oldHash = hash.slice(0);
+    for (i=0; i<64; i++){
+      var w15 = w[i-15], w2 = w[i-2];
+      var s0 = (R(7,w15)) ^ (R(18,w15)) ^ (w15>>>3);
+      var s1 = (R(17,w2)) ^ (R(19,w2)) ^ (w2>>>10);
+      w[i] = (i<16) ? w[i] : (((w[i-16] + s0 |0) + (w[i-7] |0) + s1) |0);
+      var ch = (hash[4] & hash[5]) ^ (~hash[4] & hash[6]);
+      var maj = (hash[0] & hash[1]) ^ (hash[0] & hash[2]) ^ (hash[1] & hash[2]);
+      var S0 = R(2,hash[0]) ^ R(13,hash[0]) ^ R(22,hash[0]);
+      var S1 = R(6,hash[4]) ^ R(11,hash[4]) ^ R(25,hash[4]);
+      var t1 = (((((hash[7] + S1 |0) + ch |0) + k[i] |0) + w[i]) |0);
+      var t2 = (S0 + maj) |0;
+      hash = [(t1 + t2 |0) + hash[0] |0].concat(hash);
+      hash[4] = (hash[4] + t1) |0;
+      hash.pop();
+    }
+    for (i=0; i<8; i++){ hash[i] = (hash[i] + oldHash[i]) |0; }
+  }
+  for (i=0; i<8; i++){
+    for (j=3; j+1; j--){
+      var b = (hash[i] >> (j*8)) & 255;
+      result += ((b<16) ? '0' : '') + b.toString(16);
+    }
+  }
+  return result;
+}
+async function sha256Hex(str){
+  try{
+    if (window.crypto?.subtle){
+      const data = new TextEncoder().encode(str);
+      const buf  = await window.crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    }
+  }catch(_){}
+  return Promise.resolve(sha256_polyfill(str));
+}
+
+// === PIN-Gate (hash-only; PIN 2212) ===
 (function(){
-  const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // PIN: 2412
-  const KEY = 'invite-unlocked-v1';
-  const app = document.getElementById('app');
-  const gate = document.getElementById('gate');
-  const form = document.getElementById('gate-form');
-  const input = document.getElementById('gate-input');
-  const error = document.getElementById('gate-error');
+  const KEY='pin_ok_v1';
+  const PIN_HASH='05c8bd5d4dcdb18b690e160fd7a5c5190ee9ce7eb565d88f8e7b1f81b5f25bf6'; // sha256('2212')
+
+  const app=document.getElementById('app');
+  const gate=document.getElementById('gate');
+  const form=document.getElementById('gate-form');
+  const input=document.getElementById('gate-input');
+  const error=document.getElementById('gate-error');
 
   function showApp(){
-    if (gate){ gate.classList.add('hidden'); gate.style.display='none'; }
-    if (app) app.classList.remove('hidden');
+    gate?.classList.add('hidden'); if (gate) gate.style.display='none';
+    app?.classList.remove('hidden'); if (app) app.style.removeProperty('display');
+    document.body.classList.remove('pin-locked');
+  }
+  function showGate(){
+    gate?.classList.remove('hidden'); if (gate) gate.style.removeProperty('display');
+    app?.classList.add('hidden'); if (app) app.style.display='none';
+    document.body.classList.add('pin-locked');
   }
 
-  async function sha256Hex(str){
-    if (!window.crypto || !window.crypto.subtle) return null;
-    const enc = new TextEncoder().encode(str);
-    const digest = await crypto.subtle.digest('SHA-256', enc);
-    return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');
-  }
-
-  try { if (localStorage.getItem(KEY) === '1') showApp(); } catch(e){}
+  try{ localStorage.getItem(KEY)==='1' ? showApp() : showGate(); }
+  catch(_){ showGate(); }
 
   if (form){
-    form.setAttribute('novalidate','true');
     form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      if (error) error.textContent = '';
-      const pin = (input.value||'').trim();
-      if (!pin) return;
-
-      try {
-        let digest = await sha256Hex(pin);
-        const ok = (digest ? (digest === PIN_HASH) : (pin === '2412'));
-        if (ok){
-          try { localStorage.setItem(KEY,'1'); } catch(e){}
+      e.preventDefault(); if(error) error.textContent='';
+      const pin=(input?.value||'').trim(); if(!pin) return;
+      try{
+        const digest=await sha256Hex(pin);
+        const ok = !!(digest && digest===PIN_HASH);
+        if(ok){
+          try{ localStorage.setItem(KEY,'1'); }catch(_){}
+          try{ sessionStorage.setItem(KEY,'1'); }catch(_){}
           showApp();
-        } else {
-          if (error) error.textContent = 'Falscher PIN. Versuch es bitte nochmal.';
-          input.focus(); input.select();
+        }else{
+          if(error) error.textContent='Falscher PIN. Versuch es bitte nochmal.';
+          input?.focus(); input?.select();
         }
-      } catch (err){
-        if (pin === '2412'){ try{ localStorage.setItem(KEY,'1'); }catch(e){} showApp(); }
-        else { if (error) error.textContent = 'Falscher PIN. Versuch es bitte nochmal.'; }
-      }
-      return false;
+      }catch(_){ if(error) error.textContent='Technischer Fehler – bitte nochmal.'; }
     });
   }
-
-  // Countdown
-  const target = new Date('2025-12-21T19:00:00+01:00');
-  const el = document.getElementById('countdown');
-  function update(){
-    if (!el) return;
-    const diff = target - new Date();
-    if (diff <= 0){ el.textContent = 'Es geht los!'; return; }
-    const days  = Math.floor(diff/(1000*60*60*24));
-    const hours = Math.floor(diff/(1000*60*60)) % 24;
-    const mins  = Math.floor(diff/(1000*60)) % 60;
-    el.textContent = `${days} Tage, ${hours} Std, ${mins} Min`;
-  }
-  update(); setInterval(update, 60*1000);
 })();
 
-// === RSVP + Danke-Konfetti (robust, ohne :scope) ===
-(function () {
-  const form = document.getElementById('rsvp-form');
-  if (!form) return;
-  const status = document.getElementById('rsvp-status');
-  const submitBtn = document.getElementById('rsvp-submit');
-  const thanks = document.getElementById('thanks');
-  const confettiRoot = document.getElementById('confetti');
-
-  function launchConfetti() {
-    if (!confettiRoot) return;
-    confettiRoot.innerHTML = '';
-    const colors = ['#FFFFFF','#2BD2FF','#87E8FF','#8266FF','#A28DFF','#FF3CAC','#FF64B7'];
-    const pieces = 140;
-    for (let i = 0; i < pieces; i++) {
-      const p = document.createElement('span');
-      p.className = 'p';
-      const size = 6 + Math.random()*12;
-      const color = colors[Math.floor(Math.random()*colors.length)];
-      const left = Math.random()*100;
-      const delay = Math.random()*0.8;
-      const fall = 3 + Math.random()*2.8;
-      const spin = 1.1 + Math.random()*1.8;
-
-      p.style.setProperty('--c', color);
-      p.style.width = `${size}px`;
-      p.style.height = `${size*1.4}px`;
-      p.style.left = `${left}%`;
-      p.style.top = `-10%`;
-      p.style.opacity = `${0.90 + Math.random()*0.10}`;
-      p.style.animation = `conf-fall ${fall}s linear ${delay}s 1 forwards, conf-spin ${spin}s ease-in-out ${delay/2}s infinite alternate`;
-
-      if (Math.random() < 0.35) p.style.borderRadius = '50%/30%';
-      if (Math.random() < 0.35) p.style.transform = `rotate(${Math.random()*360}deg)`;
-      confettiRoot.appendChild(p);
-    }
-  }
-
-  function hideFormFields() {
-    try {
-      const toDisable = form.querySelectorAll('input, select, textarea, button');
-      toDisable.forEach(el => { el.disabled = true; });
-      Array.from(form.children).forEach(el => {
-        if (!el.classList.contains('thanks')) el.setAttribute('aria-hidden','true');
-      });
-    } catch (e) {
-      const toDisable = form.querySelectorAll('input, select, textarea, button');
-      toDisable.forEach(el => { el.disabled = true; });
-    }
-  }
-
-  function showThanks() {
-    hideFormFields();
-    form.classList.add('success');
-    if (thanks) thanks.setAttribute('aria-hidden','false');
-    setTimeout(launchConfetti, 40);
-  }
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (status) status.textContent = 'Sende …';
-    if (submitBtn) submitBtn.disabled = true;
-
-    let done = false;
-    const finish = () => { if (done) return; done = true; showThanks(); if (status) status.textContent = ''; };
-
-    try {
-      const resp = await fetch(form.action, {
-        method: 'POST',
-        mode: 'cors',
-        redirect: 'follow',
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if (resp.ok || resp.type === 'opaque' || resp.status === 0) {
-        form.reset();
-        finish();
-      } else {
-        if (status) status.textContent = 'Uff, da ging was schief. Versuch es später erneut.';
-      }
-    } catch (err) {
-      form.reset();
-      finish();
-    } finally {
-      if (submitBtn) submitBtn.disabled = false;
-    }
-  });
-})();
-// Antwort submit: simple feedback (no backend)
+// === Countdown (DDD:HH:MM:SS) → Ziel: 22.12.2025 00:00 ===
 (function(){
-  const form = document.getElementById('antwort-form');
+  const el = document.getElementById('countdown'); if(!el) return;
+  const cd = el.querySelector('.cd') || (function(){ const s=document.createElement('span'); s.className='cd'; el.appendChild(s); return s; })();
+  let target = new Date('2025-12-22T00:00:00+01:00');
+  const p2=n=>String(n).padStart(2,'0'), p3=n=>String(n).padStart(3,'0');
+  function tick(){
+    let diff=target.getTime()-Date.now(); if(diff<0) diff=0;
+    const T=Math.floor(diff/1000);
+    const d=Math.floor(T/86400), h=Math.floor((T%86400)/3600), m=Math.floor((T%3600)/60), s=T%60;
+    cd.textContent=`${p3(d)}:${p2(h)}:${p2(m)}:${p2(s)}`;
+  }
+  tick(); setInterval(tick, 1000);
+})();
+
+// Antwort-Form: simples Feedback (kein Backend)
+(function(){
+  const form=document.getElementById('antwort-form');
   if(!form) return;
-  const fb = document.getElementById('antwort-feedback');
-  form.addEventListener('submit', (e)=>{
+  const fb=document.getElementById('antwort-feedback');
+  form.addEventListener('submit',(e)=>{
     e.preventDefault();
-    fb && (fb.textContent = 'Danke! Deine Antwort wurde notiert (lokal).');
+    fb && (fb.textContent='Danke! Deine Antwort wurde notiert (lokal).');
     setTimeout(()=> fb && (fb.textContent=''), 4000);
     form.reset();
   });
