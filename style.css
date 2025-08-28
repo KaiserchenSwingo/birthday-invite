@@ -280,66 +280,25 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 }
 
 
-/* === RESTORE COUNTDOWN LOOK: ring, size, static gradient digits === */
-#countdown,
-#countdown::before, #countdown::after{
-  /* reset any earlier kills */
-  background: initial;
-  box-shadow: initial;
-  border: initial;
-  padding: initial;
-  border-radius: initial;
-  content: normal;
+/* === Hero layer (behind container, above bg, below confetti) === */
+body{ position:relative; }
+#hero-layer{
+  position:fixed;
+  bottom:6vh; left:56%;
+  transform:translateX(-28%);
+  width:min(46vw, 560px);
+  max-width:90vw;
+  pointer-events:none;
+  z-index:1;
+  filter:drop-shadow(0 22px 48px rgba(0,0,0,.45));
+  opacity:.95;
 }
+.container{ position:relative; z-index:2; }
+#confetti, .confetti{ position:fixed; z-index:5; pointer-events:none; }
 
-#countdown.btn{
-  --r:14px;
-  position:relative !important;
-  display:inline-grid !important; place-items:center !important;
-  width:12ch !important;                /* fixed width for DDD:HH:MM:SS */
-  padding:.7rem 1.1rem !important;
-  border-radius:var(--r) !important;
-  background:transparent !important;    /* transparent box */
-  box-shadow:none !important;
-  text-align:center !important;
-  z-index:0;
+@media (max-width: 1000px){
+  #hero-layer{ width:min(58vw, 480px); left:60%; transform:translateX(-35%); bottom:4vh; opacity:.9; }
 }
-#countdown.btn::before{ content:none !important; display:none !important; } /* no glow halo under */
-#countdown.btn::after{
-  content:"" !important; position:absolute; inset:-2px; border-radius:calc(var(--r) + 2px); padding:2px;
-  background:conic-gradient(from var(--rot), var(--magenta) 0deg, var(--blue) 180deg, var(--magenta) 360deg);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-          mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor; mask-composite:exclude;
-  filter:drop-shadow(0 0 22px rgba(43,210,255,.7)) drop-shadow(0 0 26px rgba(255,60,172,.55)) drop-shadow(0 0 14px rgba(130,102,255,.45));
-  z-index:2; pointer-events:none; animation:spin 2.2s linear infinite;
-}
-
-#countdown .cd{
-  display:inline-block !important;
-  font-variant-numeric: tabular-nums; 
-  font-feature-settings: 'tnum' 1;
-  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple)) !important;
-  background-size: 100% 100% !important;
-  background-position: 0% 50% !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  color: transparent !important;
-  animation: none !important; /* static gradient as requested */
-}
-
-
-/* === Countdown digits: size + static gradient === */
-#countdown{ font-size: 200%; line-height: 1; }
-#countdown .cd{
-  display:inline-block;
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: 'tnum' 1;
-  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple));
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent;
-  background-size: 100% 100%;
-  background-position: 0% 50%;
-  animation: none;
+@media (max-width: 640px){
+  #hero-layer{ width:68vw; left:62%; transform:translateX(-44%); bottom:2vh; opacity:.85; }
 }
