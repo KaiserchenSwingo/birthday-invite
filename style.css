@@ -315,3 +315,24 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
           mask-image: radial-gradient(120% 100% at 50% 40%, rgba(0,0,0,1) 46%, rgba(0,0,0,0) 84%);
   filter: drop-shadow(0 22px 48px rgba(0,0,0,.45));
 } /* below .gate (z:1000), above container */
+
+
+/* === Mobile visibility for hero image === */
+@media (max-width: 900px){
+  #hero-layer{
+    width: min(82vw, 620px);
+    top: calc(50% - 2vh);
+    -webkit-mask-image: radial-gradient(150% 130% at 50% 44%, rgba(0,0,0,1) 62%, rgba(0,0,0,0) 94%);
+            mask-image: radial-gradient(150% 130% at 50% 44%, rgba(0,0,0,1) 62%, rgba(0,0,0,0) 94%);
+    filter: brightness(1.12) contrast(1.06) saturate(1.18) drop-shadow(0 22px 48px rgba(0,0,0,.45));
+  }
+}
+@media (max-width: 560px){
+  #hero-layer{
+    width: 92vw;
+    top: calc(50% - 0vh);
+    -webkit-mask-image: radial-gradient(190% 160% at 50% 44%, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 96%);
+            mask-image: radial-gradient(190% 160% at 50% 44%, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 96%);
+    filter: brightness(1.16) contrast(1.08) saturate(1.2) drop-shadow(0 22px 48px rgba(0,0,0,.5));
+  }
+}
