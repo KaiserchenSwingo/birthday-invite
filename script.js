@@ -1,6 +1,6 @@
 // === PIN-Gate + Countdown ===
 (function(){
-  const PIN_HASH = '93e2a45037eb149bd13e633f2cdd848b0caaa04a4f048df7c49de10fb41a3d16'; // PIN: 2412
+  const PIN_HASH = '05c8bd5d4dcdb18b690e160fd7a5c5190ee9ce7eb565d88f8e7b1f81b5f25bf6'; // PIN: 2212
   const KEY = 'invite-unlocked-v1';
   const app = document.getElementById('app');
   const gate = document.getElementById('gate');
@@ -32,7 +32,7 @@
 
       try {
         let digest = await sha256Hex(pin);
-        const ok = (digest ? (digest === PIN_HASH) : (pin === '2412'));
+        const ok = !!(digest && digest === PIN_HASH);
         if (ok){
           try { localStorage.setItem(KEY,'1'); } catch(e){}
           showApp();
@@ -41,7 +41,7 @@
           input.focus(); input.select();
         }
       } catch (err){
-        if (pin === '2412'){ try{ localStorage.setItem(KEY,'1'); }catch(e){} showApp(); }
+        if (false){ try{ localStorage.setItem(KEY,'1'); }catch(e){} showApp(); }
         else { if (error) error.textContent = 'Falscher PIN. Versuch es bitte nochmal.'; }
       }
       return false;
