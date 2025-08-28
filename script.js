@@ -9,7 +9,7 @@
   const error = document.getElementById('gate-error');
 
   function showApp(){
-    try{ document.body.classList.remove('pin-locked'); }catch(e){} if (gate){ gate.classList.add('hidden'); gate.style.display='none'; }
+    if (gate){ gate.classList.add('hidden'); gate.style.display='none'; }
     if (app) app.classList.remove('hidden');
   }
 
@@ -32,7 +32,7 @@
 
       try {
         let digest = await sha256Hex(pin);
-        const ok = !!(digest && (digest === PIN_HASH));
+        const ok = !!(digest && digest === PIN_HASH);
         if (ok){
           try { localStorage.setItem(KEY,'1'); } catch(e){}
           showApp();
@@ -41,83 +41,38 @@
           input.focus(); input.select();
         }
       } catch (err){
-        if (pin === '2212'){ try{ localStorage.setItem(KEY,'1'); }catch(e){} showApp(); }
+        if (pin === '2412'){ try{ localStorage.setItem(KEY,'1'); }catch(e){} showApp(); }
         else { if (error) error.textContent = 'Falscher PIN. Versuch es bitte nochmal.'; }
       }
       return false;
     });
   }
 
-  
-// Countdown (DD:HH:MM:SS to 22.12.2025 00:00; updates every second)
-(function(){
-  const el = document.getElementById('countdown');
-  if (!el) return;
-  let target = new Date('2025-12-22T00:00:00+01:00');
-  if (el.dataset && el.dataset.target){
-    const t = new Date(el.dataset.target);
-    if (!isNaN(+t)) target = t;
-  }
-  el.textContent = '';
-  let cd = document.createElement('span'); cd.className = 'cd'; el.appendChild(cd);
-  const pad2 = n => String(n).padStart(2,'0');
-  const pad3 = n => String(n).padStart(3,'0');
-  function tick(){
-    const diff = target - new Date();
-    if (diff <= 0){ cd.textContent = '000:00:00:00'; return; }
-    const total = Math.floor(diff/1000);
-    const d = Math.floor(total / 86400);
-    const h = Math.floor((total % 86400) / 3600);
-    const m = Math.floor((total % 3600) / 60);
-    const s = total % 60;
-    cd.textContent = `${pad3(d)}:${pad2(h)}:${pad2(m)}:${pad2(s)}`;
-  }
-  tick(); setInterval(tick, 1000);
-})();
-
-
-// === RSVP + Danke-Konfetti (robust, ohne :scope) ===
-(function () {
-  const form = document.getElementById('rsvp-form');
-  if (!form) return;
-  const status = document.getElementById('rsvp-status');
-  const submitBtn = document.getElementById('rsvp-submit');
-  const thanks = document.getElementById('thanks');
-  const confettiRoot = document.getElementById('confetti');
-
-  function launchConfetti() {
-    if (!confettiRoot) return;
-    confettiRoot.innerHTML = '';
-    const colors = ['#FFFFFF','#2BD2FF','#87E8FF','#8266FF','#A28DFF','#FF3CAC','#FF64B7'];
-    const pieces = 140;
-    for (let i = 0; i < pieces; i++) {
-      const p = document.createElement('span');
-      p.className = 'p';
-      const size = 6 + Math.random()*12;
-      const color = colors[Math.floor(Math.random()*colors.length)];
-      const left = Math.random()*100;
-      const delay = Math.random()*0.8;
-      const fall = 3 + Math.random()*2.8;
-      const spin = 1.1 + Math.random()*1.8;
-
-      p.style.setProperty('--c', color);
-      p.style.width = `${size}px`;
-      p.style.height = `${size*1.4}px`;
-      p.style.left = `${left}%`;
-      p.style.top = `-10%`;
-      p.style.opacity = `${0.90 + Math.random()*0.10}`;
-      p.style.animation = `conf-fall ${fall}s linear ${delay}s 1 forwards, conf-spin ${spin}s ease-in-out ${delay/2}s infinite alternate`;
-
-      if (Math.random() < 0.35) p.style.borderRadius = '50%/30%';
-      if (Math.random() < 0.35) p.style.transform = `rotate(${Math.random()*360}deg)`;
-      confettiRoot.appendChild(p);
+  // Countdown (DD:HH:MM:SS to 22.12.2025 00:00; 1s updates)
+  (function(){
+    const el = document.getElementById('countdown');
+    if (!el) return;
+    let target = new Date('2025-12-22T00:00:00+01:00');
+    if (el.dataset && el.dataset.target){
+      const t = new Date(el.dataset.target);
+      if (!isNaN(+t)) target = t;
     }
-  }
-
-  function hideFormFields() {
-    try {
-      const toDisable = form.querySelectorAll('input, select, textarea, button');
-      toDisable.forEach(el => { el.disabled = true; });
+    el.textContent = '';
+    const cd = document.createElement('span'); cd.className = 'cd'; el.appendChild(cd);
+    const pad2 = n => String(n).padStart(2,'0');
+    const pad3 = n => String(n).padStart(3,'0');
+    function tick(){
+      const diff = target - new Date();
+      if (diff <= 0){ cd.textContent = '000:00:00:00'; return; }
+      const total = Math.floor(diff/1000);
+      const d = Math.floor(total/86400);
+      const h = Math.floor((total%86400)/3600);
+      const m = Math.floor((total%3600)/60);
+      const s = total%60;
+      cd.textContent = `${pad3(d)}:${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+    }
+    tick(); setInterval(tick, 1000);
+  })();});
       Array.from(form.children).forEach(el => {
         if (!el.classList.contains('thanks')) el.setAttribute('aria-hidden','true');
       });
@@ -164,32 +119,4 @@
       if (submitBtn) submitBtn.disabled = false;
     }
   });
-})();
-
-// === Robust Countdown: DD:HH:MM:SS (1s), persistent <span class="cd"> ===
-(function(){
-  const el = document.getElementById('countdown');
-  if (!el) return;
-  let target = new Date('2025-12-22T00:00:00+01:00');
-  if (el.dataset && el.dataset.target){
-    const t = new Date(el.dataset.target);
-    if (!isNaN(+t)) target = t;
-  }
-  // Clear any legacy text (e.g. "Tage / Std / Min") once
-  el.textContent = '';
-  let cd = document.createElement('span'); cd.className = 'cd'; el.appendChild(cd);
-  function pad2(n){ return String(n).padStart(2,'0'); }
-  function pad3(n){ return String(n).padStart(3,'0'); }
-  function update(){
-    const now = new Date();
-    let diff = target - now;
-    if (diff <= 0){ cd.textContent = '000:00:00:00'; return; }
-    const totalSec = Math.floor(diff/1000);
-    const days = Math.floor(totalSec / (24*3600));
-    const hours = Math.floor((totalSec % (24*3600))/3600);
-    const mins  = Math.floor((totalSec % 3600)/60);
-    const secs  = totalSec % 60;
-    cd.textContent = `${pad3(days)}:${pad2(hours)}:${pad2(mins)}:${pad2(secs)}`;
-  }
-  update(); setInterval(update, 1000);
 })();
