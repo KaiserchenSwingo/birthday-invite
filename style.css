@@ -51,7 +51,7 @@ body::after{
     0 0 16px rgba(130,102,255,.9),
     0 0 28px rgba(43,210,255,.75),
     0 0 44px rgba(255,60,172,.55);
-  animation: none;
+  animation: neon-flicker 2.2s ease-in-out infinite alternate;
   position:relative;
 }
 .headline::after, .card h2::after{
@@ -191,7 +191,7 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
     0 0 16px rgba(130,102,255,.9),
     0 0 28px rgba(43,210,255,.75),
     0 0 44px rgba(255,60,172,.55);
-  animation: none;
+  animation: neon-flicker 2.2s ease-in-out infinite alternate;
 }
 .thanks h3::after{
   content:""; display:block; height:2px; margin:.25rem auto 0; width:min(200px,60%);
@@ -201,6 +201,22 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
     0 0 18px rgba(43,210,255,.55),
     0 0 14px rgba(255,60,172,.50);
 }
+
+/* Confetti – leuchtender & intensiver */
+.confetti{ position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+.confetti .p{
+  --c:#FFFFFF;
+  position:absolute; display:block; border-radius:2px;
+  background: var(--c);
+  box-shadow: 0 0 10px var(--c), 0 0 18px var(--c), 0 0 26px var(--c);
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+  animation-name: conf-fall, conf-spin;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: 1, infinite;
+}
+@keyframes conf-fall{ to{ transform: translateY(120vh) rotate(360deg); opacity:.95; } }
+@keyframes conf-spin{ from{ transform: rotateY(0deg) } to{ transform: rotateY(360deg) } }
 
 /* Checkmark-Ring */
 .checkmark{ width:80px; height:80px; margin:0 auto .6rem; border-radius:50%;
@@ -261,302 +277,4 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   body{ background:#fff; color:#000 }
   .card{ box-shadow:none; border-color:#ddd }
   .fx-holo{ display:none }
-}
-
-
-
-
-/* Countdown: button-like + border + gradient digits */
-.countdown{
-  --r:14px;
-  display:inline-grid; place-items:center;
-  min-width:190px; padding:.7rem 1.1rem; border-radius:var(--r);
-  color:#0f1116; font-weight:800; letter-spacing:.02em;
-  background:linear-gradient(180deg, rgba(243,244,246,.55), rgba(201,205,211,.28));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.85), 0 8px 18px rgba(0,0,0,.35);
-  backdrop-filter:blur(6px);
-  border:1px solid rgba(255,255,255,.18);
-}
-
-100% { background-position: 200% 50%; }
-}
-
-
-
-/* === Countdown cleanup: no box, no outline === */
-.countdown{
-  background:none !important;
-  box-shadow:none !important;
-  border:0 !important;
-  padding:0 !important;
-  min-width:0 !important;
-  border-radius:0 !important;
-  backdrop-filter:none !important;
-  display:inline-block;
-}
-/* === Countdown tuning: smoother, slower, bigger === */
-.countdown{
-  font-size: 200% !important;   /* double the current size */
-  line-height: 1 !important;
-}
-/* === Countdown gradient: seamless left->right loop === */
-100% { background-position: 200% 50%; }
-}
-
-
-/* === Countdown digits: gradient text (visible) === */
-.countdown .cd{
-  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple), var(--magenta)) !important;
-  background-size: 300% 100% !important;
-  background-repeat: repeat !important;
-  background-position: 0% 50% !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  color: transparent !important;
-  animation: cd-sweep 12s linear infinite !important;
-  will-change: background-position;
-}
-100% { background-position: 200% 50%; }
-}
-
-
-/* === FINAL COUNTDOWN FIX (no box + visible gradient) === */
-#countdown{
-  background:none !important;
-  box-shadow:none !important;
-  border:0 !important;
-  padding:0 !important;
-  min-width:0 !important;
-  border-radius:0 !important;
-  backdrop-filter:none !important;
-  display:inline-block !important;
-  color:inherit !important;
-}
-#countdown .cd{
-  display:inline-block !important;
-  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple), var(--magenta)) !important;
-  background-size: 200% 100% !important;
-  background-repeat: repeat !important;
-  background-position-x: 0% !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  color: transparent !important;
-  animation: cd-sweep-x 10s linear infinite !important;
-  animation-play-state: running !important;
-  will-change: background-position-x;
-}
-100% { background-position: 200% 50%; }
-}
-
-
-@keyframes cd-sweep-x{
-  0%   { background-position-x: 0%; }
-  100% { background-position-x: 100%; }
-}
-
-
-/* === COUNTDOWN: kill any box + enforce animated gradient text === */
-#countdown,
-#countdown:before, #countdown::before,
-#countdown:after,  #countdown{ display:inline-block !important; }
-
-#countdown .cd{
-  display:inline-block !important;
-  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple), var(--magenta)) !important;
-  background-size: 200% 100% !important;
-  background-position: 0% 50% !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  color: transparent !important;
-  animation: cd-slide 12s linear infinite !important;
-}
-
-@keyframes cd-slide{
-  0%   { background-position:   0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-
-
-/* === COUNTDOWN STATIC GRADIENT (no box, no animation) === */
-#countdown,
-#countdown::before, #countdown{ display:inline-block !important; }
-
-#countdown .cd{
-  display:inline-block !important;
-  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple)) !important;
-  background-size: 100% 100% !important;
-  background-position: 0% 50% !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  color: transparent !important;
-  animation: none !important;
-}
-
-
-/* === Countdown uses button edge/glass effect === */
-#countdown.btn{
-  --r:14px;
-  position:relative !important;
-  display:inline-grid !important; place-items:center !important;
-  min-width:190px !important;
-  padding:.7rem 1.1rem !important;
-  border-radius:var(--r) !important;
-  background:linear-gradient(180deg, rgba(243,244,246,.55), rgba(201,205,211,.28)) !important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.85), 0 8px 18px rgba(0,0,0,.35) !important;
-  color:inherit !important;
-  z-index:0;
-}
-#countdown.btn::before{
-  content:"" !important; position:absolute; inset:-12px; border-radius:calc(var(--r) + 12px);
-  background:
-    radial-gradient(180px 120px at 15% 20%, rgba(255,60,172,.5), transparent 70%),
-    radial-gradient(180px 120px at 85% 80%, rgba(43,210,255,.4), transparent 70%);
-  filter:blur(30px) saturate(1.1); opacity:.8; z-index:1; pointer-events:none;
-}
-#countdown.btn::after{
-  content:"" !important; position:absolute; inset:-2px; border-radius:calc(var(--r) + 2px); padding:2px;
-  background:conic-gradient(from var(--rot), var(--magenta) 0deg, var(--blue) 180deg, var(--magenta) 360deg);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-          mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor; mask-composite:exclude;
-  filter:drop-shadow(0 0 22px rgba(43,210,255,.7)) drop-shadow(0 0 26px rgba(255,60,172,.55)) drop-shadow(0 0 14px rgba(130,102,255,.45));
-  z-index:2; pointer-events:none; animation:spin 2.2s linear infinite;
-}
-
-
-/* === Countdown: transparent box + animated ring + fixed width === */
-#countdown.btn{
-  --r:14px;
-  position:relative !important;
-  display:inline-grid !important; place-items:center !important;
-  width: 12ch !important;              /* fixed width for DDD:HH:MM:SS */
-  padding:.7rem 1.1rem !important;
-  border-radius:var(--r) !important;
-  background: transparent !important;  /* fully transparent box */
-  box-shadow: none !important;
-  text-align:center !important;
-  color:inherit !important;
-  z-index:0;
-}
-/* Kill glow layer from button */
-#countdown.btn::before{ content:none !important; display:none !important; }
-
-/* Keep the animated gradient ring like buttons */
-#countdown.btn::after{
-  content:"" !important; position:absolute; inset:-2px; border-radius:calc(var(--r) + 2px); padding:2px;
-  background:conic-gradient(from var(--rot), var(--magenta) 0deg, var(--blue) 180deg, var(--magenta) 360deg);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-          mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor; mask-composite:exclude;
-  filter:drop-shadow(0 0 22px rgba(43,210,255,.7)) drop-shadow(0 0 26px rgba(255,60,172,.55)) drop-shadow(0 0 14px rgba(130,102,255,.45));
-  z-index:2; pointer-events:none; animation:spin 2.2s linear infinite;
-}
-
-/* Digits: static gradient text + tabular numbers for stable widths */
-#countdown .cd{
-  display:inline-block !important;
-  font-variant-numeric: tabular-nums; 
-  font-feature-settings: 'tnum' 1;
-  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple)) !important;
-  background-size: 100% 100% !important;
-  background-position: 0% 50% !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  color: transparent !important;
-  animation: none !important;
-}
-
-
-/* Countdown: transparent box + animated button ring */
-#countdown.btn{
-  --r:14px;
-  position:relative; display:inline-grid; place-items:center;
-  width:12ch; padding:.7rem 1.1rem; border-radius:var(--r);
-  background:transparent; box-shadow:none; text-align:center; z-index:0;
-}
-#countdown.btn::before{ content:none }
-#countdown.btn::after{
-  content:""; position:absolute; inset:-2px; border-radius:calc(var(--r) + 2px); padding:2px;
-  background:conic-gradient(from var(--rot), var(--magenta) 0deg, var(--blue) 180deg, var(--magenta) 360deg);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-          mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor; mask-composite:exclude;
-  filter:drop-shadow(0 0 22px rgba(43,210,255,.7)) drop-shadow(0 0 26px rgba(255,60,172,.55)) drop-shadow(0 0 14px rgba(130,102,255,.45));
-  z-index:2; pointer-events:none; animation:spin 2.2s linear infinite;
-}
-
-
-/* === Smooth breathe effect for headings === */
-@keyframes neon-breathe{
-  0%   { opacity:.92; filter:saturate(1.0) brightness(1.00); }
-  50%  { opacity:1.00; filter:saturate(1.18) brightness(1.08); }
-  100% { opacity:.92; filter:saturate(1.0) brightness(1.00); }
-}
-
-/* Apply to section headings and page headline */
-h3{ animation: neon-breathe 7s ease-in-out infinite !important; }
-.headline{
-  text-shadow:
-    0 0 10px rgba(255,255,255,.45),
-    0 0 24px rgba(130,102,255,.65),
-    0 0 38px rgba(43,210,255,.55),
-    0 0 56px rgba(255,60,172,.45);
-  animation: neon-breathe 8s ease-in-out infinite !important;
-}
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce){
-  h3, .headline{ animation: none !important; }
-}
-
-
-/* === Smooth + same-speed breathe for all headings === */
-@keyframes neon-breathe-soft{
-  0%   { opacity: .96; filter: saturate(1.0)  brightness(1.00); }
-  50%  { opacity: 1.00; filter: saturate(1.10) brightness(1.07); }
-  100% { opacity: .96; filter: saturate(1.0)  brightness(1.00); }
-}
-
-/* Force on headline + h2 + h3 (override any earlier animations) */
-:where(h1.headline, h2, h3){
-  animation: neon-breathe-soft 5s ease-in-out infinite !important;
-}
-
-
-/* === Force smooth breathe on headings (equal speed) === */
-@keyframes breath-v2{
-  0%   { opacity:.96; filter:saturate(1.0) brightness(1.00); }
-  50%  { opacity:1.00; filter:saturate(1.10) brightness(1.07); }
-  100% { opacity:.96; filter:saturate(1.0) brightness(1.00); }
-}
-.fx-on h1.headline,
-.fx-on h1.logo,
-.fx-on h2,
-.fx-on h3{
-  animation: breath-v2 5s ease-in-out infinite !important;
-}
-/* If some earlier rule disables animation in reduce-motion, this re-enables when .fx-on is present */
-@media (prefers-reduced-motion: reduce){
-  .fx-on h1.headline,
-  .fx-on h1.logo,
-  .fx-on h2,
-  .fx-on h3{ animation: breath-v2 5s ease-in-out infinite !important; }
-}
-
-
-/* === REMOVE HEADING BREATH EFFECTS === */
-h1.headline, h1.logo, h2, h3,
-.fx-on h1.headline, .fx-on h1.logo, .fx-on h2, .fx-on h3{
-  animation: none !important;
-}
-@media (prefers-reduced-motion: reduce){
-  h1.headline, h1.logo, h2, h3,
-  .fx-on h1.headline, .fx-on h1.logo, .fx-on h2, .fx-on h3{
-    animation: none !important;
-  }
 }

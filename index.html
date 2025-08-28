@@ -6,11 +6,11 @@
   <title>🎉 Mein 30. – Einladung</title>
   <meta name="description" content="Einladung mit Infos & Antwort-Formular." />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=ctd-static" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class=\"fx-on\">
+<body>
   <!-- PIN-Gate -->
-  <div id="gate" class="gate" data-pin-hash="05c8bd5d4dcdb18b690e160fd7a5c5190ee9ce7eb565d88f8e7b1f81b5f25bf6">
+  <div id="gate" class="gate">
     <div class="gate-card">
       <h1 class="logo">30</h1>
       <p>Gib den PIN von der Karte ein, um reinzukommen.</p>
@@ -33,13 +33,13 @@
       <div class="grid">
         <div>
           <h2>Wann?</h2>
-          <p><strong id="date">Montag, 22. Dezember 2025</strong><br>Start 00:00 Uhr (Mitternacht)</p>
-          <p class="countdown btn" id="countdown" aria-live="polite" data-target="2025-12-22T00:00:00+01:00"></p>
+          <p><strong id="date">Samstag, 21. Dezember 2025</strong><br>Einlass ab 18:00, Start 19:00</p>
+          <p class="countdown" id="countdown" aria-live="polite"></p>
         </div>
         <div>
           <h2>Wo?</h2>
-          <p><strong>Zum Alten Speicher</strong><br>Speicherstraße 12, 10115 Berlin</p>
-          <p><a class="btn" target="_blank" rel="noopener" href="https://maps.google.com/?q=Speicherstraße%2012%2010115%20Berlin"><span class="btn-label">Route öffnen</span></a></p>
+          <p><strong>Walther-Rathenau-Str. 60b, 15732 Schulzendorf</strong><br>Speicherstraße 12, 10115 Berlin</p>
+          <p><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Walther-Rathenau-Str.%2060b%2C%2015732%20Schulzendorf"><span class="btn-label">Route öffnen</span></a></p>
         </div>
       </div>
 
@@ -100,7 +100,8 @@
           </div>
           <h3 id="thanks-title">Danke!</h3>
           <p>Deine Antwort ist angekommen.</p>
-</div>
+          <div class="confetti" id="confetti"></div>
+        </div>
       </form>
     </section>
   </main>
@@ -108,6 +109,6 @@
   <!-- Holografischer Glitzer-Overlay -->
   <div class="fx-holo" aria-hidden="true"></div>
 
-  <script src="script.js?v=pinfix3" defer></script>
+  <script src="script.js?v=pinfix2" defer></script>
 </body>
 </html>
