@@ -118,6 +118,7 @@ async function sha256Hex(str){
   }
   tick(); setInterval(tick,1000);
 })();
+
 // RSVP handler: mailto if body[data-rsvp-email], else copy to clipboard
 (function(){
   const form = document.getElementById('rsvp-form');
