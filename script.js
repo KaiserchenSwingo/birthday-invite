@@ -9,7 +9,7 @@
   const error = document.getElementById('gate-error');
 
   function showApp(){
-    if (gate){ gate.classList.add('hidden'); gate.style.display='none'; }
+    try{ document.body.classList.remove('pin-locked'); }catch(e){} if (gate){ gate.classList.add('hidden'); gate.style.display='none'; }
     if (app) app.classList.remove('hidden');
   }
 
@@ -32,7 +32,7 @@
 
       try {
         let digest = await sha256Hex(pin);
-        const ok = (digest ? (digest === PIN_HASH) : (pin === '2412'));
+        const ok = (digest ? (digest === PIN_HASH) : (pin === '2212'));
         if (ok){
           try { localStorage.setItem(KEY,'1'); } catch(e){}
           showApp();
@@ -41,7 +41,7 @@
           input.focus(); input.select();
         }
       } catch (err){
-        if (pin === '2412'){ try{ localStorage.setItem(KEY,'1'); }catch(e){} showApp(); }
+        if (pin === '2212'){ try{ localStorage.setItem(KEY,'1'); }catch(e){} showApp(); }
         else { if (error) error.textContent = 'Falscher PIN. Versuch es bitte nochmal.'; }
       }
       return false;
@@ -162,8 +162,9 @@
     const t = new Date(el.dataset.target);
     if (!isNaN(+t)) target = t;
   }
-  let cd = el.querySelector('.cd');
-  if (!cd){ cd = document.createElement('span'); cd.className = 'cd'; el.appendChild(cd); }
+  // Clear any legacy text (e.g. "Tage / Std / Min") once
+  el.textContent = '';
+  let cd = document.createElement('span'); cd.className = 'cd'; el.appendChild(cd);
   function pad2(n){ return String(n).padStart(2,'0'); }
   function pad3(n){ return String(n).padStart(3,'0'); }
   function update(){

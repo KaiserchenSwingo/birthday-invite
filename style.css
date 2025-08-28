@@ -348,3 +348,7 @@ body{ position:relative; }
   background-size: 100% 100% !important; background-position: 0% 50% !important;
   animation: none !important;
 }
+
+/* During PIN gate, hero above container (but below gate) */
+.pin-locked #hero-layer{ z-index:7; opacity:1; filter:drop-shadow(0 24px 54px rgba(0,0,0,.5)); }
+.pin-locked .gate{ position:relative; z-index:9; }
