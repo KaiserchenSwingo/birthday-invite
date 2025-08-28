@@ -9,7 +9,9 @@
   const error = document.getElementById('gate-error');
 
   function showApp(){
-    if (gate){ gate.classList.add('hidden'); gate.style.display='none';  try{document.body.classList.remove('pin-locked');}catch(e){} }
+  if (gate){ gate.classList.add('hidden'); gate.style.display='none'; try{document.body.classList.remove('pin-locked');}catch(e){} }
+  if (app){ app.classList.remove('hidden'); try{app.style.removeProperty('display');}catch(e){} }
+}catch(e){} }
     if (app) app.classList.remove('hidden');
   }
 
@@ -24,8 +26,19 @@
 
   if (form){
     form.setAttribute('novalidate','true');
-    form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
+    form.setAttribute('novalidate','true');
+form.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  if (error) error.textContent='';
+  const pin = (input && input.value ? input.value.trim() : '');
+  if (!pin) return;
+  try{
+    const digest = await sha256Hex(pin);
+    const ok = !!(digest && digest === PIN_HASH);
+    if (ok){ try{localStorage.setItem(KEY,'1');}catch(e){} try{sessionStorage.setItem(KEY,'1');}catch(e){} showApp(); }
+    else { if (error) error.textContent='Falscher PIN. Versuch es bitte nochmal.'; if (input){ input.focus(); input.select(); } }
+  }catch(err){ if (error) error.textContent='Technischer Fehler – probier’s nochmal.'; }
+}, { once:false });
       if (error) error.textContent = '';
       const pin = (input.value||'').trim();
       if (!pin) return;
