@@ -152,3 +152,30 @@
     }
   });
 })();
+
+// === Robust Countdown: DD:HH:MM:SS (1s), persistent <span class="cd"> ===
+(function(){
+  const el = document.getElementById('countdown');
+  if (!el) return;
+  let target = new Date('2025-12-22T00:00:00+01:00');
+  if (el.dataset && el.dataset.target){
+    const t = new Date(el.dataset.target);
+    if (!isNaN(+t)) target = t;
+  }
+  let cd = el.querySelector('.cd');
+  if (!cd){ cd = document.createElement('span'); cd.className = 'cd'; el.appendChild(cd); }
+  function pad2(n){ return String(n).padStart(2,'0'); }
+  function pad3(n){ return String(n).padStart(3,'0'); }
+  function update(){
+    const now = new Date();
+    let diff = target - now;
+    if (diff <= 0){ cd.textContent = '000:00:00:00'; return; }
+    const totalSec = Math.floor(diff/1000);
+    const days = Math.floor(totalSec / (24*3600));
+    const hours = Math.floor((totalSec % (24*3600))/3600);
+    const mins  = Math.floor((totalSec % 3600)/60);
+    const secs  = totalSec % 60;
+    cd.textContent = `${pad3(days)}:${pad2(hours)}:${pad2(mins)}:${pad2(secs)}`;
+  }
+  update(); setInterval(update, 1000);
+})();

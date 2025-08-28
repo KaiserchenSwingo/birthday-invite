@@ -285,7 +285,7 @@ body{ position:relative; }
 
 #hero-layer{
   position:fixed;
-  top: calc(50% - 15vh); left:50%;
+  top: calc(50% - 5vh); left:50%;
   transform:translate(-50%, -50%);
   width:min(48vw, 560px);
   max-width:90vw;
@@ -311,4 +311,40 @@ body{ position:relative; }
 }
 @media (max-width: 640px){
   #hero-layer{ width:68vw; opacity:.88; }
+}
+
+
+/* === COUNTDOWN RESTORE === */
+#countdown.btn{
+  --r:14px;
+  position:relative !important;
+  display:inline-grid !important; place-items:center !important;
+  width:12ch !important;
+  padding:.7rem 1.1rem !important;
+  border-radius:var(--r) !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  text-align:center !important;
+  z-index:0;
+}
+#countdown.btn::before{ content:none !important; display:none !important; }
+#countdown.btn::after{
+  content:"" !important; position:absolute; inset:-2px; border-radius:calc(var(--r) + 2px); padding:2px;
+  background:conic-gradient(from var(--rot), var(--magenta) 0deg, var(--blue) 180deg, var(--magenta) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+          mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  filter:drop-shadow(0 0 22px rgba(43,210,255,.7)) drop-shadow(0 0 26px rgba(255,60,172,.55)) drop-shadow(0 0 14px rgba(130,102,255,.45));
+  z-index:2; pointer-events:none; animation:spin 2.2s linear infinite;
+}
+#countdown{ font-size: 200%; line-height: 1; }
+#countdown .cd{
+  display:inline-block !important;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple)) !important;
+  -webkit-background-clip: text !important; background-clip: text !important;
+  -webkit-text-fill-color: transparent !important; color: transparent !important;
+  background-size: 100% 100% !important; background-position: 0% 50% !important;
+  animation: none !important;
 }
