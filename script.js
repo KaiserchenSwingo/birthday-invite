@@ -48,21 +48,33 @@
     });
   }
 
-  // Countdown
-  const target = new Date('2025-12-21T19:00:00+01:00');
-  const el = document.getElementById('countdown');
-  let cd = (el ? el.querySelector('.cd') : null);
-if (el && !cd) { cd = document.createElement('span'); cd.className = 'cd'; el.appendChild(cd); }
-function update(){
+  
+  // Countdown (DD:HH:MM:SS, 1s updates; uses data-target if set)
+  (function(){
+    const el = document.getElementById('countdown');
     if (!el) return;
-    const diff = target - new Date();
-    if (diff <= 0){ el.textContent = 'Es geht los!'; return; }
-    const days  = Math.floor(diff/(1000*60*60*24));
-    const hours = Math.floor(diff/(1000*60*60)) % 24;
-    const mins  = Math.floor(diff/(1000*60)) % 60;
-    el.textContent = `${days} Tage, ${hours} Std, ${mins} Min`;
-  }
-  update(); setInterval(update, 60*1000);
+    let target = new Date('2025-12-22T00:00:00+01:00');
+    if (el.dataset && el.dataset.target){
+      const t = new Date(el.dataset.target);
+      if (!isNaN(+t)) target = t;
+    }
+    let cd = el.querySelector('.cd');
+    if (!cd){ cd = document.createElement('span'); cd.className = 'cd'; el.appendChild(cd); }
+    function pad2(n){ return String(n).padStart(2,'0'); }
+    function pad3(n){ return String(n).padStart(3,'0'); }
+    function update(){
+      const now = new Date();
+      let diff = target - now;
+      if (diff <= 0){ cd.textContent = '000:00:00:00'; return; }
+      const totalSec = Math.floor(diff/1000);
+      const days = Math.floor(totalSec / (24*3600));
+      const hours = Math.floor((totalSec % (24*3600))/3600);
+      const mins  = Math.floor((totalSec % 3600)/60);
+      const secs  = totalSec % 60;
+      cd.textContent = `${pad3(days)}:${pad2(hours)}:${pad2(mins)}:${pad2(secs)}`;
+    }
+    update(); setInterval(update, 1000);
+  })();
 })();
 
 // === RSVP + Danke-Konfetti (robust, ohne :scope) ===

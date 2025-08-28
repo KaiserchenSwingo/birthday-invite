@@ -328,3 +328,18 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   color: transparent !important;
   animation: none !important; /* static gradient as requested */
 }
+
+
+/* === Countdown digits: size + static gradient === */
+#countdown{ font-size: 200%; line-height: 1; }
+#countdown .cd{
+  display:inline-block;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+  background: linear-gradient(90deg, var(--magenta), var(--blue), var(--purple));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  background-size: 100% 100%;
+  background-position: 0% 50%;
+  animation: none;
+}
