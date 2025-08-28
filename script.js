@@ -1,6 +1,70 @@
 // === PIN-Gate + Countdown ===
 (function(){
-  const PIN_HASH = '05c8bd5d4dcdb18b690e160fd7a5c5190ee9ce7eb565d88f8e7b1f81b5f25bf6'; // PIN: 2212
+  
+// === SHA-256 polyfill (works without crypto.subtle / HTTPS) ===
+function sha256_polyfill(ascii){
+  function R(n,x){ return (x>>>n) | (x<<(32-n)); }
+  var maxWord = Math.pow(2,32), result = '', i, j;
+  var words = [], asciiBitLength = ascii.length*8;
+  var hash = [], k = [], primeCounter = 0;
+  function isPrime(n){ for (var i=2,s=Math.sqrt(n); i<=s; i++) if(n%i===0) return false; return true; }
+  function frac(n){ return ((n - Math.floor(n)) * maxWord) | 0; }
+  for (var candidate=2; primeCounter<64; candidate++){
+    if (isPrime(candidate)){ 
+      if (primeCounter<8) hash[primeCounter] = frac(Math.pow(candidate, 1/2));
+      k[primeCounter++] = frac(Math.pow(candidate, 1/3));
+    }
+  }
+  ascii += '\x80';
+  while (ascii.length%64 - 56) ascii += '\x00';
+  for (i=0; i<ascii.length; i++){
+    j = ascii.charCodeAt(i);
+    words[i>>2] |= j << ((3 - i)%4)*8;
+  }
+  words[words.length] = ((asciiBitLength/ maxWord) | 0);
+  words[words.length] = (asciiBitLength) & 0xffffffff;
+  for (j=0; j<words.length;){
+    var w = words.slice(j, j += 16);
+    var oldHash = hash.slice(0);
+    for (i=0; i<64; i++){
+      var w15 = w[i-15], w2 = w[i-2];
+      var s0 = (R(7,w15)) ^ (R(18,w15)) ^ (w15>>>3);
+      var s1 = (R(17,w2)) ^ (R(19,w2)) ^ (w2>>>10);
+      w[i] = (i<16) ? w[i] : (((w[i-16] + s0 |0) + (w[i-7] |0) + s1) |0);
+      var ch = (hash[4] & hash[5]) ^ (~hash[4] & hash[6]);
+      var maj = (hash[0] & hash[1]) ^ (hash[0] & hash[2]) ^ (hash[1] & hash[2]);
+      var S0 = R(2,hash[0]) ^ R(13,hash[0]) ^ R(22,hash[0]);
+      var S1 = R(6,hash[4]) ^ R(11,hash[4]) ^ R(25,hash[4]);
+      var t1 = (((((hash[7] + S1 |0) + ch |0) + k[i] |0) + w[i]) |0);
+      var t2 = (S0 + maj) |0;
+      hash = [(t1 + t2 |0) + hash[0] |0].concat(hash);
+      hash[4] = (hash[4] + t1) |0;
+      hash.pop();
+    }
+    for (i=0; i<8; i++){ hash[i] = (hash[i] + oldHash[i]) |0; }
+  }
+  for (i=0; i<8; i++){
+    for (j=3; j+1; j--){
+      var b = (hash[i] >> (j*8)) & 255;
+      result += ((b<16) ? '0' : '') + b.toString(16);
+    }
+  }
+  return result;
+}
+
+async function sha256Hex(str){
+  try{
+    if (window.crypto && window.crypto.subtle){
+      const data = new TextEncoder().encode(str);
+      const buf  = await window.crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    }
+  }catch(e){}
+  // Fallback
+  return Promise.resolve(sha256_polyfill(str));
+}
+
+const PIN_HASH = '05c8bd5d4dcdb18b690e160fd7a5c5190ee9ce7eb565d88f8e7b1f81b5f25bf6'; // PIN: 2212
   const KEY = 'invite-unlocked-v1';
   const app = document.getElementById('app');
   const gate = document.getElementById('gate');
