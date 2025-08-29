@@ -393,3 +393,27 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   animation-duration: var(--spin-speed) !important;
 }
 /* ====================================================================== */
+
+/* Anker für Bild + Container */
+#stage { 
+  position: relative; 
+  display: grid; 
+  place-items: center; 
+}
+
+/* Bild zentriert RELATIV zum Container-Wrapper */
+#stage > #hero-layer{
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(360px, 48vw, 640px);
+  max-width: 92vw;
+  pointer-events: none;
+  z-index: 0;            /* hinter dem Container */
+}
+
+/* Container liegt darüber */
+#stage > .container{
+  position: relative;
+  z-index: 1;
+}
