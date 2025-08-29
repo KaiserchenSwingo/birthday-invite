@@ -143,4 +143,54 @@
     tick(); setInterval(tick, 1000);
   })();
 
+  // === RSVP: Danke-Animation statt Weiterleitung =========================
+(function () {
+  // Nimm dein Formular (rsvp-form oder antwort-form)
+  const form =
+    document.getElementById('rsvp-form') ||
+    document.getElementById('antwort-form');
+  if (!form) return;
+
+  const thanks    = document.getElementById('thanks');     // vorhandener Danke-Block
+  const confetti  = document.getElementById('confetti');   // optional
+  const submitBtn = form.querySelector('[type="submit"]');
+
+  // Safety: egal was im HTML steht (z.B. formspree), Redirect killen
+  try {
+    form.setAttribute('action', 'javascript:;');
+    form.removeAttribute('target');
+  } catch (_) {}
+
+  function resetConfetti(el) {
+    if (!el) return;
+    el.style.animation = 'none';
+    void el.offsetWidth;       // reflow, um Animation neu zu starten
+    el.style.animation = '';
+  }
+
+  function showThanks() {
+    if (!thanks) return;
+    thanks.setAttribute('aria-hidden', 'false');
+    thanks.classList?.remove('hidden');
+    thanks.style.display = 'grid';
+    resetConfetti(confetti);
+
+    clearTimeout(showThanks._t);
+    showThanks._t = setTimeout(hideThanks, 2600); // Auto-close
+  }
+
+  function hideThanks() {
+    if (!thanks) return;
+    thanks.setAttribute('aria-hidden', 'true');
+    thanks.classList?.add('hidden');
+    thanks.style.display = 'none';
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();               // <-- verhindert Weiterleitung
+    submitBtn?.setAttribute('disabled', 'true');
+    showThanks();
+    form.reset();
+    setTimeout(() => submitBtn?.removeAttribute('disabled'), 800);
+  });
 })();
