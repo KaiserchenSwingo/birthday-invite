@@ -364,13 +364,18 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 }
 
 /* override countdown size to 150% */
-#countdown{ font-size:150%; line-height:1; }
+#countdown{ font-size:130%; line-height:1; }
 #countdown .cd{ font-size:inherit; }
 
 /* === Einheitliche Rand-Animation (Punkt 2) ============================= */
 :root{
   /* zentrale Geschwindigkeit für alle Neon-Ränder */
   --spin-speed: 8s; /* z.B. 6s schneller, 12s langsamer */
+}
+
+/* nur Countdown schneller drehen lassen */
+#countdown { 
+  --spin-speed: 4s;   /* probier 3s–5s, 4s wirkt meist flüssig */
 }
 
 /* auf Buttons, Countdown (und ggf. Karten) anwenden */
