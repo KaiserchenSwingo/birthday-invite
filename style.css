@@ -308,22 +308,33 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   filter:blur(30px) saturate(1.1); opacity:.8; z-index:1; pointer-events:none;
 }
 #countdown::after{
-  --rot:0deg;
+  --rot: 0deg;
   content:"";
   position:absolute; inset:-2px; padding:2px;
   border-radius:calc(var(--r) + 2px);
-  background:conic-gradient(from var(--rot), var(--magenta) 0deg, var(--blue) 140deg, var(--purpe) 260deg), var(--magenta) 360deg;
+  background: conic-gradient(
+    from var(--rot),
+    var(--magenta) 0deg,
+    var(--blue)    140deg,
+    var(--purple)  260deg,
+    var(--magenta) 360deg
+  );
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
           mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor; mask-composite:exclude;
-  filter:drop-shadow(0 0 22px rgba(43,210,255,.7)) drop-shadow(0 0 18px rgba(255,60,172,.55)) drop-shadow(0 0 14px rgba(130,102,255,.45));
+  filter:
+    drop-shadow(0 0 22px rgba(43,210,255,.7))
+    drop-shadow(0 0 18px rgba(255,60,172,.55))
+    drop-shadow(0 0 14px rgba(130,102,255,.45));
   z-index:2; pointer-events:none;
-  animation: spin360 var(--spin-speed, 10s) linear infinite !important;
+  animation: spin360 var(--spin-speed, 20s) linear infinite !important;
+  will-change: background;
 }
 
 @keyframes spin360 { 
   to { --rot: 360deg; } 
 }
+
 
 /* === Hero-layer: centered behind container, same size in/out gate === */
 #hero-layer{
