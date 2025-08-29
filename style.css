@@ -375,26 +375,8 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 
 /* nur Countdown schneller drehen lassen */
 #countdown { 
-  --spin-speed: 16s;   /* probier 3s–5s, 4s wirkt meist flüssig */
+  --spin-speed: 14s;   /* probier 3s–5s, 4s wirkt meist flüssig */
 }
-
-#countdown::after{
-  /* fester Gradient (nicht mehr von --rot abhängig) */
-  background: conic-gradient(
-    from 0deg,
-    var(--magenta) 0deg,
-    var(--blue)    130deg,
-    var(--purple)  250deg,
-    var(--magenta) 360deg
-  );
-
-  /* alte Animation killen & per transform rotieren */
-  animation: ring-rotate var(--spin-speed, 20s) linear infinite !important;
-  will-change: transform;
-  transform-origin: 50% 50%;
-}
-
-@keyframes ring-rotate { to { transform: rotate(360deg); } }
 
 /* auf Buttons, Countdown (und ggf. Karten) anwenden */
 .btn::after,
