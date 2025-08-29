@@ -143,6 +143,8 @@
     tick(); setInterval(tick, 1000);
   })();
 
+})();
+
   // === RSVP: Danke-Animation statt Weiterleitung =========================
 (function () {
   // Nimm dein Formular (rsvp-form oder antwort-form)
