@@ -417,3 +417,12 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   position: relative;
   z-index: 1;
 }
+
+.pin-locked #stage > #hero-layer{
+  position: fixed !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1100;        /* über dem Gate (falls Gate z-index:1000 hat) */
+  pointer-events: none; /* klicks gehen weiterhin aufs Formular */
+}
