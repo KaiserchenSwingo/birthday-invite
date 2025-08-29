@@ -145,54 +145,67 @@
 
 })();
 
-  // === RSVP: Danke-Animation statt Weiterleitung =========================
+// === RSVP: Danke-Animation + Formspree ohne Redirect ===================
 (function () {
-  // Nimm dein Formular (rsvp-form oder antwort-form)
   const form =
     document.getElementById('rsvp-form') ||
     document.getElementById('antwort-form');
   if (!form) return;
 
-  const thanks    = document.getElementById('thanks');     // vorhandener Danke-Block
-  const confetti  = document.getElementById('confetti');   // optional
-  const submitBtn = form.querySelector('[type="submit"]');
+  const thanks     = document.getElementById('thanks');      // vorhandene Danke-Card
+  const confetti   = document.getElementById('confetti');    // optional
+  const submitBtn  = form.querySelector('[type="submit"]');
+  const statusEl   = document.getElementById('rsvp-status');
 
-  // Safety: egal was im HTML steht (z.B. formspree), Redirect killen
-  try {
-    form.setAttribute('action', 'javascript:;');
-    form.removeAttribute('target');
-  } catch (_) {}
+  // Ziel-Endpunkt: wenn im HTML kein echter action-URL steht, fallback auf deine Formspree-ID
+  const htmlAction = (form.getAttribute('action') || '').trim();
+  const endpoint   = /^https?:\/\//i.test(htmlAction) ? htmlAction : 'https://formspree.io/f/xeolqzzr';
 
-  function resetConfetti(el) {
+  function resetConfetti(el){
     if (!el) return;
     el.style.animation = 'none';
-    void el.offsetWidth;       // reflow, um Animation neu zu starten
+    void el.offsetWidth;
     el.style.animation = '';
   }
 
-  function showThanks() {
-    if (!thanks) return;
-    thanks.setAttribute('aria-hidden', 'false');
-    thanks.classList?.remove('hidden');
-    thanks.style.display = 'grid';
-    resetConfetti(confetti);
-
+  function showThanks(){
+    // CSS erwartet .rsvp.success → das triggert die Animation & blendet Felder aus
+    form.classList.add('success');
+    // optional: UI-Reset nach Animationszeit
     clearTimeout(showThanks._t);
-    showThanks._t = setTimeout(hideThanks, 2600); // Auto-close
+    showThanks._t = setTimeout(()=>{
+      form.classList.remove('success');
+      if (thanks){
+        thanks.setAttribute('aria-hidden','true');
+      }
+    }, 2600);
+    resetConfetti(confetti);
   }
 
-  function hideThanks() {
-    if (!thanks) return;
-    thanks.setAttribute('aria-hidden', 'true');
-    thanks.classList?.add('hidden');
-    thanks.style.display = 'none';
-  }
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault(); // nie redirecten
+    submitBtn?.setAttribute('disabled','true');
+    statusEl && (statusEl.textContent = 'Sende…');
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();               // <-- verhindert Weiterleitung
-    submitBtn?.setAttribute('disabled', 'true');
-    showThanks();
-    form.reset();
-    setTimeout(() => submitBtn?.removeAttribute('disabled'), 800);
+    try{
+      const data = new FormData(form);
+      const res  = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: data
+      });
+
+      // Formspree antwortet i.d.R. mit 200/OK
+      if (!res.ok) throw new Error('HTTP '+res.status);
+      statusEl && (statusEl.textContent = '✔️ Empfangen');
+      showThanks();
+      form.reset();
+    }catch(err){
+      statusEl && (statusEl.textContent = '❌ Konnte nicht senden. Bitte später erneut.');
+      // Du kannst hier fallback-mäßig showThanks() dennoch zeigen, wenn du willst
+    }finally{
+      setTimeout(()=> submitBtn?.removeAttribute('disabled'), 800);
+    }
   });
 })();
+
