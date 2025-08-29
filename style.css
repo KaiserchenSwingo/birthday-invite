@@ -430,6 +430,6 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 
 @media (max-width: 640px){
   .pin-locked #stage > #hero-layer{
-    transform: translate(-50%, -88%) scale(.5); /* war -75% */
+    transform: translate(-50%, -84%) scale(.5); /* war -75% */
   }
 }
