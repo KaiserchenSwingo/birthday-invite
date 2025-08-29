@@ -169,18 +169,15 @@
   }
 
   function showThanks(){
-    // CSS erwartet .rsvp.success → das triggert die Animation & blendet Felder aus
-    form.classList.add('success');
-    // optional: UI-Reset nach Animationszeit
-    clearTimeout(showThanks._t);
-    showThanks._t = setTimeout(()=>{
-      form.classList.remove('success');
-      if (thanks){
-        thanks.setAttribute('aria-hidden','true');
-      }
-    }, 2600);
-    resetConfetti(confetti);
+  // CSS erwartet .rsvp.success → Danke-Card bleibt sichtbar
+  form.classList.add('success');
+  if (thanks){
+    thanks.setAttribute('aria-hidden', 'false');
+    // falls deine CSS .thanks via display steuert, kannst du die nächste Zeile weglassen
+    thanks.style.display = 'grid';
   }
+  resetConfetti(confetti);
+}
 
   form.addEventListener('submit', async (e)=>{
     e.preventDefault(); // nie redirecten
