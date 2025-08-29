@@ -435,5 +435,5 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 }
 
 .pin-locked .gate{
-  background: radial-gradient(1200px 600px at 50% -20%, rgba(0,0,0,.45), rgba(0,0,0,.45));
+  background: radial-gradient(1200px 600px at 50% -20%, rgba(0,0,0,.95), rgba(0,0,0,.65));
 }
