@@ -562,7 +562,7 @@ form label.section-title {
   --h: 200;
   animation:
     hueflow 8s linear infinite,           /* weichere Farbübergänge */
-    groove 2.2s cubic-bezier(.4,0,.2,1) infinite;
+    groove 2.2s cubic-bezier(.42,0,.58,1) infinite alternate !important
 }
 
 @keyframes hueflow {
@@ -678,7 +678,4 @@ from { transform: rotate(24deg); }
 .stickman .leg.left  { animation: legL 3.2s ease-in-out infinite alternate !important; }
 .stickman .leg.right { animation: legR 3.0s ease-in-out infinite alternate !important; }
 
-.stickman.neon-sync{
-  /* Farbanimation bleibt wie bei dir; nur die Körperbewegung wird smoother */
-  animation: groove 3.4s cubic-bezier(.42,0,.58,1) infinite alternate !important;
-}
+
