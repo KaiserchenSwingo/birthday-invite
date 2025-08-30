@@ -631,42 +631,65 @@ form label.section-title {
 }
 
 /* ===== Bewegungen (smooth, ohne harte Umkehrpunkte) ===== */
+/* Body-Groove – mehr Zwischenpunkte (nahezu „sinus“) */
 @keyframes groove{
-  0%   { transform: translateX(0) rotate(0deg); }
-  20%  { transform: translateX(3px) rotate(4deg); }
-  50%  { transform: translateX(0) rotate(0deg); }
-  80%  { transform: translateX(-3px) rotate(-4deg); }
-  100% { transform: translateX(0) rotate(0deg); }
+  0%    { transform: translate(0,0) rotate(0deg); }
+  12.5% { transform: translate(1.4px, .8px) rotate(2deg); }
+  25%   { transform: translate(2.6px, 1.6px) rotate(3.6deg); }
+  37.5% { transform: translate(1.4px, .8px) rotate(2deg); }
+  50%   { transform: translate(0,0) rotate(0deg); }
+  62.5% { transform: translate(-1.4px, .8px) rotate(-2deg); }
+  75%   { transform: translate(-2.6px, 1.6px) rotate(-3.6deg); }
+  87.5% { transform: translate(-1.4px, .8px) rotate(-2deg); }
+  100%  { transform: translate(0,0) rotate(0deg); }
 }
 
+/* Arme – weichere, gleichmäßige Swing-Kurve */
 @keyframes armL{
-  0%   { transform: rotate(30deg); }
-  25%  { transform: rotate(8deg); }
-  50%  { transform: rotate(-6deg); }
-  75%  { transform: rotate(10deg); }
-  100% { transform: rotate(30deg); }
+  0%    { transform: rotate(26deg); }
+  12.5% { transform: rotate(14deg); }
+  25%   { transform: rotate(6deg); }
+  37.5% { transform: rotate(0deg); }
+  50%   { transform: rotate(-4deg); }
+  62.5% { transform: rotate(0deg); }
+  75%   { transform: rotate(6deg); }
+  87.5% { transform: rotate(14deg); }
+  100%  { transform: rotate(26deg); }
 }
 @keyframes armR{
-  0%   { transform: rotate(-30deg); }
-  25%  { transform: rotate(-8deg); }
-  50%  { transform: rotate(6deg); }
-  75%  { transform: rotate(-10deg); }
-  100% { transform: rotate(-30deg); }
+  0%    { transform: rotate(-26deg); }
+  12.5% { transform: rotate(-14deg); }
+  25%   { transform: rotate(-6deg); }
+  37.5% { transform: rotate(0deg); }
+  50%   { transform: rotate(4deg); }
+  62.5% { transform: rotate(0deg); }
+  75%   { transform: rotate(-6deg); }
+  87.5% { transform: rotate(-14deg); }
+  100%  { transform: rotate(-26deg); }
 }
 
+/* Beine – gleiche Idee, feinere Übergänge */
 @keyframes legL{
-  0%   { transform: translateX(calc(-50% - var(--hip-gap))) rotate(20deg); }
-  25%  { transform: translateX(calc(-50% - var(--hip-gap))) rotate(6deg); }
-  50%  { transform: translateX(calc(-50% - var(--hip-gap))) rotate(-4deg); }
-  75%  { transform: translateX(calc(-50% - var(--hip-gap))) rotate(10deg); }
-  100% { transform: translateX(calc(-50% - var(--hip-gap))) rotate(20deg); }
+  0%    { transform: translateX(calc(-50% - var(--hip-gap))) rotate(18deg); }
+  12.5% { transform: translateX(calc(-50% - var(--hip-gap))) rotate(12deg); }
+  25%   { transform: translateX(calc(-50% - var(--hip-gap))) rotate(6deg); }
+  37.5% { transform: translateX(calc(-50% - var(--hip-gap))) rotate(2deg); }
+  50%   { transform: translateX(calc(-50% - var(--hip-gap))) rotate(-2deg); }
+  62.5% { transform: translateX(calc(-50% - var(--hip-gap))) rotate(2deg); }
+  75%   { transform: translateX(calc(-50% - var(--hip-gap))) rotate(6deg); }
+  87.5% { transform: translateX(calc(-50% - var(--hip-gap))) rotate(12deg); }
+  100%  { transform: translateX(calc(-50% - var(--hip-gap))) rotate(18deg); }
 }
 @keyframes legR{
-  0%   { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-20deg); }
-  25%  { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-6deg); }
-  50%  { transform: translateX(calc(-50% + var(--hip-gap))) rotate(4deg); }
-  75%  { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-10deg); }
-  100% { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-20deg); }
+  0%    { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-18deg); }
+  12.5% { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-12deg); }
+  25%   { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-6deg); }
+  37.5% { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-2deg); }
+  50%   { transform: translateX(calc(-50% + var(--hip-gap))) rotate(2deg); }
+  62.5% { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-2deg); }
+  75%   { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-6deg); }
+  87.5% { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-12deg); }
+  100%  { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-18deg); }
 }
 
 /* Optionaler Bodenschatten – falls „Ghosting“ auffällt, einfach auskommentieren */
