@@ -452,7 +452,7 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 
 /* Liste bündig mit Überschrift */
 .hinweise-list {
-  list-style: none;   /* Standardpunkte aus */
+  list-style: none;
   margin-left: 0;
   padding-left: 0;
 }
@@ -464,18 +464,36 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   color: #fff;
   font-size: 1rem;
   line-height: 1.5;
-  text-shadow: 0 0 4px #6ecbff, 0 0 8px #a64dff;
+  text-shadow: 0 0 3px #6ecbff, 0 0 6px #a64dff;
 }
 
-/* Custom Neon-Kugel als Bullet */
+/* Neon-Kreise mit animiertem Farbwechsel */
 .hinweise-list li::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.6em; /* vertikal mittig */
+  top: 0.6em; 
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #a64dff;
-  box-shadow: 0 0 6px #a64dff, 0 0 12px #6ecbff, 0 0 20px #6ecbff;
+  background: linear-gradient(135deg, #6ecbff, #a64dff);
+  box-shadow: 0 0 4px #6ecbff, 0 0 8px #a64dff;
+  animation: neonPulse 3s infinite alternate;
 }
+
+/* Farbwechsel-Animation wie beim Rahmen */
+@keyframes neonPulse {
+  0% {
+    background: #6ecbff;
+    box-shadow: 0 0 4px #6ecbff, 0 0 8px #6ecbff;
+  }
+  50% {
+    background: #a64dff;
+    box-shadow: 0 0 4px #a64dff, 0 0 8px #a64dff;
+  }
+  100% {
+    background: #6ecbff;
+    box-shadow: 0 0 4px #6ecbff, 0 0 8px #6ecbff;
+  }
+}
+
