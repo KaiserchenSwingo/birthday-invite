@@ -665,14 +665,6 @@ from { transform: rotate(28deg); }
   to   { transform: translateX(calc(-50% + var(--hip-gap, 8px))) rotate(-4deg); }
 }
 
-/* Optionaler Bodenschatten – falls „Ghosting“ auffällt, einfach auskommentieren */
-.stickman::after{
-  content:""; position:absolute; left:50%; bottom:6px; transform:translateX(-50%);
-  width:50px; height:12px; border-radius:999px;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,.32), rgba(0,0,0,0) 70%);
-  filter: blur(2px);
-}
-
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce){
   .neon-sync{ animation: hueflow 0s linear 1 forwards; }
