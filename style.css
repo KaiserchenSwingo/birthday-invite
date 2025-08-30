@@ -611,7 +611,7 @@ form label.section-title {
   transform-origin: right center;
   transform: rotate(22deg);
   animation: armL 2.2s cubic-bezier(.4,0,.2,1) infinite,
-             hueflow 9.2s linear infinite .25s,
+             hueflow 9.2s linear infinite .25s;
 }
 
 .stickman .arm.right{
