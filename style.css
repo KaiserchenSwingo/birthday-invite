@@ -438,7 +438,44 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   background: radial-gradient(1200px 600px at 50% -20%, rgba(0,0,0,.95), rgba(0,0,0,.65));
 }
 
-ul {
-  padding-left: 0;             /* entfernt die Standard-Einrückung */
-  margin-left: 0;              /* zieht die Liste komplett nach links */
+/* Überschrift HINWEISE */
+.hinweise-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+  text-shadow: 0 0 6px #a64dff, 0 0 12px #6ecbff; /* Neon Glow */
+  margin-bottom: 12px;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+/* Liste bündig mit Überschrift */
+.hinweise-list {
+  list-style: none;   /* Standardpunkte aus */
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.hinweise-list li {
+  position: relative;
+  margin: 8px 0;
+  padding-left: 28px; /* Platz für den Neon-Kreis */
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-shadow: 0 0 4px #6ecbff, 0 0 8px #a64dff;
+}
+
+/* Custom Neon-Kugel als Bullet */
+.hinweise-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em; /* vertikal mittig */
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #a64dff;
+  box-shadow: 0 0 6px #a64dff, 0 0 12px #6ecbff, 0 0 20px #6ecbff;
 }
