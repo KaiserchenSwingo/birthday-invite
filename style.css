@@ -680,5 +680,5 @@ from { transform: rotate(24deg); }
 
 .stickman.neon-sync{
   /* Farbanimation bleibt wie bei dir; nur die Körperbewegung wird smoother */
-  animation: groove 3.4s cubic-bezier(.42,0,.58,1) infinite !important;
+  animation: groove 3.4s cubic-bezier(.42,0,.58,1) infinite alternate !important;
 }
