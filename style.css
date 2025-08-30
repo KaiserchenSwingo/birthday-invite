@@ -551,8 +551,6 @@ form label.section-title {
   width: 80px; height: 130px;
   margin: 16px 0 8px;
   color: hsl(var(--h) 100% 70%); /* aktuelle Neonfarbe */
-  filter: drop-shadow(0 0 var(--glow1) currentColor)
-          drop-shadow(0 0 var(--glow2) currentColor);
   animation: groove 2.2s cubic-bezier(.4,0,.2,1) infinite;
   will-change: transform, filter;
 }
@@ -570,6 +568,8 @@ form label.section-title {
 .stickman .leg::after{
   /* jede Form nutzt ihre EIGENE Hue-Variable */
   color: hsl(var(--h,200) 100% 70%);
+  filter: drop-shadow(0 0 var(--glow1) currentColor)
+          drop-shadow(0 0 var(--glow2) currentColor);
   will-change: color, box-shadow, filter;
 }
 
