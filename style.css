@@ -526,119 +526,102 @@ form label.section-title {
 }
 
 /* EXPERIMENT*/
-/* ==== STICKMAN v3 – organisch, bündige Beine, smoother Farbverlauf ==== */
-
-/* fließende Farbänderung über HSL-Hue */
-@property --h {
-  syntax: '<number>';
-  inherits: false;
-  initial-value: 200; /* Start: cyan/blau */
+/* --- EXAKTER Bezugspunkt für Beine --- */
+:root {
+  --t: 4px;                /* Strichdicke */
+  --arm-len: 38px;
+  --leg-len: 54px;
+  --body-top: 38px;        /* Torso-Start */
+  --body-h: 48px;          /* Torso-Höhe  */
+  --hue-duration: 8s;      /* Farbfluss */
+  --move-duration: 2.4s;   /* Bewegung   */
 }
 
-/* Tuning-Variablen */
-:root{
-  --t: 4px;            /* Strichdicke */
-  --arm-len: 38px;     /* Armlänge */
-  --leg-len: 54px;     /* Gesamtlänge (Oberschenkel + Unterschenkel) */
-  --glow1: 6px;        /* Glow soft */
-  --glow2: 14px;       /* Glow stark */
-  --hue-duration: 8s;  /* Dauer Farbfluss (größer = smoother) */
-  --move-duration: 2.4s; /* Dauer Bewegungen */
-}
-
-/* Container + globaler Glow */
-.stickman{
-  position: relative;
-  width: 80px; height: 130px;
-  margin: 16px 0 8px;
-  color: hsl(var(--h) 100% 70%); /* aktuelle Neonfarbe */
-  filter: drop-shadow(0 0 var(--glow1) currentColor)
-          drop-shadow(0 0 var(--glow2) currentColor);
-  animation: groove var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite;
-  will-change: transform, filter;
-}
-
-/* Farbverlauf: blau → lila → pink → blau (fließend) */
-.neon-sync{
-  --h: 200;
-  animation:
-    hueflow var(--hue-duration) linear infinite,
-    groove  var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite;
-}
-@keyframes hueflow{
-  0%   { --h: 200; }  /* blau */
-  33%  { --h: 270; }  /* lila */
-  66%  { --h: 315; }  /* pink */
-  100% { --h: 200; }
-}
-
-/* Kopf */
-.stickman .head{
-  width: 34px; height: 34px; margin: 0 auto;
-  border-radius: 50%;
-  border: var(--t) solid currentColor;
-  box-shadow: inset 0 0 2px currentColor;
-}
-
-/* Torso mittig */
+/* Torso nutzt die Variablen */
 .stickman .body{
-  position: absolute; top: 38px; left: 50%;
-  width: var(--t); height: 48px; transform: translateX(-50%);
+  position:absolute; left:50%;
+  top: var(--body-top); height: var(--body-h);
+  width: var(--t); transform: translateX(-50%);
   background: currentColor;
   box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
 }
 
-/* ===== ARME – korrekt an den Schultern, gegentaktig ===== */
-.stickman .arm{
-  position: absolute; top: 54px; height: var(--t); width: var(--arm-len);
-  background: currentColor;
-  box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
-}
-.stickman .arm.left{
-  right: calc(50% + var(--t)/2);
-  transform-origin: right center;
-  transform: rotate(22deg);
-  animation: armL var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite;
-}
-.stickman .arm.right{
-  left: calc(50% + var(--t)/2);
-  transform-origin: left center;
-  transform: rotate(-22deg);
-  animation: armR var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite;
-}
-
-/* ===== BEINE – oben direkt am Torso, mit „Knie“ (Unterschenkel als ::after) ===== */
+/* Beine starten exakt am Torso-Ende (kein Spalt) */
 .stickman .leg{
-  position: absolute; top: 86px; left: 50%;
-  width: var(--t); height: calc(var(--leg-len)*0.55); /* Oberschenkel */
+  position:absolute; left:50%;
+  top: calc(var(--body-top) + var(--body-h) - var(--t)/2);
+  width: var(--t); height: calc(var(--leg-len)*0.55);
   background: currentColor;
   box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
-  transform-origin: top center;                 /* Hüfte */
+  transform-origin: top center;
 }
-.stickman .leg.left{
-  transform: translateX(-50%) rotate(14deg);
-  animation: thighL var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite;
-  animation-delay: .02s;
-}
-.stickman .leg.right{
-  transform: translateX(-50%) rotate(-14deg);
-  animation: thighR var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite;
-  animation-delay: .14s;
-}
-/* Unterschenkel am Kniegelenk */
+.stickman .leg.left  { transform: translateX(-50%) rotate(14deg);  animation: thighL var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite; animation-delay:.02s; }
+.stickman .leg.right { transform: translateX(-50%) rotate(-14deg); animation: thighR var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite; animation-delay:.14s; }
+
+/* Unterschenkel (Knie) */
 .stickman .leg::after{
-  content:"";
-  position:absolute; left:50%; top: calc(100% - 2px);
+  content:""; position:absolute; left:50%; top: calc(100% - 2px);
   transform: translateX(-50%) rotate(8deg);
-  transform-origin: top center;                /* Knie */
+  transform-origin: top center;
   width: var(--t); height: calc(var(--leg-len)*0.58);
   background: currentColor;
   box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
 }
-.stickman .leg.left::after{
-  animation: shinL var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite;
-  animation-delay: .06s;
+.stickman .leg.left::after  { animation: shinL  var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite; animation-delay:.06s; }
+.stickman .leg.right::after { animation: shinR  var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite; animation-delay:.18s; }
+
+/* Arme (wie gehabt, korrekt an den Schultern) */
+.stickman .arm{
+  position:absolute; top:54px; height: var(--t); width: var(--arm-len);
+  background: currentColor; box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
 }
-.stickman .leg.right::after{
-  animation: shinR var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite;
-  animation-d
+.stickman .arm.left  { right: calc(50% + var(--t)/2); transform-origin: right center; transform: rotate(22deg);  animation: armL  var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite; }
+.stickman .arm.right { left:  calc(50% + var(--t)/2); transform-origin: left  center; transform: rotate(-22deg); animation: armR  var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite; }
+
+/* ===== GARANTIERT LAUFENDE ANIMATIONEN ===== */
+/* Farbfluss OHNE @property (höchste Kompatibilität) */
+@keyframes colorflow {
+  0%   { color:#6ecbff; }  /* blau/cyan */
+  33%  { color:#a64dff; }  /* lila */
+  66%  { color:#ff4fd8; }  /* pink */
+  100% { color:#6ecbff; }
+}
+
+/* beide Animationen direkt auf DEMSELBEN Element setzen */
+.stickman.neon-sync{
+  /* Glow bleibt über filter, Farbe über 'color' */
+  filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 14px currentColor);
+  animation-name: colorflow, groove;
+  animation-duration: var(--hue-duration), var(--move-duration);
+  animation-timing-function: linear, cubic-bezier(.45,.02,.55,.98);
+  animation-iteration-count: infinite, infinite;
+  animation-play-state: running, running;
+}
+
+/* Body-Groove (smooth) */
+@keyframes groove{
+  0%   { transform: translate(0,0) rotate(0deg); }
+  20%  { transform: translate(2px,1px) rotate(3deg); }
+  50%  { transform: translate(0,2px) rotate(0deg); }
+  80%  { transform: translate(-2px,1px) rotate(-3deg); }
+  100% { transform: translate(0,0) rotate(0deg); }
+}
+
+/* Gliedmaßen (weich, organisch) */
+@keyframes armL { 0%{transform:rotate(28deg)} 25%{rotate:8deg} 50%{rotate:-6deg} 75%{rotate:10deg} 100%{rotate:28deg} }
+@keyframes armR { 0%{transform:rotate(-28deg)}25%{rotate:-8deg}50%{rotate:6deg} 75%{rotate:-10deg}100%{rotate:-28deg} }
+
+@keyframes thighL{ 0%{transform:translateX(-50%) rotate(18deg)} 25%{transform:translateX(-50%) rotate(6deg)} 50%{transform:translateX(-50%) rotate(-2deg)} 75%{transform:translateX(-50%) rotate(9deg)} 100%{transform:translateX(-50%) rotate(18deg)} }
+@keyframes thighR{ 0%{transform:translateX(-50%) rotate(-18deg)}25%{transform:translateX(-50%) rotate(-6deg)}50%{transform:translateX(-50%) rotate(2deg)} 75%{transform:translateX(-50%) rotate(-9deg)}100%{transform:translateX(-50%) rotate(-18deg)} }
+
+@keyframes shinL { 0%{transform:translateX(-50%) rotate(6deg)} 25%{rotate:14deg} 50%{rotate:4deg} 75%{rotate:10deg} 100%{rotate:6deg} }
+@keyframes shinR { 0%{transform:translateX(-50%) rotate(-6deg)}25%{rotate:-14deg}50%{rotate:-4deg}75%{rotate:-10deg}100%{rotate:-6deg} }
+
+/* Falls irgendwo was die Animation pausiert, hier „scharf“ wieder einschalten */
+.stickman .arm, .stickman .leg, .stickman .leg::after { animation-play-state: running !important; }
+
+/* A11y – nur wenn System wirklich Reduce Motion anfragt */
+@media (prefers-reduced-motion: reduce){
+  .stickman.neon-sync{ animation: colorflow 0s linear 1 forwards; }
+  .stickman .arm, .stickman .leg, .stickman .leg::after{ animation: none !important; }
+}
