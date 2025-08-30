@@ -526,88 +526,128 @@ form label.section-title {
 }
 
 /* EXPERIMENT*/
+/* Animierbare HSL-Hue für fließenden Farbverlauf */
+@property --h {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 200; /* Start: cyan */
+}
+
 :root{
-  --neon-a:#6ecbff;   /* blau */
-  --neon-b:#a64dff;   /* lila */
-  --neon-c:#ff4fd8;   /* pink */
-  --frame-anim-duration: 4s;
-  --frame-anim-timing: linear;
+  --t: 4px;              /* Strichdicke */
+  --arm-len: 38px;       /* Armlänge */
+  --leg-len: 54px;       /* Beinlänge */
+  --hip-gap: 10px;       /* halber Abstand der Beine von der Mittelachse */
+  --glow1: 6px;
+  --glow2: 14px;
 }
 
-/* 3-Farben-Zyklus (Blau→Lila→Pink→Blau) */
-@keyframes neonTri {
-  0%   { --c: var(--neon-a); }
-  33%  { --c: var(--neon-b); }
-  66%  { --c: var(--neon-c); }
-  100% { --c: var(--neon-a); }
-}
-
-/* Figur insgesamt leicht grooven lassen */
 .stickman{
-  --thick:3px;                /* Strichdicke */
-  position:relative;
-  width:70px;height:120px;
-  margin:16px 0 8px;
-  animation: dance 1.6s ease-in-out infinite;
+  position: relative;
+  width: 80px; height: 130px;
+  margin: 16px 0 8px;
+  color: hsl(var(--h) 100% 70%);                /* aktuelle Neonfarbe */
+  filter: drop-shadow(0 0 var(--glow1) currentColor)
+          drop-shadow(0 0 var(--glow2) currentColor);
+  animation: groove 1.6s ease-in-out infinite;
 }
-.neon-sync{ animation: neonTri var(--frame-anim-duration) var(--frame-anim-timing) infinite; }
+
+/* fließender Farbverlauf: blau → lila → pink → blau */
+.neon-sync{
+  --h: 200;
+  animation:
+    hueflow 6s linear infinite,
+    groove 1.6s ease-in-out infinite;
+}
+@keyframes hueflow {
+  0%   { --h: 200; }  /* cyan/blau */
+  33%  { --h: 270; }  /* lila */
+  66%  { --h: 315; }  /* pink */
+  100% { --h: 200; }  /* zurück */
+}
 
 /* Kopf */
 .stickman .head{
-  width:32px;height:32px;margin:0 auto;
-  border-radius:50%;
-  border: var(--thick) solid var(--c, var(--neon-a));
-  box-shadow:0 0 6px var(--c), 0 0 14px var(--c), inset 0 0 2px var(--c);
+  width: 34px; height: 34px; margin: 0 auto;
+  border-radius: 50%;
+  border: var(--t) solid currentColor;
+  box-shadow: inset 0 0 2px currentColor;
 }
 
-/* Körper (Hals+Torso) */
+/* Torso mittig */
 .stickman .body{
-  position:absolute;left:50%;top:34px;
-  width:var(--thick);height:44px;transform:translateX(-50%);
-  background: var(--c);
-  box-shadow:0 0 4px var(--c), 0 0 10px var(--c);
+  position: absolute; top: 38px; left: 50%;
+  width: var(--t); height: 48px; transform: translateX(-50%);
+  background: currentColor;
 }
 
-/* --- Arme: Gelenk an den Schultern, realistischer Winkel --- */
+/* ========== ARME (Schultern als Gelenk, korrekt ausgerichtet) ========== */
 .stickman .arm{
-  position:absolute;top:50px; /* Schulterhöhe */
-  height:var(--thick);width:30px;
-  background: var(--c); box-shadow:0 0 4px var(--c), 0 0 10px var(--c);
+  position: absolute; top: 54px; height: var(--t); width: var(--arm-len);
+  background: currentColor;
+  box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
 }
-.stickman .arm.left{  left:50%; transform-origin: 0% 50%;  transform: translateX(-14px) rotate(25deg);  animation: armL 1.6s ease-in-out infinite; }
-.stickman .arm.right{ left:50%; transform-origin: 100% 50%; transform: translateX(-16px) rotate(-25deg); animation: armR 1.6s ease-in-out infinite; }
 
-/* --- Beine: Hüfte als Drehpunkt, leicht versetzt --- */
-.stickman .leg{
-  position:absolute;top:78px; /* Hüfte */
-  width:var(--thick);height:46px;
-  background: var(--c); box-shadow:0 0 4px var(--c), 0 0 10px var(--c);
-  transform-origin: 50% 0%;
+/* Linker Arm: Gelenk an rechter Kante (Schulter), vom Körper nach links */
+.stickman .arm.left{
+  right: calc(50% + var(--t)/2);
+  transform-origin: right center;
+  transform: rotate(22deg);
+  animation: armL 1.6s ease-in-out infinite;
 }
-.stickman .leg.left{  left:33px; transform: rotate(15deg);  animation: legL 1.6s ease-in-out infinite; }
-.stickman .leg.right{ left:37px; transform: rotate(-15deg); animation: legR 1.6s ease-in-out infinite; }
+
+/* Rechter Arm: Gelenk an linker Kante (Schulter), vom Körper nach rechts */
+.stickman .arm.right{
+  left: calc(50% + var(--t)/2);
+  transform-origin: left center;
+  transform: rotate(-22deg);
+  animation: armR 1.6s ease-in-out infinite;
+}
+
+/* ========== BEINE (Hüfte als Gelenk, bündig unter dem Torso) ========== */
+.stickman .leg{
+  position: absolute; top: 86px; width: var(--t); height: var(--leg-len);
+  background: currentColor;
+  box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
+  transform-origin: top center;  /* Hüfte */
+}
+
+/* Linkes Bein: Start exakt unter Torso, leicht nach außen */
+.stickman .leg.left{
+  left: calc(50% - var(--hip-gap));
+  transform: rotate(14deg);
+  animation: legL 1.6s ease-in-out infinite;
+}
+
+/* Rechtes Bein symmetrisch – bündig zur Mittelachse */
+.stickman .leg.right{
+  left: calc(50% + var(--hip-gap));
+  transform: rotate(-14deg);
+  animation: legR 1.6s ease-in-out infinite;
+}
 
 /* Bewegungen */
-@keyframes dance{
-  0%,100%{ transform: translateX(0) rotate(0deg); }
-  25%    { transform: translateX(3px) rotate(6deg); }
-  50%    { transform: translateX(0) rotate(0deg); }
-  75%    { transform: translateX(-3px) rotate(-6deg); }
+@keyframes groove {
+  0%,100% { transform: translateX(0) rotate(0deg); }
+  25%     { transform: translateX(3px) rotate(6deg); }
+  50%     { transform: translateX(0) rotate(0deg); }
+  75%     { transform: translateX(-3px) rotate(-6deg); }
 }
-@keyframes armL{ 0%,100%{ transform: translateX(-14px) rotate(35deg);} 50%{ transform: translateX(-14px) rotate(-10deg);} }
-@keyframes armR{ 0%,100%{ transform: translateX(-16px) rotate(-35deg);}50%{ transform: translateX(-16px) rotate(10deg);} }
-@keyframes legL{ 0%,100%{ transform: rotate(22deg);} 50%{ transform: rotate(-8deg);} }
-@keyframes legR{ 0%,100%{ transform: rotate(-22deg);}50%{ transform: rotate(8deg);} }
+@keyframes armL { 0%,100% { transform: rotate(30deg); } 50% { transform: rotate(-8deg); } }
+@keyframes armR { 0%,100% { transform: rotate(-30deg);} 50% { transform: rotate(8deg); } }
+@keyframes legL { 0%,100% { transform: rotate(20deg);} 50% { transform: rotate(-6deg);} }
+@keyframes legR { 0%,100% { transform: rotate(-20deg);} 50% { transform: rotate(6deg); } }
 
-/* Optional: kleiner Bodenschatten, lässt ihn „stehen“ */
+/* kleiner Bodenschatten (optional) */
 .stickman::after{
   content:""; position:absolute; left:50%; bottom:6px; transform:translateX(-50%);
-  width:44px;height:10px;border-radius:999px;
+  width:50px; height:12px; border-radius:999px;
   background: radial-gradient(ellipse at center, rgba(0,0,0,.35), rgba(0,0,0,0) 70%);
   filter: blur(2px);
 }
 
-/* Reduced motion respect */
+/* Bewegungsreduktion respektieren */
 @media (prefers-reduced-motion: reduce){
-  .neon-sync, .stickman, .arm.left, .arm.right, .leg.left, .leg.right{ animation:none !important; }
+  .neon-sync{ animation: hueflow 0s linear 1 forwards; }
+  .stickman, .arm.left, .arm.right, .leg.left, .leg.right{ animation: none !important; }
 }
