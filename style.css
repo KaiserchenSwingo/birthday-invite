@@ -526,102 +526,159 @@ form label.section-title {
 }
 
 /* EXPERIMENT*/
-/* --- EXAKTER Bezugspunkt für Beine --- */
-:root {
-  --t: 4px;                /* Strichdicke */
-  --arm-len: 38px;
-  --leg-len: 54px;
-  --body-top: 38px;        /* Torso-Start */
-  --body-h: 48px;          /* Torso-Höhe  */
-  --hue-duration: 8s;      /* Farbfluss */
-  --move-duration: 2.4s;   /* Bewegung   */
+/* ==== STICKMAN v2 – smoother, bündige Beine, fließender Farbverlauf ==== */
+
+/* Animierbare Hue für weichen Farbwechsel (blau → lila → pink → blau) */
+@property --h {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 200;
 }
 
-/* Torso nutzt die Variablen */
+/* Tuning-Variablen */
+:root{
+  --t: 4px;               /* Strichdicke */
+  --arm-len: 38px;        /* Armlänge */
+  --leg-len: 54px;        /* Beinlänge */
+  --hip-gap: 2px;         /* Abstand jedes Beins von der Mittelachse */
+  --glow1: 6px;           /* weicher Glow */
+  --glow2: 14px;          /* stärkerer Glow */
+}
+
+/* Container + globaler Glow + smoother Bewegung */
+.stickman{
+  position: relative;
+  width: 80px; height: 130px;
+  margin: 16px 0 8px;
+  color: hsl(var(--h) 100% 70%); /* aktuelle Neonfarbe */
+  filter: drop-shadow(0 0 var(--glow1) currentColor)
+          drop-shadow(0 0 var(--glow2) currentColor);
+  animation: groove 2.2s cubic-bezier(.4,0,.2,1) infinite;
+  will-change: transform, filter;
+}
+
+/* fließender Farbverlauf – anpassbar über Dauer */
+.neon-sync{
+  --h: 200;
+  animation:
+    hueflow 8s linear infinite,           /* weichere Farbübergänge */
+    groove 2.2s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+@keyframes hueflow {
+  0%   { --h: 200; }  /* cyan/blau */
+  33%  { --h: 270; }  /* lila */
+  66%  { --h: 315; }  /* pink */
+  100% { --h: 200; }  /* zurück */
+}
+
+/* Kopf */
+.stickman .head{
+  width: 34px; height: 34px; margin: 0 auto;
+  border-radius: 50%;
+  border: var(--t) solid currentColor;
+  box-shadow: inset 0 0 2px currentColor;
+}
+
+/* Torso mittig */
 .stickman .body{
-  position:absolute; left:50%;
-  top: var(--body-top); height: var(--body-h);
-  width: var(--t); transform: translateX(-50%);
+  position: absolute; top: 38px; left: 50%;
+  width: var(--t); height: 48px; transform: translateX(-50%);
   background: currentColor;
   box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
 }
 
-/* Beine starten exakt am Torso-Ende (kein Spalt) */
-.stickman .leg{
-  position:absolute; left:50%;
-  top: calc(var(--body-top) + var(--body-h) - var(--t)/2);
-  width: var(--t); height: calc(var(--leg-len)*0.55);
-  background: currentColor;
-  box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
-  transform-origin: top center;
-}
-.stickman .leg.left  { transform: translateX(-50%) rotate(14deg);  animation: thighL var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite; animation-delay:.02s; }
-.stickman .leg.right { transform: translateX(-50%) rotate(-14deg); animation: thighR var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite; animation-delay:.14s; }
-
-/* Unterschenkel (Knie) */
-.stickman .leg::after{
-  content:""; position:absolute; left:50%; top: calc(100% - 2px);
-  transform: translateX(-50%) rotate(8deg);
-  transform-origin: top center;
-  width: var(--t); height: calc(var(--leg-len)*0.58);
-  background: currentColor;
-  box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
-}
-.stickman .leg.left::after  { animation: shinL  var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite; animation-delay:.06s; }
-.stickman .leg.right::after { animation: shinR  var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite; animation-delay:.18s; }
-
-/* Arme (wie gehabt, korrekt an den Schultern) */
+/* ===== ARME – korrekt an den Schultern, gegentaktig ===== */
 .stickman .arm{
-  position:absolute; top:54px; height: var(--t); width: var(--arm-len);
-  background: currentColor; box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
-}
-.stickman .arm.left  { right: calc(50% + var(--t)/2); transform-origin: right center; transform: rotate(22deg);  animation: armL  var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite; }
-.stickman .arm.right { left:  calc(50% + var(--t)/2); transform-origin: left  center; transform: rotate(-22deg); animation: armR  var(--move-duration) cubic-bezier(.45,.02,.55,.98) infinite; }
-
-/* ===== GARANTIERT LAUFENDE ANIMATIONEN ===== */
-/* Farbfluss OHNE @property (höchste Kompatibilität) */
-@keyframes colorflow {
-  0%   { color:#6ecbff; }  /* blau/cyan */
-  33%  { color:#a64dff; }  /* lila */
-  66%  { color:#ff4fd8; }  /* pink */
-  100% { color:#6ecbff; }
+  position: absolute; top: 54px; height: var(--t); width: var(--arm-len);
+  background: currentColor;
+  box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
 }
 
-/* beide Animationen direkt auf DEMSELBEN Element setzen */
-.stickman.neon-sync{
-  /* Glow bleibt über filter, Farbe über 'color' */
-  filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 14px currentColor);
-  animation-name: colorflow, groove;
-  animation-duration: var(--hue-duration), var(--move-duration);
-  animation-timing-function: linear, cubic-bezier(.45,.02,.55,.98);
-  animation-iteration-count: infinite, infinite;
-  animation-play-state: running, running;
+.stickman .arm.left{
+  right: calc(50% + var(--t)/2);
+  transform-origin: right center;
+  transform: rotate(22deg);
+  animation: armL 2.2s cubic-bezier(.4,0,.2,1) infinite;
 }
 
-/* Body-Groove (smooth) */
+.stickman .arm.right{
+  left: calc(50% + var(--t)/2);
+  transform-origin: left center;
+  transform: rotate(-22deg);
+  animation: armR 2.2s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+/* ===== BEINE – exakt unter dem Torso, bündig zur Mitte ===== */
+.stickman .leg{
+  position: absolute; top: 86px; width: var(--t); height: var(--leg-len);
+  background: currentColor;
+  box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
+  transform-origin: top center; /* Hüfte als Gelenk */
+}
+
+/* Linkes/rechtes Bein: Start in der Mitte, nur lateral verschieben */
+.stickman .leg.left{
+  left: 50%;
+  transform: translateX(calc(-50% - var(--hip-gap))) rotate(16deg);
+  animation: legL 2.2s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+.stickman .leg.right{
+  left: 50%;
+  transform: translateX(calc(-50% + var(--hip-gap))) rotate(-16deg);
+  animation: legR 2.2s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+/* ===== Bewegungen (smooth, ohne harte Umkehrpunkte) ===== */
 @keyframes groove{
-  0%   { transform: translate(0,0) rotate(0deg); }
-  20%  { transform: translate(2px,1px) rotate(3deg); }
-  50%  { transform: translate(0,2px) rotate(0deg); }
-  80%  { transform: translate(-2px,1px) rotate(-3deg); }
-  100% { transform: translate(0,0) rotate(0deg); }
+  0%   { transform: translateX(0) rotate(0deg); }
+  20%  { transform: translateX(3px) rotate(4deg); }
+  50%  { transform: translateX(0) rotate(0deg); }
+  80%  { transform: translateX(-3px) rotate(-4deg); }
+  100% { transform: translateX(0) rotate(0deg); }
 }
 
-/* Gliedmaßen (weich, organisch) */
-@keyframes armL { 0%{transform:rotate(28deg)} 25%{rotate:8deg} 50%{rotate:-6deg} 75%{rotate:10deg} 100%{rotate:28deg} }
-@keyframes armR { 0%{transform:rotate(-28deg)}25%{rotate:-8deg}50%{rotate:6deg} 75%{rotate:-10deg}100%{rotate:-28deg} }
+@keyframes armL{
+  0%   { transform: rotate(30deg); }
+  25%  { transform: rotate(8deg); }
+  50%  { transform: rotate(-6deg); }
+  75%  { transform: rotate(10deg); }
+  100% { transform: rotate(30deg); }
+}
+@keyframes armR{
+  0%   { transform: rotate(-30deg); }
+  25%  { transform: rotate(-8deg); }
+  50%  { transform: rotate(6deg); }
+  75%  { transform: rotate(-10deg); }
+  100% { transform: rotate(-30deg); }
+}
 
-@keyframes thighL{ 0%{transform:translateX(-50%) rotate(18deg)} 25%{transform:translateX(-50%) rotate(6deg)} 50%{transform:translateX(-50%) rotate(-2deg)} 75%{transform:translateX(-50%) rotate(9deg)} 100%{transform:translateX(-50%) rotate(18deg)} }
-@keyframes thighR{ 0%{transform:translateX(-50%) rotate(-18deg)}25%{transform:translateX(-50%) rotate(-6deg)}50%{transform:translateX(-50%) rotate(2deg)} 75%{transform:translateX(-50%) rotate(-9deg)}100%{transform:translateX(-50%) rotate(-18deg)} }
+@keyframes legL{
+  0%   { transform: translateX(calc(-50% - var(--hip-gap))) rotate(20deg); }
+  25%  { transform: translateX(calc(-50% - var(--hip-gap))) rotate(6deg); }
+  50%  { transform: translateX(calc(-50% - var(--hip-gap))) rotate(-4deg); }
+  75%  { transform: translateX(calc(-50% - var(--hip-gap))) rotate(10deg); }
+  100% { transform: translateX(calc(-50% - var(--hip-gap))) rotate(20deg); }
+}
+@keyframes legR{
+  0%   { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-20deg); }
+  25%  { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-6deg); }
+  50%  { transform: translateX(calc(-50% + var(--hip-gap))) rotate(4deg); }
+  75%  { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-10deg); }
+  100% { transform: translateX(calc(-50% + var(--hip-gap))) rotate(-20deg); }
+}
 
-@keyframes shinL { 0%{transform:translateX(-50%) rotate(6deg)} 25%{rotate:14deg} 50%{rotate:4deg} 75%{rotate:10deg} 100%{rotate:6deg} }
-@keyframes shinR { 0%{transform:translateX(-50%) rotate(-6deg)}25%{rotate:-14deg}50%{rotate:-4deg}75%{rotate:-10deg}100%{rotate:-6deg} }
+/* Optionaler Bodenschatten – falls „Ghosting“ auffällt, einfach auskommentieren */
+.stickman::after{
+  content:""; position:absolute; left:50%; bottom:6px; transform:translateX(-50%);
+  width:50px; height:12px; border-radius:999px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.32), rgba(0,0,0,0) 70%);
+  filter: blur(2px);
+}
 
-/* Falls irgendwo was die Animation pausiert, hier „scharf“ wieder einschalten */
-.stickman .arm, .stickman .leg, .stickman .leg::after { animation-play-state: running !important; }
-
-/* A11y – nur wenn System wirklich Reduce Motion anfragt */
+/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce){
-  .stickman.neon-sync{ animation: colorflow 0s linear 1 forwards; }
-  .stickman .arm, .stickman .leg, .stickman .leg::after{ animation: none !important; }
+  .neon-sync{ animation: hueflow 0s linear 1 forwards; }
+  .stickman, .arm.left, .arm.right, .leg.left, .leg.right{ animation: none !important; }
 }
