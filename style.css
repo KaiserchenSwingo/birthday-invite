@@ -633,28 +633,28 @@ form label.section-title {
 /* ===== Bewegungen (smooth, ohne harte Umkehrpunkte) ===== */
 /* Body-Groove – mehr Zwischenpunkte (nahezu „sinus“) */
 @keyframes groove{
- from { transform: translate(0,0) rotate(3.4deg); }
-  to   { transform: translate(-2.5px, 1.6px) rotate(-3.4deg); }
+ from { transform: translate(0,0) rotate(4deg); }
+  to   { transform: translate(-2.5px, 1.6px) rotate(4deg); }
 }
 
 /* Arme – weichere, gleichmäßige Swing-Kurve */
 @keyframes armL{
-from { transform: rotate(24deg); }
+from { transform: rotate(28deg); }
   to   { transform: rotate(-8deg); }
 }
 @keyframes armR{
-  from { transform: rotate(-24deg); }
+  from { transform: rotate(-28deg); }
   to   { transform: rotate(8deg); }
 }
 
 /* Beine – gleiche Idee, feinere Übergänge */
 @keyframes legL{
  from { transform: translateX(calc(-50% - var(--hip-gap, 8px))) rotate(16deg); }
-  to   { transform: translateX(calc(-50% - var(--hip-gap, 8px))) rotate(2deg); }
+  to   { transform: translateX(calc(-50% - var(--hip-gap, 8px))) rotate(4deg); }
 }
 @keyframes legR{
   from { transform: translateX(calc(-50% + var(--hip-gap, 8px))) rotate(-16deg); }
-  to   { transform: translateX(calc(-50% + var(--hip-gap, 8px))) rotate(-2deg); }
+  to   { transform: translateX(calc(-50% + var(--hip-gap, 8px))) rotate(-4deg); }
 }
 
 /* Optionaler Bodenschatten – falls „Ghosting“ auffällt, einfach auskommentieren */
