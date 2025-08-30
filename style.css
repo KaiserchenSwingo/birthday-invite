@@ -562,7 +562,7 @@ form label.section-title {
   --h: 200;
   animation:
    /* hueflow 8s linear infinite,           /* weichere Farbübergänge */
-    groove 2.2s cubic-bezier(.42,0,.58,1) infinite alternate !important
+    groove 2.2s cubic-bezier(.42,0,.58,1) infinite alternate !important;
 }
 
 .stickman .head,
