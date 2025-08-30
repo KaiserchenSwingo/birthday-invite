@@ -704,9 +704,9 @@ from { transform: rotate(28deg); }
 .stick-wrap.mirror{ transform: scaleX(-1); } /* mittlere Figur gespiegelt */
 
 /* Optional kleine Größenvariation für mehr Leben */
-.sm-1 .stickman{ scale: .98; }
+.sm-1 .stickman{ scale: .90; }
 .sm-2 .stickman{ scale: 1;   }
-.sm-3 .stickman{ scale: 1.02; }
+.sm-3 .stickman{ scale: 1.1; }
 
 /* ===== Asynchrone Offsets pro Figur =====
    WICHTIG: Bei Armen/Beinen haben wir 2 Animationen (Bewegung, Farbe).
@@ -741,13 +741,6 @@ from { transform: rotate(28deg); }
 
 .sm-3 .leg.left  { animation-delay: .25s, .10s !important; }
 .sm-3 .leg.right { animation-delay: .25s, .95s !important; }
-
-/* Falls du Unterschenkel (::after) animierst – gleiche Logik:
-.sm-2 .leg.left::after  { animation-delay: .1s, .9s  !important; }
-.sm-2 .leg.right::after { animation-delay: .1s, .3s  !important; }
-.sm-3 .leg.left::after  { animation-delay: .2s, .2s  !important; }
-.sm-3 .leg.right::after { animation-delay: .2s, 1.0s !important; }
-*/
 
 /* Mobile Helferlein */
 @media (max-width: 520px){
