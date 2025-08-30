@@ -513,10 +513,8 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 /* Titel-Look auch auf Labels anwenden */
 label.section-title {
   display: block;               /* macht es wie eine Überschrift */
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-size: 1rem;
   color: #fff;
-  text-transform: uppercase;
   margin: 16px 0 8px;
   text-shadow: 0 0 6px #a64dff, 0 0 12px #6ecbff; /* Neon Glow */
 }
