@@ -704,8 +704,8 @@ from { transform: rotate(28deg); }
 .stick-wrap.mirror{ transform: scaleX(-1); } /* mittlere Figur gespiegelt */
 
 /* Optional kleine Größenvariation für mehr Leben */
-.sm-1 .stickman{ scale: .90; }
-.sm-2 .stickman{ scale: 1;   }
+.sm-1 .stickman{ scale: 1; }
+.sm-2 .stickman{ scale: .90;   }
 .sm-3 .stickman{ scale: 1.1; }
 
 /* ===== Asynchrone Offsets pro Figur =====
@@ -725,22 +725,23 @@ from { transform: rotate(28deg); }
 /* ARMS (Move + hueflow) */
 .sm-1 .arm.left  { animation-delay: 0s,   .25s !important; }
 .sm-1 .arm.right { animation-delay: 0s,   1.0s !important; }
-
-.sm-2 .arm.left  { animation-delay: .1s,  .55s !important; }
-.sm-2 .arm.right { animation-delay: .1s,  1.2s !important; }
-
-.sm-3 .arm.left  { animation-delay: .2s,  .15s !important; }
-.sm-3 .arm.right { animation-delay: .2s,  .85s !important; }
-
-/* LEGS (Move + hueflow) */
 .sm-1 .leg.left  { animation-delay: 0s,   .40s !important; }
 .sm-1 .leg.right { animation-delay: 0s,   1.20s !important; }
 
-.sm-2 .leg.left  { animation-delay: .15s, .80s !important; }
-.sm-2 .leg.right { animation-delay: .15s, .30s !important; }
+/* Fig 1 (Basis) – keine Änderungen nötig */
 
-.sm-3 .leg.left  { animation-delay: .25s, .10s !important; }
-.sm-3 .leg.right { animation-delay: .25s, .95s !important; }
+/* Fig 2 */
+.sm-2 .arm.left  { animation-delay: .10s, .55s; animation-duration: 3.2s, 10.4s; }
+.sm-2 .arm.right { animation-delay: .10s, 1.10s; animation-duration: 3.3s, 9.8s;  }
+.sm-2 .leg.left  { animation-delay: .12s, .80s;  animation-duration: 3.4s, 11.0s; }
+.sm-2 .leg.right { animation-delay: .12s, .30s;  animation-duration: 3.1s, 10.2s; }
+
+/* Fig 3 */
+.sm-3 .arm.left  { animation-delay: .20s, .20s;  animation-duration: 3.0s, 9.6s;  }
+.sm-3 .arm.right { animation-delay: .20s, .85s;  animation-duration: 3.5s, 10.8s; }
+.sm-3 .leg.left  { animation-delay: .22s, .10s;  animation-duration: 3.2s, 10.6s; }
+.sm-3 .leg.right { animation-delay: .22s, .95s;  animation-duration: 3.6s, 11.4s; }
+
 
 /* Mobile Helferlein */
 @media (max-width: 520px){
