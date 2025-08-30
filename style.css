@@ -526,86 +526,88 @@ form label.section-title {
 }
 
 /* EXPERIMENT*/
-/* === Sync-Settings: passe diese 3 Variablen an deinen Rahmen an === */
 :root{
-  --neon-a: #6ecbff;           /* Startfarbe (wie Rahmen) */
-  --neon-b: #a64dff;           /* Zielfarbe (wie Rahmen)  */
-  --frame-anim-duration: 3s;   /* gleiche Dauer wie der Rahmen */
-  --frame-anim-timing: linear; /* Timing des Rahmens      */
+  --neon-a:#6ecbff;   /* blau */
+  --neon-b:#a64dff;   /* lila */
+  --neon-c:#ff4fd8;   /* pink */
+  --frame-anim-duration: 4s;
+  --frame-anim-timing: linear;
 }
 
-/* Gemeinsame Keyframes, falls du schon eigene hast: einfach Namen/Dauer matchen */
-@keyframes neonFramePulse{
+/* 3-Farben-Zyklus (Blau→Lila→Pink→Blau) */
+@keyframes neonTri {
   0%   { --c: var(--neon-a); }
-  50%  { --c: var(--neon-b); }
+  33%  { --c: var(--neon-b); }
+  66%  { --c: var(--neon-c); }
   100% { --c: var(--neon-a); }
 }
 
-/* Stickman-Container bewegt sich leicht (groovt) */
-.stickman {
-  position: relative;
-  width: 60px; height: 120px;
-  margin: 16px 0 10px;
-  animation: dance 1.5s ease-in-out infinite;
+/* Figur insgesamt leicht grooven lassen */
+.stickman{
+  --thick:3px;                /* Strichdicke */
+  position:relative;
+  width:70px;height:120px;
+  margin:16px 0 8px;
+  animation: dance 1.6s ease-in-out infinite;
+}
+.neon-sync{ animation: neonTri var(--frame-anim-duration) var(--frame-anim-timing) infinite; }
+
+/* Kopf */
+.stickman .head{
+  width:32px;height:32px;margin:0 auto;
+  border-radius:50%;
+  border: var(--thick) solid var(--c, var(--neon-a));
+  box-shadow:0 0 6px var(--c), 0 0 14px var(--c), inset 0 0 2px var(--c);
 }
 
-/* Neon-Sync: alle Linien/Kreise nutzen die animierte Variable --c */
-.neon-sync { 
-  /* bindet Farbe/Glow an dieselben Keyframes/Timing wie dein Rahmen */
-  animation: neonFramePulse var(--frame-anim-duration) var(--frame-anim-timing) infinite;
+/* Körper (Hals+Torso) */
+.stickman .body{
+  position:absolute;left:50%;top:34px;
+  width:var(--thick);height:44px;transform:translateX(-50%);
+  background: var(--c);
+  box-shadow:0 0 4px var(--c), 0 0 10px var(--c);
 }
 
-/* Kopf = Kreis (nur Kontur) */
-.stickman .head {
-  width: 30px; height: 30px; margin: 0 auto 0;
-  border-radius: 50%;
-  border: 2px solid var(--c, var(--neon-a));
-  box-shadow: 0 0 6px var(--c, var(--neon-a)), 0 0 12px var(--c, var(--neon-a));
+/* --- Arme: Gelenk an den Schultern, realistischer Winkel --- */
+.stickman .arm{
+  position:absolute;top:50px; /* Schulterhöhe */
+  height:var(--thick);width:30px;
+  background: var(--c); box-shadow:0 0 4px var(--c), 0 0 10px var(--c);
+}
+.stickman .arm.left{  left:50%; transform-origin: 0% 50%;  transform: translateX(-14px) rotate(25deg);  animation: armL 1.6s ease-in-out infinite; }
+.stickman .arm.right{ left:50%; transform-origin: 100% 50%; transform: translateX(-16px) rotate(-25deg); animation: armR 1.6s ease-in-out infinite; }
+
+/* --- Beine: Hüfte als Drehpunkt, leicht versetzt --- */
+.stickman .leg{
+  position:absolute;top:78px; /* Hüfte */
+  width:var(--thick);height:46px;
+  background: var(--c); box-shadow:0 0 4px var(--c), 0 0 10px var(--c);
+  transform-origin: 50% 0%;
+}
+.stickman .leg.left{  left:33px; transform: rotate(15deg);  animation: legL 1.6s ease-in-out infinite; }
+.stickman .leg.right{ left:37px; transform: rotate(-15deg); animation: legR 1.6s ease-in-out infinite; }
+
+/* Bewegungen */
+@keyframes dance{
+  0%,100%{ transform: translateX(0) rotate(0deg); }
+  25%    { transform: translateX(3px) rotate(6deg); }
+  50%    { transform: translateX(0) rotate(0deg); }
+  75%    { transform: translateX(-3px) rotate(-6deg); }
+}
+@keyframes armL{ 0%,100%{ transform: translateX(-14px) rotate(35deg);} 50%{ transform: translateX(-14px) rotate(-10deg);} }
+@keyframes armR{ 0%,100%{ transform: translateX(-16px) rotate(-35deg);}50%{ transform: translateX(-16px) rotate(10deg);} }
+@keyframes legL{ 0%,100%{ transform: rotate(22deg);} 50%{ transform: rotate(-8deg);} }
+@keyframes legR{ 0%,100%{ transform: rotate(-22deg);}50%{ transform: rotate(8deg);} }
+
+/* Optional: kleiner Bodenschatten, lässt ihn „stehen“ */
+.stickman::after{
+  content:""; position:absolute; left:50%; bottom:6px; transform:translateX(-50%);
+  width:44px;height:10px;border-radius:999px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.35), rgba(0,0,0,0) 70%);
+  filter: blur(2px);
 }
 
-/* Körperlinie */
-.stickman .body {
-  position: absolute; top: 30px; left: 50%;
-  width: 2px; height: 40px; transform: translateX(-50%);
-  background: var(--c, var(--neon-a));
-  box-shadow: 0 0 4px var(--c, var(--neon-a)), 0 0 8px var(--c, var(--neon-a));
-}
-
-/* Arme */
-.stickman .arm {
-  position: absolute; top: 40px; height: 2px; width: 30px;
-  background: var(--c, var(--neon-a));
-  box-shadow: 0 0 4px var(--c, var(--neon-a)), 0 0 8px var(--c, var(--neon-a));
-}
-.stickman .arm.left  { left: 2px;  transform-origin: left center;  animation: armLeft 1.5s ease-in-out infinite; }
-.stickman .arm.right { right: 2px; transform-origin: right center; animation: armRight 1.5s ease-in-out infinite; }
-
-/* Beine */
-.stickman .leg {
-  position: absolute; top: 70px; width: 2px; height: 40px;
-  background: var(--c, var(--neon-a));
-  box-shadow: 0 0 4px var(--c, var(--neon-a)), 0 0 8px var(--c, var(--neon-a));
-}
-.stickman .leg.left  { left: 20px;  transform-origin: top center; animation: legLeft 1.5s ease-in-out infinite; }
-.stickman .leg.right { right: 20px; transform-origin: top center; animation: legRight 1.5s ease-in-out infinite; }
-
-/* Groove der ganzen Figur */
-@keyframes dance {
-  0%   { transform: translateX(0) rotate(0deg); }
-  25%  { transform: translateX(3px) rotate(8deg); }
-  50%  { transform: translateX(0) rotate(0deg); }
-  75%  { transform: translateX(-3px) rotate(-8deg); }
-  100% { transform: translateX(0) rotate(0deg); }
-}
-
-/* Gliedmaßen-Swing */
-@keyframes armLeft  { 0%,100%{transform:rotate(28deg)} 50%{transform:rotate(-28deg)} }
-@keyframes armRight { 0%,100%{transform:rotate(-28deg)} 50%{transform:rotate(28deg)} }
-@keyframes legLeft  { 0%,100%{transform:rotate(-18deg)} 50%{transform:rotate(18deg)} }
-@keyframes legRight { 0%,100%{transform:rotate(18deg)} 50%{transform:rotate(-18deg)} }
-
-/* Motion-Respect */
+/* Reduced motion respect */
 @media (prefers-reduced-motion: reduce){
-  .stickman, .arm.left, .arm.right, .leg.left, .leg.right, .neon-sync { animation: none !important; }
+  .neon-sync, .stickman, .arm.left, .arm.right, .leg.left, .leg.right{ animation:none !important; }
 }
-
