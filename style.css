@@ -690,10 +690,25 @@ from { transform: rotate(28deg); }
 }
 
 /* Arme/Beine: unterschiedliche Dauern + alternate → natürlicher Rhythmus */
-.stickman .arm.left  { animation: armL 1.7s ease-in-out infinite alternate !important; }
-.stickman .arm.right { animation: armR 1.5s ease-in-out infinite alternate !important; }
-
-.stickman .leg.left  { animation: legL 2.0s ease-in-out infinite alternate !important; }
-.stickman .leg.right { animation: legR 2.0s ease-in-out infinite alternate !important; }
+.stickman .arm.left{
+  animation:
+    armL    1.7s ease-in-out infinite alternate,
+    hueflow 9.2s linear .25s infinite !important;
+}
+.stickman .arm.right{
+  animation:
+    armR    1.5s ease-in-out infinite alternate,
+    hueflow 8.8s linear 1s infinite !important;
+}
+.stickman .leg.left{
+  animation:
+    legL    2.0s ease-in-out infinite alternate,
+    hueflow 9.8s linear .4s infinite !important;
+}
+.stickman .leg.right{
+  animation:
+    legR    2.0s ease-in-out infinite alternate,
+    hueflow 11.2s linear 1.2s infinite !important;
+}
 
 
