@@ -634,7 +634,7 @@ form label.section-title {
 /* Body-Groove – mehr Zwischenpunkte (nahezu „sinus“) */
 @keyframes groove{
  from { transform: translate(0,0) rotate(4deg); }
-  to   { transform: translate(-2.5px, 1.6px) rotate(4deg); }
+  to   { transform: translate(-2.5px, 1.6px) rotate(-4deg); }
 }
 
 /* Arme – weichere, gleichmäßige Swing-Kurve */
