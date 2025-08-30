@@ -610,21 +610,12 @@ form label.section-title {
   right: calc(50% + var(--t)/2);
   transform-origin: right center;
   transform: rotate(22deg);
-
-  /* Bewegung + Farbe (asynchron) */
-  animation:
-    armL    3s cubic-bezier(.44,.05,.55,.95) infinite alternate,
-    hueflow 9.2s linear .25s infinite;
-  /* Voraussetzung: am Element ist color per HSL an --h gebunden:
-     color: hsl(var(--h,200) 100% 70%);  (steht idealerweise auf .stickman .arm) */
 }
 
 .stickman .arm.right{
   left: calc(50% + var(--t)/2);
   transform-origin: left center;
   transform: rotate(-22deg);
-  animation: armR 2.2s cubic-bezier(.4,0,.2,1) infinite,
-             hueflow 8.8s linear infinite 1.0s;
 }
 
 /* ===== BEINE – exakt unter dem Torso, bündig zur Mitte ===== */
@@ -639,13 +630,11 @@ form label.section-title {
 .stickman .leg.left{
   left: 50%;
   transform: translateX(calc(-50% - var(--hip-gap))) rotate(16deg);
-  animation: legL 2.2s cubic-bezier(.4,0,.2,1) infinite;
 }
 
 .stickman .leg.right{
   left: 50%;
   transform: translateX(calc(-50% + var(--hip-gap))) rotate(-16deg);
-  animation: legR 2.2s cubic-bezier(.4,0,.2,1) infinite;
 }
 
 /* ===== Bewegungen (smooth, ohne harte Umkehrpunkte) ===== */
