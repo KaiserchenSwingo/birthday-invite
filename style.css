@@ -439,7 +439,6 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
 }
 
 ul {
-  list-style-position: outside; /* sorgt dafür, dass die Punkte außen stehen */
   padding-left: 0;             /* entfernt die Standard-Einrückung */
   margin-left: 0;              /* zieht die Liste komplett nach links */
 }
