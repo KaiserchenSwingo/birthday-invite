@@ -670,3 +670,11 @@ from { transform: rotate(24deg); }
   .neon-sync{ animation: hueflow 0s linear 1 forwards; }
   .stickman, .arm.left, .arm.right, .leg.left, .leg.right{ animation: none !important; }
 }
+
+/* Arme/Beine: unterschiedliche Dauern + alternate → natürlicher Rhythmus */
+.stickman .arm.left  { animation: armL 2.9s ease-in-out infinite alternate !important; }
+.stickman .arm.right { animation: armR 3.1s ease-in-out infinite alternate !important; }
+
+.stickman .leg.left  { animation: legL 3.2s ease-in-out infinite alternate !important; }
+.stickman .leg.right { animation: legR 3.0s ease-in-out infinite alternate !important; }
+
