@@ -561,8 +561,17 @@ form label.section-title {
 .neon-sync{
   --h: 200;
   animation:
-    hueflow 8s linear infinite,           /* weichere Farbübergänge */
+   /* hueflow 8s linear infinite,           /* weichere Farbübergänge */
     groove 2.2s cubic-bezier(.42,0,.58,1) infinite alternate !important
+}
+
+.stickman .head,
+.stickman .body,
+.stickman .arm,
+.stickman .leg,
+.stickman .leg::after{
+  /* jede Form nutzt ihre EIGENE Hue-Variable */
+  color: hsl(var(--h,200) 100% 70%);
 }
 
 @keyframes hueflow {
@@ -578,6 +587,7 @@ form label.section-title {
   border-radius: 50%;
   border: var(--t) solid currentColor;
   box-shadow: inset 0 0 2px currentColor;
+  animation: hueflow 10s linear infinite .0s; 
 }
 
 /* Torso mittig */
@@ -586,6 +596,7 @@ form label.section-title {
   width: var(--t); height: 48px; transform: translateX(-50%);
   background: currentColor;
   box-shadow: 0 0 4px currentColor, 0 0 10px currentColor;
+  animation: hueflow 12s linear infinite .6s; 
 }
 
 /* ===== ARME – korrekt an den Schultern, gegentaktig ===== */
@@ -599,14 +610,16 @@ form label.section-title {
   right: calc(50% + var(--t)/2);
   transform-origin: right center;
   transform: rotate(22deg);
-  animation: armL 2.2s cubic-bezier(.4,0,.2,1) infinite;
+  animation: armL 2.2s cubic-bezier(.4,0,.2,1) infinite,
+             hueflow 9.2s linear infinite .25s,
 }
 
 .stickman .arm.right{
   left: calc(50% + var(--t)/2);
   transform-origin: left center;
   transform: rotate(-22deg);
-  animation: armR 2.2s cubic-bezier(.4,0,.2,1) infinite;
+  animation: armR 2.2s cubic-bezier(.4,0,.2,1) infinite,
+             hueflow 8.8s linear infinite 1.0s;
 }
 
 /* ===== BEINE – exakt unter dem Torso, bündig zur Mitte ===== */
