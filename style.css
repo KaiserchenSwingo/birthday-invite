@@ -560,9 +560,6 @@ form label.section-title {
 /* fließender Farbverlauf – anpassbar über Dauer */
 .neon-sync{
   --h: 200;
-  animation:
-   /* hueflow 8s linear infinite,           /* weichere Farbübergänge */
-    groove 2.2s cubic-bezier(.42,0,.58,1) infinite alternate !important;
 }
 
 .stickman .head,
