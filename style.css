@@ -610,8 +610,13 @@ form label.section-title {
   right: calc(50% + var(--t)/2);
   transform-origin: right center;
   transform: rotate(22deg);
-  animation: armL 2.2s cubic-bezier(.4,0,.2,1) infinite,
-             hueflow 9.2s linear infinite .25s;
+
+  /* Bewegung + Farbe (asynchron) */
+  animation:
+    armL    3s cubic-bezier(.44,.05,.55,.95) infinite alternate,
+    hueflow 9.2s linear .25s infinite;
+  /* Voraussetzung: am Element ist color per HSL an --h gebunden:
+     color: hsl(var(--h,200) 100% 70%);  (steht idealerweise auf .stickman .arm) */
 }
 
 .stickman .arm.right{
