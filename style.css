@@ -473,8 +473,8 @@ hr{border:none;border-top:1px solid rgba(243,244,246,.25);margin:2rem 0}
   position: absolute;
   left: 0;
   top: 0.6em; 
-  width: 5px;
-  height: 5px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: linear-gradient(135deg, #6ecbff, #a64dff);
   box-shadow: 0 0 4px #6ecbff, 0 0 8px #a64dff;
