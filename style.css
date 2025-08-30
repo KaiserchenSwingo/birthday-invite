@@ -524,3 +524,25 @@ form label.section-title {
   color: #fff !important;
   text-shadow: 0 0 6px #a64dff, 0 0 12px #6ecbff !important;
 }
+
+/* Experiment */
+.dc-chips{
+  --gap:10px;
+  display:flex; gap:var(--gap); overflow:hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.dc-chips span{
+  white-space:nowrap; padding:6px 10px; border-radius:999px;
+  border:1px solid #6ecbff40; color:#fff; font-size:.95rem;
+  box-shadow: 0 0 6px #6ecbff40, 0 0 10px #a64dff30 inset;
+  text-shadow: 0 0 3px #6ecbff, 0 0 6px #a64dff;
+  animation: dcScroll 14s linear infinite;
+}
+.dc-chips span:nth-child(even){ animation-duration: 16s; } /* asynchron leicht */
+@keyframes dcScroll{
+  0%{ transform: translateX(0); }
+  100%{ transform: translateX(-120%); }
+}
+@media (prefers-reduced-motion: reduce){
+  .dc-chips span{animation:none;}
+}
