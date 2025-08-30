@@ -524,3 +524,88 @@ form label.section-title {
   color: #fff !important;
   text-shadow: 0 0 6px #a64dff, 0 0 12px #6ecbff !important;
 }
+
+/* EXPERIMENT*/
+/* === Sync-Settings: passe diese 3 Variablen an deinen Rahmen an === */
+:root{
+  --neon-a: #6ecbff;           /* Startfarbe (wie Rahmen) */
+  --neon-b: #a64dff;           /* Zielfarbe (wie Rahmen)  */
+  --frame-anim-duration: 3s;   /* gleiche Dauer wie der Rahmen */
+  --frame-anim-timing: linear; /* Timing des Rahmens      */
+}
+
+/* Gemeinsame Keyframes, falls du schon eigene hast: einfach Namen/Dauer matchen */
+@keyframes neonFramePulse{
+  0%   { --c: var(--neon-a); }
+  50%  { --c: var(--neon-b); }
+  100% { --c: var(--neon-a); }
+}
+
+/* Stickman-Container bewegt sich leicht (groovt) */
+.stickman {
+  position: relative;
+  width: 60px; height: 120px;
+  margin: 16px 0 10px;
+  animation: dance 1.5s ease-in-out infinite;
+}
+
+/* Neon-Sync: alle Linien/Kreise nutzen die animierte Variable --c */
+.neon-sync { 
+  /* bindet Farbe/Glow an dieselben Keyframes/Timing wie dein Rahmen */
+  animation: neonFramePulse var(--frame-anim-duration) var(--frame-anim-timing) infinite;
+}
+
+/* Kopf = Kreis (nur Kontur) */
+.stickman .head {
+  width: 30px; height: 30px; margin: 0 auto 0;
+  border-radius: 50%;
+  border: 2px solid var(--c, var(--neon-a));
+  box-shadow: 0 0 6px var(--c, var(--neon-a)), 0 0 12px var(--c, var(--neon-a));
+}
+
+/* Körperlinie */
+.stickman .body {
+  position: absolute; top: 30px; left: 50%;
+  width: 2px; height: 40px; transform: translateX(-50%);
+  background: var(--c, var(--neon-a));
+  box-shadow: 0 0 4px var(--c, var(--neon-a)), 0 0 8px var(--c, var(--neon-a));
+}
+
+/* Arme */
+.stickman .arm {
+  position: absolute; top: 40px; height: 2px; width: 30px;
+  background: var(--c, var(--neon-a));
+  box-shadow: 0 0 4px var(--c, var(--neon-a)), 0 0 8px var(--c, var(--neon-a));
+}
+.stickman .arm.left  { left: 2px;  transform-origin: left center;  animation: armLeft 1.5s ease-in-out infinite; }
+.stickman .arm.right { right: 2px; transform-origin: right center; animation: armRight 1.5s ease-in-out infinite; }
+
+/* Beine */
+.stickman .leg {
+  position: absolute; top: 70px; width: 2px; height: 40px;
+  background: var(--c, var(--neon-a));
+  box-shadow: 0 0 4px var(--c, var(--neon-a)), 0 0 8px var(--c, var(--neon-a));
+}
+.stickman .leg.left  { left: 20px;  transform-origin: top center; animation: legLeft 1.5s ease-in-out infinite; }
+.stickman .leg.right { right: 20px; transform-origin: top center; animation: legRight 1.5s ease-in-out infinite; }
+
+/* Groove der ganzen Figur */
+@keyframes dance {
+  0%   { transform: translateX(0) rotate(0deg); }
+  25%  { transform: translateX(3px) rotate(8deg); }
+  50%  { transform: translateX(0) rotate(0deg); }
+  75%  { transform: translateX(-3px) rotate(-8deg); }
+  100% { transform: translateX(0) rotate(0deg); }
+}
+
+/* Gliedmaßen-Swing */
+@keyframes armLeft  { 0%,100%{transform:rotate(28deg)} 50%{transform:rotate(-28deg)} }
+@keyframes armRight { 0%,100%{transform:rotate(-28deg)} 50%{transform:rotate(28deg)} }
+@keyframes legLeft  { 0%,100%{transform:rotate(-18deg)} 50%{transform:rotate(18deg)} }
+@keyframes legRight { 0%,100%{transform:rotate(18deg)} 50%{transform:rotate(-18deg)} }
+
+/* Motion-Respect */
+@media (prefers-reduced-motion: reduce){
+  .stickman, .arm.left, .arm.right, .leg.left, .leg.right, .neon-sync { animation: none !important; }
+}
+
