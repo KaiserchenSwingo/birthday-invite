@@ -717,49 +717,49 @@ from { transform: rotate(28deg); }
 /* Reihenfolge in den Listen immer: 1) Bewegung, 2) Farbe */
 
  /* ---------- HEAD / BODY (nur Farbe) ---------- */
-.sm-1 .head{ animation-duration: 9s !important;  animation-delay: 0s    !important; }
-.sm-2 .head{ animation-duration: 14s !important; animation-delay: .8s   !important; }
-.sm-3 .head{ animation-duration: 18s !important; animation-delay: 1.6s  !important; }
+.sm-1 .head{ animation-duration: 8s !important;  animation-delay: 0s    !important; }
+.sm-2 .head{ animation-duration: 6.5s !important; animation-delay: .8s   !important; }
+.sm-3 .head{ animation-duration: 7.2s !important; animation-delay: 1.6s  !important; }
 
-.sm-1 .body{ animation-duration: 11s !important; animation-delay: .4s   !important; }
-.sm-2 .body{ animation-duration: 16s !important; animation-delay: 1.2s  !important; }
-.sm-3 .body{ animation-duration: 20s !important; animation-delay: .2s   !important; }
+.sm-1 .body{ animation-duration: 9s !important; animation-delay: .4s   !important; }
+.sm-2 .body{ animation-duration: 7.4s !important; animation-delay: 1.2s  !important; }
+.sm-3 .body{ animation-duration: 8.2s !important; animation-delay: .2s   !important; }
 
 /* ---------- ARMS (Bewegung + Farbe) ---------- */
 .sm-1 .arm.left{
-  animation-duration: 2.6s, 10.2s !important;
+  animation-duration: 1.6s, 7.5s !important;
   animation-delay:    0s,   .30s  !important;
   animation-direction: alternate, normal !important;
   animation-timing-function: cubic-bezier(.44,.05,.55,.95), linear !important;
 }
 .sm-1 .arm.right{
-  animation-duration: 3.0s,  9.6s !important;
+  animation-duration: 1.5s,  7s !important;
   animation-delay:    0s,    1.00s !important;
   animation-direction: alternate, normal !important;
   animation-timing-function: cubic-bezier(.44,.05,.55,.95), linear !important;
 }
 
 .sm-2 .arm.left{
-  animation-duration: 3.4s, 12.4s !important;
+  animation-duration: 1.3s, 6.5s !important;
   animation-delay:    .12s, .55s  !important;
   animation-direction: alternate-reverse, normal !important;
   animation-timing-function: ease-in-out, linear !important;
 }
 .sm-2 .arm.right{
-  animation-duration: 2.7s,  9.8s !important;
+  animation-duration: 1.7s,  8.0s !important;
   animation-delay:    .12s, 1.20s !important;
   animation-direction: alternate, normal !important;
   animation-timing-function: ease-in-out, linear !important;
 }
 
 .sm-3 .arm.left{
-  animation-duration: 3.8s,  9.6s !important;
+  animation-duration: 1.2s,  6s !important;
   animation-delay:    .20s,  .20s !important;
   animation-direction: alternate, normal !important;
   animation-timing-function: ease-in-out, linear !important;
 }
 .sm-3 .arm.right{
-  animation-duration: 2.4s, 10.8s !important;
+  animation-duration: 1.9s, 8.8s !important;
   animation-delay:    .20s,  .85s !important;
   animation-direction: alternate-reverse, normal !important;
   animation-timing-function: cubic-bezier(.42,0,.58,1), linear !important;
@@ -767,39 +767,39 @@ from { transform: rotate(28deg); }
 
 /* ---------- LEGS (Bewegung + Farbe) ---------- */
 .sm-1 .leg.left{
-  animation-duration: 3.1s, 11.0s !important;
+  animation-duration: 1.8s, 8s !important;
   animation-delay:    0s,   .40s  !important;
   animation-direction: alternate, normal !important;
   animation-timing-function: ease-in-out, linear !important;
 }
 .sm-1 .leg.right{
-  animation-duration: 3.0s, 12.0s !important;
+  animation-duration: 1.7s, 8.8s !important;
   animation-delay:    0s,   1.20s !important;
   animation-direction: alternate, normal !important;
   animation-timing-function: ease-in-out, linear !important;
 }
 
 .sm-2 .leg.left{
-  animation-duration: 2.4s, 12.4s !important;
+  animation-duration: 1.4s, 7.2s !important;
   animation-delay:    .15s, .80s  !important;
   animation-direction: alternate-reverse, normal !important;
   animation-timing-function: cubic-bezier(.42,0,.58,1), linear !important;
 }
 .sm-2 .leg.right{
-  animation-duration: 3.6s, 10.2s !important;
+  animation-duration: 2.0s, 6.6s !important;
   animation-delay:    .15s, .30s  !important;
   animation-direction: alternate, normal !important;
   animation-timing-function: ease-in-out, linear !important;
 }
 
 .sm-3 .leg.left{
-  animation-duration: 2.8s, 10.6s !important;
+  animation-duration: 1.5s, 7.8s !important;
   animation-delay:    .25s, .10s  !important;
   animation-direction: alternate, normal !important;
   animation-timing-function: ease-in-out, linear !important;
 }
 .sm-3 .leg.right{
-  animation-duration: 3.8s, 11.4s !important;
+  animation-duration: 1.3s, 6.2s !important;
   animation-delay:    .25s, .95s  !important;
   animation-direction: alternate-reverse, normal !important;
   animation-timing-function: cubic-bezier(.44,.05,.55,.95), linear !important;
